@@ -15,19 +15,19 @@ class App extends Component {
 
     logOut() {
         this.props.logoutUser().then((data) => {
-      // reload props from reducer
+            // reload props from reducer
             this.props.fetchUser();
         });
     }
 
     renderUserMenu(currentUser) {
-    // if current user exists and user id exists than make user navigation
+        // if current user exists and user id exists than make user navigation
         if (currentUser && currentUser.uid) {
             return (
                 <li className="dropdown">
                     <a
-                      href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
-                      aria-haspopup="true" aria-expanded="false"
+                        href="#" className="dropdown-toggle" data-toggle="dropdown" role="button"
+                        aria-haspopup="true" aria-expanded="false"
                     >
                         {currentUser.email} <span className="caret" /></a>
                     <ul className="dropdown-menu">
@@ -52,8 +52,8 @@ class App extends Component {
                     <div className="container">
                         <div className="navbar-header">
                             <button
-                              className="navbar-toggle collapsed" type="button" data-toggle="collapse"
-                              data-target=".bs-navbar-collapse"
+                                className="navbar-toggle collapsed" type="button" data-toggle="collapse"
+                                data-target=".bs-navbar-collapse"
                             ><span className="sr-only">Toggle navigation</span>
                                 <span className="icon-bar" />
                                 <span className="icon-bar" />
@@ -65,10 +65,10 @@ class App extends Component {
                         <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
                             <ul className="nav navbar-nav">
                                 <li><Link to="/"> Home</Link></li>
-                ,
+                                ,
               </ul>
                             <ul className="nav navbar-nav navbar-right">
-                                { this.renderUserMenu(this.props.currentUser) }
+                                {this.renderUserMenu(this.props.currentUser)}
                             </ul>
                         </nav>
                     </div>
