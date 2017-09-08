@@ -1,5 +1,5 @@
 {
-  "extends": "airbnb",
+  // "extends": "airbnb",
   "parserOptions": {
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true
@@ -7,8 +7,8 @@
   },
   "rules": {
     "max-len": ["warn", 120],
-    "indent": ["warn", 4],
-    "react/jsx-indent": ["warn", 4]
+    "indent": ["warn", 2],
+    "react/jsx-indent": ["warn", 2]
   },
   "globals": {
     "localStorage": true 
