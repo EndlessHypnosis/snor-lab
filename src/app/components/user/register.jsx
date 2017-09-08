@@ -21,12 +21,15 @@ class UserRegister extends Component {
         this.props.registerUser({ email, password }).then((data) => {
             if (data.payload.errorCode) {
                 this.setState({ message: data.payload.errorMessage })
-              ;
+                    ;
             } else {
-                browserHistory.push('/profile');
+                // TODO: Dont think we can use browserHistory here
+                // look into how we did it in movie tracker
+                // browserHistory.push('/profile');
+                this.props.history.push('/profile')
             }
         }
-    );
+        );
     }
 
     render() {
@@ -38,39 +41,39 @@ class UserRegister extends Component {
                     <div className="form-group">
                         <label htmlFor="txtRegEmail">Email address</label>
                         <input
-                          type="email" className="form-control" ref="email" id="txtEmail" placeholder="Enter email"
-                          name="email"
+                            type="email" className="form-control" ref="email" id="txtEmail" placeholder="Enter email"
+                            name="email"
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="txtRegPass">Password</label>
                         <input
-                          type="password" className="form-control" ref="password" id="txtPass" placeholder="Password"
-                          name="password"
+                            type="password" className="form-control" ref="password" id="txtPass" placeholder="Password"
+                            name="password"
                         />
                     </div>
                     <button type="submit" className="btn btn-default">Register</button>
                     <br /> <br />
 
                     <a
-                      href="#" className="btn btn-block btn-social btn-facebook" onClick={() => {
-                          this.loginWithProvider('facebook');
-                      }} data-provider="facebook"
+                        href="#" className="btn btn-block btn-social btn-facebook" onClick={() => {
+                            this.loginWithProvider('facebook');
+                        }} data-provider="facebook"
                     >Facebook</a>
                     <a
-                      href="#" className="btn btn-block btn-social btn-twitter" onClick={() => {
-                          this.loginWithProvider('twitter');
-                      }} data-provider="twitter"
+                        href="#" className="btn btn-block btn-social btn-twitter" onClick={() => {
+                            this.loginWithProvider('twitter');
+                        }} data-provider="twitter"
                     >Twitter</a>
                     <a
-                      href="#" className="btn btn-block btn-social btn-google" onClick={() => {
-                          this.loginWithProvider('google');
-                      }} data-provider="twitter"
+                        href="#" className="btn btn-block btn-social btn-google" onClick={() => {
+                            this.loginWithProvider('google');
+                        }} data-provider="twitter"
                     >Google</a>
                     <a
-                      href="#" className="btn btn-block btn-social btn-github" onClick={() => {
-                          this.loginWithProvider('github');
-                      }} data-provider="twitter"
+                        href="#" className="btn btn-block btn-social btn-github" onClick={() => {
+                            this.loginWithProvider('github');
+                        }} data-provider="twitter"
                     >Github</a>
 
                 </form>

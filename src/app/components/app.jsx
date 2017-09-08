@@ -75,12 +75,14 @@ class App extends Component {
                 </header>
 
                 <div className="container">
-                    {this.props.children}
+                    this props children here before
                 </div>
-            </div>
-        );
+                </div>
+            );
+        }
     }
-}
+    // in classname container
+    // {this.props.children}
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchUser, logoutUser }, dispatch);

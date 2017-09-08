@@ -32,7 +32,7 @@ class UserProfile extends Component {
                 });
             }
         }
-    );
+        );
     }
 
     render() {
@@ -49,16 +49,16 @@ class UserProfile extends Component {
                     <div className="form-group">
                         <label htmlFor="email">Email: </label>
                         <input
-                          type="text" defaultValue={this.props.currentUser.email}
-                          className="form-control" id="email" ref="email" placeholder="Email" name="email"
+                            type="text" defaultValue={this.props.currentUser.email}
+                            className="form-control" id="email" ref="email" placeholder="Email" name="email"
                         />
                     </div>
                     <div className="form-group">
                         <label htmlFor="displayName">Display name: </label>
                         <input
-                          type="text" defaultValue={this.props.currentUser.displayName}
-                          className="form-control" ref="displayName" id="displayName" placeholder="Display name"
-                          name="displayName"
+                            type="text" defaultValue={this.props.currentUser.displayName}
+                            className="form-control" ref="displayName" id="displayName" placeholder="Display name"
+                            name="displayName"
                         />
                     </div>
                     <button type="submit" className="btn btn-primary">Update</button>
