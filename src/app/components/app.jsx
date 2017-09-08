@@ -63,8 +63,7 @@ class App extends Component {
                         </div>
                         <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
                             <ul className="nav navbar-nav">
-                                <li><Link to="/"> Home</Link></li>
-                                ,
+                                <li><Link to="/"> Placeholder for site nav links</Link></li>
                             </ul>
                             <ul className="nav navbar-nav navbar-right">
                                 {this.renderUserMenu(this.props.currentUser)}
