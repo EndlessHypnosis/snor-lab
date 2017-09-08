@@ -49,7 +49,6 @@ class App extends Component {
         return (
             <div>
                 <header className="navbar navbar-static-top navbar-inverse" id="top" role="banner">
-                    <div className="container">
                         <div className="navbar-header">
                             <button
                                 className="navbar-toggle collapsed" type="button" data-toggle="collapse"
@@ -59,24 +58,20 @@ class App extends Component {
                                 <span className="icon-bar" />
                                 <span className="icon-bar" />
                             </button>
-                            <Link to="/" className="navbar-brand">Firebase & Redux boilerplate</Link>
+                            <Link to="/" className="navbar-brand">snorLab</Link>
 
                         </div>
                         <nav className="collapse navbar-collapse bs-navbar-collapse" role="navigation">
                             <ul className="nav navbar-nav">
                                 <li><Link to="/"> Home</Link></li>
                                 ,
-              </ul>
+                            </ul>
                             <ul className="nav navbar-nav navbar-right">
                                 {this.renderUserMenu(this.props.currentUser)}
                             </ul>
                         </nav>
-                    </div>
                 </header>
 
-                <div className="container">
-                    this props children here before
-                </div>
                 </div>
             );
         }

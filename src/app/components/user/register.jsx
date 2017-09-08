@@ -53,28 +53,7 @@ class UserRegister extends Component {
                         />
                     </div>
                     <button type="submit" className="btn btn-default">Register</button>
-                    <br /> <br />
-
-                    <a
-                        href="#" className="btn btn-block btn-social btn-facebook" onClick={() => {
-                            this.loginWithProvider('facebook');
-                        }} data-provider="facebook"
-                    >Facebook</a>
-                    <a
-                        href="#" className="btn btn-block btn-social btn-twitter" onClick={() => {
-                            this.loginWithProvider('twitter');
-                        }} data-provider="twitter"
-                    >Twitter</a>
-                    <a
-                        href="#" className="btn btn-block btn-social btn-google" onClick={() => {
-                            this.loginWithProvider('google');
-                        }} data-provider="twitter"
-                    >Google</a>
-                    <a
-                        href="#" className="btn btn-block btn-social btn-github" onClick={() => {
-                            this.loginWithProvider('github');
-                        }} data-provider="twitter"
-                    >Github</a>
+                    
 
                 </form>
             </div>
@@ -82,6 +61,29 @@ class UserRegister extends Component {
     }
 
 }
+
+// <br /> <br />
+
+//     <a
+//         href="#" className="btn btn-block btn-social btn-facebook" onClick={() => {
+//             this.loginWithProvider('facebook');
+//         }} data-provider="facebook"
+//     >Facebook</a>
+//     <a
+//         href="#" className="btn btn-block btn-social btn-twitter" onClick={() => {
+//             this.loginWithProvider('twitter');
+//         }} data-provider="twitter"
+//     >Twitter</a>
+//     <a
+//         href="#" className="btn btn-block btn-social btn-google" onClick={() => {
+//             this.loginWithProvider('google');
+//         }} data-provider="twitter"
+//     >Google</a>
+//     <a
+//         href="#" className="btn btn-block btn-social btn-github" onClick={() => {
+//             this.loginWithProvider('github');
+//         }} data-provider="twitter"
+//     >Github</a>
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({
