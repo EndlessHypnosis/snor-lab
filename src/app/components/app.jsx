@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetchUser, logoutUser } from "../actions/firebase_actions";
+import music_14 from "../sounds/music_14.mp3";
+import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 
 // or just take everything!
 import * as Blueprint from "@blueprintjs/core";
@@ -13,6 +15,18 @@ class App extends Component {
 
     this.props.fetchUser();
     this.logOut = this.logOut.bind(this);
+  }
+
+  componentDidMount() {
+    let sound = new Audio(music_14);
+    sound.play();
+
+    sound = new Audio(make_yourself_comfortable);
+
+    setTimeout(() => {
+      sound.play();
+    }, 7000);
+
   }
 
   logOut() {
@@ -105,7 +119,7 @@ class App extends Component {
           >
             <ul className="nav navbar-nav">
               <li>
-                <Link to="/"> Placeholder for site nav links</Link>
+                <Link to="/">this is a placeholder for site nav links</Link>
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
