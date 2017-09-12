@@ -49,7 +49,7 @@ class App extends Component {
   logOut() {
     this.props.logoutUser().then(data => {
       // reload props from reducer
-      console.log("app.jsx:21:", data);
+      console.log("logout log:", data);
       this.props.fetchUser();
     });
   }
@@ -99,9 +99,9 @@ class App extends Component {
     // const mySpinner = <Spinner intent={Intent.PRIMARY} />;
 
     // using the namespace import:
-    const anotherSpinner = (
-      <Blueprint.Spinner intent={Blueprint.Intent.PRIMARY} />
-    );
+    // const anotherSpinner = (
+    //   <Blueprint.Spinner intent={Blueprint.Intent.PRIMARY} />
+    // );
 
     // use factories for React.createElement shorthand if you're not using JSX.
     // every component provides a corresponding <Name>Factory.

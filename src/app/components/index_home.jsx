@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import Sound from "react-sound";
 import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 import FireBaseTools from '../utils/firebase';
@@ -6,20 +7,106 @@ import FireBaseTools from '../utils/firebase';
 // or just take everything!
 import * as Blueprint from "@blueprintjs/core";
 
-export default class HomeIndex extends Component {
-  constructor() {
-    super();
+class HomeIndex extends Component {
+  constructor(props) {
+    super(props);
 
     this.state = {
       isOpenDialogStart: false,
-      taskTitle: ''
+      taskTitle: '',
+      userTaskList: {}
     };
 
-    const fbRef = FireBaseTools.getDatabaseReference('tasks');
-    fbRef.on('value', snap => {
-      console.log('db val:', snap.val())
+    this.onFormTaskAdd = this.onFormTaskAdd.bind(this);
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
+
+    if (!this.props.currentUser && nextProps.currentUser) {
+      console.log('LISTENING to nextProps');
+      this.listenForTasks(nextProps);
+    }
+  }
+
+  componentDidMount() {
+
+    console.log('COMPONENT DID MOUNT: what are props:', this.props)
+    if (this.props.currentUser) {
+      console.log('LISTENING to this.props');
+      this.listenForTasks(this.props);
+    }
+    
+
+
+    // FireBaseTools.fetchUser()
+    //   .then(res => {
+    //     console.log('LOGGED IN USER:', res);
+    //     console.log('PROPS:', this.props);
+    //     this.setState({
+    //       uid: res.uid
+    //     })
+    //   })
+  }
+
+  actualTaskListener(myProps) {
+    const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
+    //
+    fbRef.on('child_added', snap => {
+      let stateCopy = Object.assign({}, this.state.userTaskList);
+      console.log('SNAP from users/tasklist watcher:', snap.key)
+      // only add if it's not there yet. could run into issues later with this, may need to rethink
+      if (!stateCopy[snap.key]) {
+        stateCopy[snap.key] = snap.val();
+        this.setState({
+          userTaskList: stateCopy
+        })
+      }
     })
   }
+
+  listenForTasks(myProps) {
+
+    //
+    // ref.on('child_added') will return all children and then maintain a listener for more.
+    // ref.on('value') just detects change in path item itself?
+    //
+    
+    // how do we store the current user logged in "uid" so then we just listen for that here:
+    console.log(`LISTENER ATTACHED TO [users/tasklist${myProps.currentUser.uid}]`);
+    const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
+    // Before we setup our listener, let's pre load
+    // the userTaskList so we can avoid all these renders
+    //
+    fbRef.once('value', snap => {
+      let stateCopy = Object.assign({}, this.state.userTaskList);
+      console.log('ONE TIME .ONCE CALL:', snap, ' | val: ', snap.val());
+      // make sure there is a snap val before setting
+      if (snap.val()) {
+        Object.keys(snap.val()).forEach(task => {
+          stateCopy[task] = snap.val()[task];
+        });
+        this.setState({
+          userTaskList: stateCopy
+        });
+      }
+    }).then(stuff => {
+      console.log('ONCE FINISHED!!!!!!!!!!!!!!!', stuff);
+      this.actualTaskListener(myProps);
+    })
+
+    
+
+
+
+    // var users = [];
+    // usersRef.on(‘child_added’, function (snap) {
+    //   users.push(snap.val()); // Push children to a local users array
+    // });
+
+  }
+
 
 
   toggleDialog() {
@@ -30,15 +117,37 @@ export default class HomeIndex extends Component {
     })
   };
 
+  // no longer used.
   addTask(e) {
-    FireBaseTools.fetchUser()
-      .then(res => {
-        console.log('LOGGED IN USER:', res);
-        FireBaseTools.getDatabaseReference(`users/${res.uid}/tasks`).set({
-          title: this.state.taskTitle,
-          user: res.email
-        });
-    })
+
+    console.log('addTask(e):', this.props.currentUser.uid);
+
+    //
+    // simple firebase set (insert)
+    //
+
+    // FireBaseTools.getDatabaseReference(`users/${res.uid}/tasks`).set({
+    //   title: this.state.taskTitle,
+    //   user: res.email
+    // });
+
+    //
+    // firebase push (for lists of data)
+    //
+
+    let fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${this.props.currentUser.uid}`);
+    let childRef = fbRef.push({ 
+      userEmail: this.props.currentUser.email,
+      title: this.state.taskTitle
+    });
+    //^ you can do it in one line like above, or like this here below:
+
+    // let childRef = fbRef.push();
+    // we can get its id using key()
+    // console.log('my new shiny id is ', childRef);
+    // now it is appended at the end of data at the server
+    // childRef.set({ foo: 'bar' });
+
 
     // console.log('E:', e.target, 'VAL:', this.state.taskTitle)
     // FireBaseTools.getDatabaseReference('tasks/${}').set({
@@ -47,7 +156,69 @@ export default class HomeIndex extends Component {
     // });
   }
 
+  onFormTaskAdd(event) {
+    event.preventDefault();
+    console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
+
+    // actual task add
+    //
+
+    let fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${this.props.currentUser.uid}`);
+    let childRef = fbRef.push({
+      userEmail: this.props.currentUser.email,
+      title: this.state.taskTitle
+    }).then(response => {
+      console.log('Task Added | Saving Random Image');
+      this.addImageToStorage(response.key, 'images/avatars', `https://robohash.org/${response.key}`);
+      this.addImageToStorage(response.key, 'images/moods', `https://api.adorable.io/avatars/200/${response.key}.png`);
+    })
+  }
+
+  // https://api.adorable.io/avatars/200/abott@adorable.png
+
+  addImageToStorage(key, folderPath, imgUrl) {
+    // just playing around with storage here
+    //
+
+    let folderImages = FireBaseTools.getStorageReference().child(folderPath);
+    let newRoboFileName = `${key}.png`;
+    let newRobo = folderImages.child(newRoboFileName);
+    console.log('STORAGE:', newRobo.fullPath)
+
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    // const url = "https://example.com"; // site that doesn’t send Access-Control-*
+    // fetch(proxyurl + url) // https://cors-anywhere.herokuapp.com/https://example.com
+    //   .then(response => response.text())
+    //   .then(contents => console.log(contents))
+    //   .catch(console.log("Can’t access " + url + " response. Blocked by browser?"))
+
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', proxyurl + imgUrl, true);
+    xhr.responseType = 'blob';
+    // if (folderPath === 'images/moods') {
+    //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+    //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+    // }
+    xhr.onload = function (e) {
+      if (this.status == 200) {
+        var myBlob = this.response;
+        console.log('what is myBlob', myBlob)
+        newRobo.put(myBlob).then(snap => {
+          console.log('File Upload Complete: ', newRobo.fullPath)
+        })
+        // myBlob is now the blob that the object URL pointed to.
+      }
+    };
+    xhr.send();
+  }
+
   render() {
+    console.log('--APP RENDER--');
+
+    const listOfTasks = Object.keys(this.state.userTaskList).map( task => {
+      return <p key={task}>{this.state.userTaskList[task].title}</p>
+    })
 
     const somestuff = (
       <div>
@@ -58,17 +229,24 @@ export default class HomeIndex extends Component {
           text="Show dialog"
         />
 
-        <input
-          type="text"
-          className="pt-input"
-          value={this.state.taskTitle}
-          onChange={(e) => { this.setState({taskTitle: e.target.value}); }}
-        />
-        <button
-          type="button"
-          className="pt-button"
-          onClick={(e) => { this.addTask(e); }}
-        >Add Task</button>
+        <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
+          <input
+            type="text"
+            className="pt-input"
+            value={this.state.taskTitle}
+            onChange={(e) => { this.setState({ taskTitle: e.target.value }); }}
+          />
+          <button
+            type="submit"
+            className="pt-button"
+            // onClick={(e) => { this.addTask(e); }}
+          >Add Task</button>
+        </form>
+        
+        <div>
+          <img src="https://robohash.org/funny_slow_catapillar" />
+          {listOfTasks}
+        </div>
 
 
 
@@ -105,7 +283,7 @@ export default class HomeIndex extends Component {
     );
 
 
-    return(
+    return (
       <div>
         This is the home page {somestuff}
       </div>
@@ -115,11 +293,22 @@ export default class HomeIndex extends Component {
 
 }
 
-  // <div className="pt-callout pt-intent-success">
-  //   <h5>Callout Heading</h5>
-  //   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
-  // </div>
+// <div className="pt-callout pt-intent-success">
+//   <h5>Callout Heading</h5>
+//   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
+// </div>
 
-  // 111: <Sound url="/src/app/sounds/welcome_to_the_show.mp3" playStatus={Sound.status.PLAYING}/>
-  // isOpen={this.state.isOpen}
-  
+// 111: <Sound url="/src/app/sounds/welcome_to_the_show.mp3" playStatus={Sound.status.PLAYING}/>
+// isOpen={this.state.isOpen}
+
+
+
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({ fetchUser, logoutUser }, dispatch);
+// }
+
+function mapStateToProps(state) {
+  return { currentUser: state.currentUser };
+}
+
+export default connect(mapStateToProps, null)(HomeIndex);
