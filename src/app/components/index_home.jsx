@@ -159,13 +159,55 @@ class HomeIndex extends Component {
     event.preventDefault();
     console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
 
+    
+
+
+
+
+    // actual task add
+    //
 
     let fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${this.props.currentUser.uid}`);
     let childRef = fbRef.push({
       userEmail: this.props.currentUser.email,
       title: this.state.taskTitle
-    });
+    }).then(response => {
+      console.log('Task Added | Saving Random Image');
+      this.addImageToStorage(response.key, 'images/avatars', `https://robohash.org/${response.key}`);
+      this.addImageToStorage(response.key, 'images/moods', `https://api.adorable.io/avatars/200/${response.key}.png`);
+    })
+  }
 
+  // https://api.adorable.io/avatars/200/abott@adorable.png
+
+  addImageToStorage(key, folderPath, imgUrl) {
+    // just playing around with storage here
+    //
+
+    let folderImages = FireBaseTools.getStorageReference().child(folderPath);
+    let newRoboFileName = `${key}.png`;
+    let newRobo = folderImages.child(newRoboFileName);
+    console.log('STORAGE:', newRobo.fullPath)
+
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', imgUrl, true);
+    xhr.responseType = 'blob';
+    // if (folderPath === 'images/moods') {
+    //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+    //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+    // }
+    xhr.onload = function (e) {
+      if (this.status == 200) {
+        var myBlob = this.response;
+        console.log('what is myBlob', myBlob)
+        newRobo.put(myBlob).then(snap => {
+          console.log('File Upload Complete: ', newRobo.fullPath)
+        })
+        // myBlob is now the blob that the object URL pointed to.
+      }
+    };
+    xhr.send();
   }
 
   render() {
@@ -199,6 +241,7 @@ class HomeIndex extends Component {
         </form>
         
         <div>
+          <img src="https://robohash.org/funny_slow_catapillar" />
           {listOfTasks}
         </div>
 

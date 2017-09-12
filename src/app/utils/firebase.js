@@ -4,6 +4,7 @@ import { FIREBASE_CONFIG } from '../config';
 export const firebaseApp = firebase.initializeApp(FIREBASE_CONFIG);
 export const firebaseAuth = firebaseApp.auth();
 export const firebaseDb = firebaseApp.database();
+export const firebaseStorage = firebaseApp.storage();
 
 const FireBaseTools = {
 
@@ -150,6 +151,14 @@ const FireBaseTools = {
      * @returns {!firebase.database.Reference|firebase.database.Reference}
      */
     getDatabaseReference: path => firebaseDb.ref(path),
+
+    /**
+     * Get the firebase storage reference.
+     *
+     * @param path {!string|string}
+     * @returns {!firebase.database.Reference|firebase.database.Reference}
+     */
+    getStorageReference: () => firebaseStorage.ref(),
 };
 
 export default FireBaseTools;
