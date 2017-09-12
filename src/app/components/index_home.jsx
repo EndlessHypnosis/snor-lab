@@ -8,14 +8,16 @@ import FireBaseTools from '../utils/firebase';
 import * as Blueprint from "@blueprintjs/core";
 
 class HomeIndex extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       isOpenDialogStart: false,
       taskTitle: '',
       userTaskList: {}
     };
+
+    this.onFormTaskAdd = this.onFormTaskAdd.bind(this);
 
   }
 
@@ -48,24 +50,53 @@ class HomeIndex extends Component {
     //   })
   }
 
+  actualTaskListener(myProps) {
+    const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
+    //
+    fbRef.on('child_added', snap => {
+      let stateCopy = Object.assign({}, this.state.userTaskList);
+      console.log('SNAP from users/tasklist watcher:', snap.key)
+      // only add if it's not there yet. could run into issues later with this, may need to rethink
+      if (!stateCopy[snap.key]) {
+        stateCopy[snap.key] = snap.val();
+        this.setState({
+          userTaskList: stateCopy
+        })
+      }
+    })
+  }
+
   listenForTasks(myProps) {
 
     //
     // ref.on('child_added') will return all children and then maintain a listener for more.
     // ref.on('value') just detects change in path item itself?
     //
-
+    
     // how do we store the current user logged in "uid" so then we just listen for that here:
     console.log(`LISTENER ATTACHED TO [users/tasklist${myProps.currentUser.uid}]`);
     const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
-    fbRef.on('child_added', snap => {
-      console.log('SNAP from users/tasklist watcher:', snap.key)
+    // Before we setup our listener, let's pre load
+    // the userTaskList so we can avoid all these renders
+    //
+    fbRef.once('value', snap => {
       let stateCopy = Object.assign({}, this.state.userTaskList);
-      stateCopy[snap.key] = snap.val();
-      this.setState({
-        userTaskList: stateCopy
-      })
+      console.log('ONE TIME .ONCE CALL:', snap, ' | val: ', snap.val());
+      // make sure there is a snap val before setting
+      if (snap.val()) {
+        Object.keys(snap.val()).forEach(task => {
+          stateCopy[task] = snap.val()[task];
+        });
+        this.setState({
+          userTaskList: stateCopy
+        });
+      }
+    }).then(stuff => {
+      console.log('ONCE FINISHED!!!!!!!!!!!!!!!', stuff);
+      this.actualTaskListener(myProps);
     })
+
+    
 
 
 
@@ -88,7 +119,7 @@ class HomeIndex extends Component {
 
   addTask(e) {
 
-    console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
+    console.log('addTask(e):', this.props.currentUser.uid);
 
     //
     // simple firebase set (insert)
@@ -124,12 +155,25 @@ class HomeIndex extends Component {
     // });
   }
 
-  render() {
+  onFormTaskAdd(event) {
+    event.preventDefault();
+    console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
 
-    // const listOfTasks = this.state.userTaskList.map( task => {
-    //   console.log('APP RENDER: WHAT IS TASK:', task)
-    //   return <p key={task}>hi</p>
-    // })
+
+    let fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${this.props.currentUser.uid}`);
+    let childRef = fbRef.push({
+      userEmail: this.props.currentUser.email,
+      title: this.state.taskTitle
+    });
+
+  }
+
+  render() {
+    console.log('--APP RENDER--');
+
+    const listOfTasks = Object.keys(this.state.userTaskList).map( task => {
+      return <p key={task}>{this.state.userTaskList[task].title}</p>
+    })
 
     const somestuff = (
       <div>
@@ -140,17 +184,23 @@ class HomeIndex extends Component {
           text="Show dialog"
         />
 
-        <input
-          type="text"
-          className="pt-input"
-          value={this.state.taskTitle}
-          onChange={(e) => { this.setState({ taskTitle: e.target.value }); }}
-        />
-        <button
-          type="button"
-          className="pt-button"
-          onClick={(e) => { this.addTask(e); }}
-        >Add Task</button>
+        <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
+          <input
+            type="text"
+            className="pt-input"
+            value={this.state.taskTitle}
+            onChange={(e) => { this.setState({ taskTitle: e.target.value }); }}
+          />
+          <button
+            type="submit"
+            className="pt-button"
+            // onClick={(e) => { this.addTask(e); }}
+          >Add Task</button>
+        </form>
+        
+        <div>
+          {listOfTasks}
+        </div>
 
 
 
