@@ -117,6 +117,7 @@ class HomeIndex extends Component {
     })
   };
 
+  // no longer used.
   addTask(e) {
 
     console.log('addTask(e):', this.props.currentUser.uid);
@@ -159,11 +160,6 @@ class HomeIndex extends Component {
     event.preventDefault();
     console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
 
-    
-
-
-
-
     // actual task add
     //
 
@@ -189,9 +185,16 @@ class HomeIndex extends Component {
     let newRobo = folderImages.child(newRoboFileName);
     console.log('STORAGE:', newRobo.fullPath)
 
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+    // const url = "https://example.com"; // site that doesn’t send Access-Control-*
+    // fetch(proxyurl + url) // https://cors-anywhere.herokuapp.com/https://example.com
+    //   .then(response => response.text())
+    //   .then(contents => console.log(contents))
+    //   .catch(console.log("Can’t access " + url + " response. Blocked by browser?"))
+
 
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', imgUrl, true);
+    xhr.open('GET', proxyurl + imgUrl, true);
     xhr.responseType = 'blob';
     // if (folderPath === 'images/moods') {
     //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
