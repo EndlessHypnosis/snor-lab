@@ -14,13 +14,13 @@ class HomeIndex extends Component {
     this.state = {
       isOpenDialogStart: false,
       taskTitle: '',
-      userTaskList: []
+      userTaskList: {}
     };
 
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('OLD PROPS:', this.props, ' | INCOMING PROP:', nextProps);
+    console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
 
     if (!this.props.currentUser && nextProps.currentUser) {
       console.log('LISTENING to nextProps');
@@ -49,11 +49,22 @@ class HomeIndex extends Component {
   }
 
   listenForTasks(myProps) {
+
+    //
+    // ref.on('child_added') will return all children and then maintain a listener for more.
+    // ref.on('value') just detects change in path item itself?
+    //
+
     // how do we store the current user logged in "uid" so then we just listen for that here:
     console.log(`LISTENER ATTACHED TO [users/tasklist${myProps.currentUser.uid}]`);
     const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
     fbRef.on('child_added', snap => {
-      console.log('SNAP from users/tasklist watcher:', snap.val())
+      console.log('SNAP from users/tasklist watcher:', snap.key)
+      let stateCopy = Object.assign({}, this.state.userTaskList);
+      stateCopy[snap.key] = snap.val();
+      this.setState({
+        userTaskList: stateCopy
+      })
     })
 
 
@@ -116,7 +127,8 @@ class HomeIndex extends Component {
   render() {
 
     // const listOfTasks = this.state.userTaskList.map( task => {
-    //   return <p key={task}>{task}</p>
+    //   console.log('APP RENDER: WHAT IS TASK:', task)
+    //   return <p key={task}>hi</p>
     // })
 
     const somestuff = (
