@@ -15,17 +15,34 @@ class App extends Component {
 
     this.props.fetchUser();
     this.logOut = this.logOut.bind(this);
+
+    this.runLoop();
+  }
+
+  runLoop() {
+    console.log('RUN LOOP WAS STARTED');
+      (function loop() {
+        var now = new Date();
+        console.log('DATE: ', now.getDate(), ' | TIME: ', now.getHours(), ':', now.getMinutes())
+        if (now.getDate() === 11 && now.getHours() === 16 && now.getMinutes() === 52) {
+          // check for notifications here. This is essentially our cron.
+          console.log('RUN LOOP WAS TIME WAS TRIGGERED!!!')
+        }
+        now = new Date();                  // allow for time passing
+        var delay = 60000 - (now % 60000); // exact ms to next minute interval
+        setTimeout(loop, delay);
+      })();
   }
 
   componentDidMount() {
-    let sound = new Audio(music_14);
-    sound.play();
+    // let sound = new Audio(music_14);
+    // sound.play();
 
-    sound = new Audio(make_yourself_comfortable);
+    // sound = new Audio(make_yourself_comfortable);
 
-    setTimeout(() => {
-      sound.play();
-    }, 7000);
+    // setTimeout(() => {
+    //   sound.play();
+    // }, 7000);
 
   }
 
@@ -54,7 +71,7 @@ class App extends Component {
           </a>
           <ul className="dropdown-menu">
             <li>
-              <Link to="/profile">Profile</Link>
+              <Link to="/profile">profile</Link>
             </li>
             <li role="separator" className="divider" />
             <li>

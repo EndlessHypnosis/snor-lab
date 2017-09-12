@@ -73,7 +73,7 @@ module.exports = (options) => {
 
     webpackConfig.devServer = {
       contentBase: Path.join(__dirname, '../'),
-      hot: false,
+      hot: true,
       port: options.port,
       inline: true,
       progress: true,

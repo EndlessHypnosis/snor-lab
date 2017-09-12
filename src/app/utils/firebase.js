@@ -73,7 +73,7 @@ const FireBaseTools = {
      */
     fetchUser: () => new Promise((resolve, reject) => {
         const unsub = firebaseAuth.onAuthStateChanged((user) => {
-            unsub();
+            unsub(); // why does it seem like this function unsub is calling itself here? recursion?
             resolve(user);
         }, (error) => {
             reject(error);
