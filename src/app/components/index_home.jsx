@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import Sound from "react-sound";
 import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 import FireBaseTools from '../utils/firebase';
@@ -6,20 +7,64 @@ import FireBaseTools from '../utils/firebase';
 // or just take everything!
 import * as Blueprint from "@blueprintjs/core";
 
-export default class HomeIndex extends Component {
+class HomeIndex extends Component {
   constructor() {
     super();
 
     this.state = {
       isOpenDialogStart: false,
-      taskTitle: ''
+      taskTitle: '',
+      userTaskList: []
     };
 
-    const fbRef = FireBaseTools.getDatabaseReference('tasks');
-    fbRef.on('value', snap => {
-      console.log('db val:', snap.val())
-    })
   }
+
+  componentWillReceiveProps(nextProps) {
+    console.log('OLD PROPS:', this.props, ' | INCOMING PROP:', nextProps);
+
+    if (!this.props.currentUser && nextProps.currentUser) {
+      console.log('LISTENING to nextProps');
+      this.listenForTasks(nextProps);
+    }
+  }
+
+  componentDidMount() {
+
+    console.log('COMPONENT DID MOUNT: what are props:', this.props)
+    if (this.props.currentUser) {
+      console.log('LISTENING to this.props');
+      this.listenForTasks(this.props);
+    }
+    
+
+
+    // FireBaseTools.fetchUser()
+    //   .then(res => {
+    //     console.log('LOGGED IN USER:', res);
+    //     console.log('PROPS:', this.props);
+    //     this.setState({
+    //       uid: res.uid
+    //     })
+    //   })
+  }
+
+  listenForTasks(myProps) {
+    // how do we store the current user logged in "uid" so then we just listen for that here:
+    console.log(`LISTENER ATTACHED TO [users/tasklist${myProps.currentUser.uid}]`);
+    const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
+    fbRef.on('child_added', snap => {
+      console.log('SNAP from users/tasklist watcher:', snap.val())
+    })
+
+
+
+    // var users = [];
+    // usersRef.on(‘child_added’, function (snap) {
+    //   users.push(snap.val()); // Push children to a local users array
+    // });
+
+  }
+
 
 
   toggleDialog() {
@@ -31,14 +76,35 @@ export default class HomeIndex extends Component {
   };
 
   addTask(e) {
-    FireBaseTools.fetchUser()
-      .then(res => {
-        console.log('LOGGED IN USER:', res);
-        FireBaseTools.getDatabaseReference(`users/${res.uid}/tasks`).set({
-          title: this.state.taskTitle,
-          user: res.email
-        });
-    })
+
+    console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
+
+    //
+    // simple firebase set (insert)
+    //
+
+    // FireBaseTools.getDatabaseReference(`users/${res.uid}/tasks`).set({
+    //   title: this.state.taskTitle,
+    //   user: res.email
+    // });
+
+    //
+    // firebase push (for lists of data)
+    //
+
+    let fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${this.props.currentUser.uid}`);
+    let childRef = fbRef.push({ 
+      userEmail: this.props.currentUser.email,
+      title: this.state.taskTitle
+    });
+    //^ you can do it in one line like above, or like this here below:
+
+    // let childRef = fbRef.push();
+    // we can get its id using key()
+    // console.log('my new shiny id is ', childRef);
+    // now it is appended at the end of data at the server
+    // childRef.set({ foo: 'bar' });
+
 
     // console.log('E:', e.target, 'VAL:', this.state.taskTitle)
     // FireBaseTools.getDatabaseReference('tasks/${}').set({
@@ -48,6 +114,10 @@ export default class HomeIndex extends Component {
   }
 
   render() {
+
+    // const listOfTasks = this.state.userTaskList.map( task => {
+    //   return <p key={task}>{task}</p>
+    // })
 
     const somestuff = (
       <div>
@@ -62,7 +132,7 @@ export default class HomeIndex extends Component {
           type="text"
           className="pt-input"
           value={this.state.taskTitle}
-          onChange={(e) => { this.setState({taskTitle: e.target.value}); }}
+          onChange={(e) => { this.setState({ taskTitle: e.target.value }); }}
         />
         <button
           type="button"
@@ -105,7 +175,7 @@ export default class HomeIndex extends Component {
     );
 
 
-    return(
+    return (
       <div>
         This is the home page {somestuff}
       </div>
@@ -115,11 +185,22 @@ export default class HomeIndex extends Component {
 
 }
 
-  // <div className="pt-callout pt-intent-success">
-  //   <h5>Callout Heading</h5>
-  //   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
-  // </div>
+// <div className="pt-callout pt-intent-success">
+//   <h5>Callout Heading</h5>
+//   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ex, delectus!
+// </div>
 
-  // 111: <Sound url="/src/app/sounds/welcome_to_the_show.mp3" playStatus={Sound.status.PLAYING}/>
-  // isOpen={this.state.isOpen}
-  
+// 111: <Sound url="/src/app/sounds/welcome_to_the_show.mp3" playStatus={Sound.status.PLAYING}/>
+// isOpen={this.state.isOpen}
+
+
+
+// function mapDispatchToProps(dispatch) {
+//   return bindActionCreators({ fetchUser, logoutUser }, dispatch);
+// }
+
+function mapStateToProps(state) {
+  return { currentUser: state.currentUser };
+}
+
+export default connect(mapStateToProps, null)(HomeIndex);

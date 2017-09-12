@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import {createBrowserHistory} from 'history';
+import { createBrowserHistory } from 'history';
 // OR
 // import createHistory from 'history/createBrowserHistory';
 import { Route } from 'react-router';
@@ -34,8 +34,6 @@ import 'bootstrap-social';
 import './bundle.scss';
 
 const devTools = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-window.appStore = store;    //In case you want to see what's inside
-                            // by executing appStore.getState() in console;
 
 const browserHistory = createBrowserHistory();
 // OR
@@ -57,12 +55,16 @@ const store = createStore(
     applyMiddleware(ReduxPromise) // from thunk to ReduxPromise
 )
 
+window.appStore = store;    //In case you want to see what's inside
+// by executing appStore.getState() in console;
+
+
 // ifyou use a <Switch> wrapper </Switch> only the first child that
 // matches the path.
 
 ReactDOM.render(
-    <Provider store={ store }>
-        <ConnectedRouter history={ browserHistory }>
+    <Provider store={store}>
+        <ConnectedRouter history={browserHistory}>
             <div>
                 <Route path="/" component={App} />
                 <Route exact path="/" component={HomeIndex} />
@@ -72,6 +74,6 @@ ReactDOM.render(
                 <Route path="/reset" component={ResetPassword} />
                 <Route path="/profile" component={UserProfile} onEnter={requireAuth} />
             </div>
-        </ConnectedRouter>        
+        </ConnectedRouter>
     </Provider>
-  , document.querySelector('.react-root'));
+    , document.querySelector('.react-root'));
