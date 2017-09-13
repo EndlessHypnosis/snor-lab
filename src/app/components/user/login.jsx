@@ -16,25 +16,27 @@ class UserLogin extends Component {
         };
     }
 
+    // login form submit
     onFormSubmit(event) {
         event.preventDefault();
 
         const email = this.refs.email.value;
         const password = this.refs.password.value;
-        console.log('FIRST CONSOLE LOG: ', this)
+        // console.log('FIRST CONSOLE LOG: ', this)
         this.props.firebaseLoginUser({ email, password }).then((data) => {
             if (data.payload.errorCode) {
                 this.setState({ message: data.payload.errorMessage });
             } else {
-                console.log('here1')
-                this.props.history.push('/profile')
-                console.log('here2')
+                // where do you want to push on successful login?
+                this.props.history.push('/snor')
             }
         }
         );
     }
 
+    // not sure i need this anymore
     loginWithProvider(provider) {
+        console.log('---YOU ARE TRYING TO LOG IN WITH A PROVIDER---')
         this.props.loginWithProvider(provider).then((data) => {
             if (data.payload.errorCode) {
                 this.setState({ message: data.payload.errorMessage });

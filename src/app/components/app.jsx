@@ -5,7 +5,12 @@ import { bindActionCreators } from "redux";
 import { fetchUser, logoutUser } from "../actions/firebase_actions";
 import music_14 from "../sounds/music_14.mp3";
 import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
+import FireBaseTools from '../utils/firebase';
 
+
+// TODO:
+// when changing display name in profile,
+// it doesn't update till you get back to root
 
 class App extends Component {
   constructor(props) {
@@ -15,6 +20,14 @@ class App extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.runLoop();
+
+    this.fbRefCurrentLevel = undefined;
+    
+    
+    // FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+
+    // console.log('WHAT IS this.fbRefCurrentLevel:', this.fbRefCurrentLevel)
+
   }
 
   runLoop() {
@@ -50,6 +63,23 @@ class App extends Component {
       console.log("logout log:", data);
       this.props.fetchUser();
     });
+  }
+
+  renderContinueMenu(currentUser) {
+    if (currentUser && currentUser.uid) {
+      return (
+        <li>
+          <button onClick={() => {
+            this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
+
+            this.fbRefCurrentLevel.once('value', snap => {
+              console.log('Continue My Journey WHERE:', snap.val());
+              this.props.history.push(snap.val().currentLevel);
+            })
+          }}>continue my journey</button>
+        </li>
+      );
+    }
   }
 
   renderUserMenu(currentUser) {
@@ -133,9 +163,7 @@ class App extends Component {
             role="navigation"
           >
             <ul className="nav navbar-nav">
-              <li>
-                <Link to="/">this is a placeholder for site nav links</Link>
-              </li>
+              {this.renderContinueMenu(this.props.currentUser)}
             </ul>
             <ul className="nav navbar-nav navbar-right">
               {this.renderUserMenu(this.props.currentUser)}
