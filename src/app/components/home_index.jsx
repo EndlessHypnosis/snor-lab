@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Route } from 'react-router';
+import { Link } from 'react-router-dom';
+
+import TasksIndex from '../components/tasks/tasks_index';
+import UserLogin from '../components/user/login';
+
 // import Sound from "react-sound";
 // import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 // import FireBaseTools from '../utils/firebase';
@@ -56,17 +62,27 @@ class HomeIndex extends Component {
     // if current user exists and user id exists than make user navigation
     if (currentUser && currentUser.uid) {
       return (
-        <div>USER EXISTS</div>
+        <div>USER EXISTS
+        <Route path="/tasks" component={TasksIndex} />
+        </div>
       );
     }
     else {
       return (
-        <div>USER DOESN'T EXIST</div>
+        <div>
+          <Route exact path="/" render={(props) => {
+            return (
+              <div>
+                <h4>No User Logged In - Please Login or Register</h4>
+                <Link to='/login'>click here to login</Link>
+              </div>
+            );
+          }} />
+          <Route path="/login" component={UserLogin} />
+        </div>
       );
     }
   }
-
-
 
   render() {
     // console.log('--APP RENDER--');
@@ -74,10 +90,10 @@ class HomeIndex extends Component {
       return (
         <div>
           <h3>Welcome to the snorLab</h3>
-          <p>You have 6 tasks in progress</p>
+          <p>this is a sub message</p>
           <button onClick={() => {
               this.props.history.push('/tasks')
-          }}>View Tasks</button>
+          }}>push history to /tasks</button>
           {this.renderLoginCheck(this.props.currentUser) }
         </div>
       );

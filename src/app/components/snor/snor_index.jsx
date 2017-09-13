@@ -14,7 +14,7 @@ class SnorIndex extends Component {
   render() {
     return(
       <div>
-        <h1>Welcome to the snorLab</h1>
+        <h1>This is the SNOR INDEX</h1>
         <h3>this is the starting point from level 0</h3>
       </div>
     );

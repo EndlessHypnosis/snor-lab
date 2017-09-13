@@ -71,15 +71,16 @@ ReactDOM.render(
         <ConnectedRouter history={browserHistory}>
             <div>
                 <Route path="/" component={App} />
-                <Route exact path="/" component={HomeIndex} />
+                <Route path="/" component={HomeIndex} />
                 <Route path="/snor" component={SnorIndex} />
-                <Route path="/tasks" component={TasksIndex} />
-                <Route path="/login" component={UserLogin} />
                 <Route path="/logout" component={UserLogout} />
                 <Route path="/register" component={UserRegister} />
                 <Route path="/reset" component={ResetPassword} />
                 <Route path="/profile" component={UserProfile} onEnter={requireAuth} />
-            </div>
-        </ConnectedRouter>
-    </Provider>
-    , document.querySelector('.react-root'));
+                </div>
+                </ConnectedRouter>
+                </Provider>
+                , document.querySelector('.react-root'));
+                
+                // <Route path="/login" component={UserLogin} />
+                // <Route path="/tasks" component={TasksIndex} />
