@@ -3,6 +3,7 @@ import { browserHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { registerUser } from '../../actions/firebase_actions';
+import FireBaseTools from '../../utils/firebase';
 
 class UserRegister extends Component {
     constructor(props) {
@@ -11,6 +12,15 @@ class UserRegister extends Component {
         this.state = {
             message: '',
         };
+    }
+
+    initializeUserInDataBase(data) {
+        console.log('REGISTER USER DATA:', data);
+
+        const fbRef = FireBaseTools.getDatabaseReference(`users/${data.payload.uid}/account/level`)
+        fbRef.set({
+            currentLevel: 'welcome-splash'
+        })
     }
 
     onFormSubmit(event) {
@@ -26,6 +36,7 @@ class UserRegister extends Component {
                 // TODO: Dont think we can use browserHistory here
                 // look into how we did it in movie tracker
                 // browserHistory.push('/profile');
+                this.initializeUserInDataBase(data);
                 this.props.history.push('/profile')
             }
         }

@@ -75,7 +75,7 @@ class HomeIndex extends Component {
             ? `Good day, ${currentUser.displayName}`
             : `psst head over to your profile and fill out your name`
           }
-        <Route exact path="/" component={SnorIndex} />
+        <Route path="/snor" component={SnorIndex} />
 
         
 

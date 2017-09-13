@@ -138,7 +138,7 @@ class App extends Component {
           >
             <ul className="nav navbar-nav">
               <li>
-                <Link to="/">this is a placeholder for site nav links</Link>
+                <Link to="/snor">continue my journey</Link>
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">
