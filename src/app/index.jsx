@@ -13,7 +13,11 @@ import thunk from 'redux-thunk';
 // import { Router } from 'react-router-dom';
 
 import App from './components/app';
-import HomeIndex from './components/index_home';
+import HomeIndex from './components/home_index';
+
+import TasksIndex from './components/tasks/tasks_index';
+import SnorIndex from './components/snor/snor_index';
+
 import UserLogin from './components/user/login';
 import UserLogout from './components/user/logout';
 import UserRegister from './components/user/register';
@@ -68,6 +72,8 @@ ReactDOM.render(
             <div>
                 <Route path="/" component={App} />
                 <Route exact path="/" component={HomeIndex} />
+                <Route path="/snor" component={SnorIndex} />
+                <Route path="/tasks" component={TasksIndex} />
                 <Route path="/login" component={UserLogin} />
                 <Route path="/logout" component={UserLogout} />
                 <Route path="/register" component={UserRegister} />

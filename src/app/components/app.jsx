@@ -6,8 +6,6 @@ import { fetchUser, logoutUser } from "../actions/firebase_actions";
 import music_14 from "../sounds/music_14.mp3";
 import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 
-// or just take everything!
-import * as Blueprint from "@blueprintjs/core";
 
 class App extends Component {
   constructor(props) {
@@ -110,7 +108,7 @@ class App extends Component {
     return (
       <div>
         <header
-          className="navbar navbar-static-top navbar-inverse"
+          className="navbar navbar-static-top"
           id="top"
           role="banner"
         >
