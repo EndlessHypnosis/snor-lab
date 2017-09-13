@@ -72,15 +72,16 @@ ReactDOM.render(
             <div>
                 <Route path="/" component={App} />
                 <Route path="/" component={HomeIndex} />
-                <Route path="/snor" component={SnorIndex} />
                 <Route path="/logout" component={UserLogout} />
-                <Route path="/register" component={UserRegister} />
-                <Route path="/reset" component={ResetPassword} />
-                <Route path="/profile" component={UserProfile} onEnter={requireAuth} />
+                
                 </div>
                 </ConnectedRouter>
                 </Provider>
                 , document.querySelector('.react-root'));
                 
+                // <Route path="/snor" component={SnorIndex} />
+                // <Route path="/register" component={UserRegister} />
+                // <Route path="/reset" component={ResetPassword} />
+                // <Route path="/profile" component={UserProfile} onEnter={requireAuth} />
                 // <Route path="/login" component={UserLogin} />
                 // <Route path="/tasks" component={TasksIndex} />

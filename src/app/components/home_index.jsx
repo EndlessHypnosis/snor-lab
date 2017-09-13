@@ -4,7 +4,14 @@ import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
 
 import TasksIndex from '../components/tasks/tasks_index';
+import SnorIndex from '../components/snor/snor_index';
+
 import UserLogin from '../components/user/login';
+import UserRegister from '../components/user/register';
+import UserProfile from '../components/user/profile';
+import ResetPassword from '../components/user/reset_password';
+import requireAuth from '../utils/authenticated.js';
+
 
 // import Sound from "react-sound";
 // import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
@@ -61,9 +68,21 @@ class HomeIndex extends Component {
   renderLoginCheck(currentUser) {
     // if current user exists and user id exists than make user navigation
     if (currentUser && currentUser.uid) {
+      console.log('clean up these:', currentUser)
       return (
-        <div>USER EXISTS
-        <Route path="/tasks" component={TasksIndex} />
+        <div>
+          {currentUser.displayName
+            ? `Good day, ${currentUser.displayName}`
+            : `psst head over to your profile and fill out your name`
+          }
+        <Route exact path="/" component={SnorIndex} />
+
+        
+
+
+        <Route path="/reset" component={ResetPassword} />
+        <Route path="/profile" component={UserProfile} onEnter={requireAuth} />
+
         </div>
       );
     }
@@ -73,34 +92,43 @@ class HomeIndex extends Component {
           <Route exact path="/" render={(props) => {
             return (
               <div>
-                <h4>No User Logged In - Please Login or Register</h4>
+                <h4>No User Logged In</h4>
+                <p>The snorLab would like to keep track of you...I mean your progress.</p>
+                <p>For this, we require you to login/register before continuing your journey :)</p>
                 <Link to='/login'>click here to login</Link>
+                <Link to='/register'>click here to register</Link>
               </div>
             );
           }} />
           <Route path="/login" component={UserLogin} />
+          <Route path="/register" component={UserRegister} />
+          
         </div>
       );
     }
   }
 
   render() {
-    // console.log('--APP RENDER--');
 
       return (
         <div>
           <h3>Welcome to the snorLab</h3>
           <p>this is a sub message</p>
-          <button onClick={() => {
-              this.props.history.push('/tasks')
-          }}>push history to /tasks</button>
           {this.renderLoginCheck(this.props.currentUser) }
-        </div>
-      );
-      
-    } // end render
-  } // end class
-  
+          </div>
+        );
+        
+      } // end render
+    } // end class
+    
+
+    // example of onclick history push
+    //
+    // <button onClick={() => {
+    //     this.props.history.push('/tasks')
+    // }}>push history to /tasks</button>
+
+
   // <img src="https://robohash.org/funny_slow_catapillar" />
 // <div className="pt-callout pt-intent-success">
 //   <h5>Callout Heading</h5>

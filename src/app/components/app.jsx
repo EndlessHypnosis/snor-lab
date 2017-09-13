@@ -7,6 +7,10 @@ import music_14 from "../sounds/music_14.mp3";
 import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 
 
+// TODO:
+// when changing display name in profile,
+// it doesn't update till you get back to root
+
 class App extends Component {
   constructor(props) {
     super(props);
