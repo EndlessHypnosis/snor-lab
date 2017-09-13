@@ -65,6 +65,23 @@ class App extends Component {
     });
   }
 
+  renderContinueMenu(currentUser) {
+    if (currentUser && currentUser.uid) {
+      return (
+        <li>
+          <button onClick={() => {
+            this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
+
+            this.fbRefCurrentLevel.once('value', snap => {
+              console.log('Continue My Journey WHERE:', snap.val());
+              this.props.history.push(snap.val().currentLevel);
+            })
+          }}>continue my journey</button>
+        </li>
+      );
+    }
+  }
+
   renderUserMenu(currentUser) {
     // if current user exists and user id exists than make user navigation
     if (currentUser && currentUser.uid) {
@@ -146,16 +163,7 @@ class App extends Component {
             role="navigation"
           >
             <ul className="nav navbar-nav">
-              <li>
-                <button onClick={() => {
-                  this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
-
-                  this.fbRefCurrentLevel.once('value', snap => {
-                    console.log('Continue My Journey WHERE:', snap.val());
-                    this.props.history.push(snap.val().currentLevel);
-                  })
-                }}>continue my journey</button>
-              </li>
+              {this.renderContinueMenu(this.props.currentUser)}
             </ul>
             <ul className="nav navbar-nav navbar-right">
               {this.renderUserMenu(this.props.currentUser)}
