@@ -5,6 +5,7 @@ import { bindActionCreators } from "redux";
 import { fetchUser, logoutUser } from "../actions/firebase_actions";
 import music_14 from "../sounds/music_14.mp3";
 import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
+import FireBaseTools from '../utils/firebase';
 
 
 // TODO:
@@ -19,6 +20,14 @@ class App extends Component {
     this.logOut = this.logOut.bind(this);
 
     this.runLoop();
+
+    this.fbRefCurrentLevel = undefined;
+    
+    
+    // FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+
+    // console.log('WHAT IS this.fbRefCurrentLevel:', this.fbRefCurrentLevel)
+
   }
 
   runLoop() {
@@ -138,7 +147,14 @@ class App extends Component {
           >
             <ul className="nav navbar-nav">
               <li>
-                <Link to="/snor">continue my journey</Link>
+                <button onClick={() => {
+                  this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+
+                  this.fbRefCurrentLevel.once('value', snap => {
+                    console.log('Continue My Journey WHERE:', snap.val());
+                    this.props.history.push(snap.val().currentLevel);
+                  })
+                }}>continue my journey</button>
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">

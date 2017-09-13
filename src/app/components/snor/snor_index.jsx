@@ -10,28 +10,53 @@ class SnorIndex extends Component {
 
     this.state={
       none: 'none'
-    }
+    };
+
+    // setup this ref globbaly so i can turn off the listener
+    // in the component did unmount or something like that
+    this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+
+  }
+  
+  componentDidMount(){
+
     this.initFireBaseListeners();
+
+  }
+
+  whereDoYouBelong(currentLevel = 'invalid') {
+
+    if (currentLevel !== 'invalid') {
+      this.props.history.push(currentLevel);
+    }
+
+    // switch (currentLevel) {
+    //   case 'welcome-splash':
+    //     this.props.history.push('/snor/welcome-splash');
+    //   default:
+    //     console.log('---UNKNOWN level/currentLevel VALUE---')
+    // }
   }
 
   initFireBaseListeners() {
     console.log('---Setting up FireBase DB Listener---');
     
-    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+    // as global now
+    // const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
 
-    fbRef.on('value', snap => {
+    this.fbRefCurrentLevel.on('value', snap => {
       console.log('FireBase Listener HIT in SNOR INDEX:', snap.val());
-
-      switch(snap.val().currentLevel) {
-        case 'welcome-splash':
-          this.props.history.push('/snor/welcome-splash');
-        default:
-          console.log('---UNKNOWN level/currentLevel VALUE---')
-      }
-
+      this.whereDoYouBelong(snap.val().currentLevel);
     })
-
   }
+
+  // componentWillUpdate(nextProps, nextState) {
+  //   const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+  //   fbRef.once('value', snap => {
+  //     console.log('COMPONENT WILL UPDATE _ SNOR INDEX');
+  //     this.whereDoYouBelong(snap.val().currentLevel);
+  //   })    
+  // }
 
   // somehwere here in snor index, we could call a function,
   // or better yet have a listener to the database, and when
