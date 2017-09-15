@@ -29,6 +29,7 @@ class SnorIndex extends Component {
   whereDoYouBelong(currentLevel = 'invalid') {
 
     if (currentLevel !== 'invalid') {
+      console.log('SNOR INDEX:', this.props)
       this.props.history.push(currentLevel);
     }
 
@@ -88,20 +89,13 @@ class SnorIndex extends Component {
           );
         }} />
 
-        <Route path='/snor/level-1' render={(props) => {
-          return (
-            <div>
-              <TasksIndex />
-            </div>
-          );
-        }} />
+        <Route path="/snor/level-1" component={TasksIndex} />
 
-
-      </div>
-    );
+        </div>
+      );
+    }
   }
-}
-
+  
 
 // function mapDispatchToProps(dispatch) {
 //   return bindActionCreators({ fetchUser, logoutUser }, dispatch);
