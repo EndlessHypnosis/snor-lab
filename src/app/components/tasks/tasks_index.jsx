@@ -45,7 +45,7 @@ class TasksIndex extends Component {
 
 
   actualTaskListener(myProps) {
-    const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     //
     fbRef.on('child_added', snap => {
       let stateCopy = Object.assign({}, this.state.userTaskList);
@@ -69,8 +69,8 @@ class TasksIndex extends Component {
     //
 
     // how do we store the current user logged in "uid" so then we just listen for that here:
-    console.log(`LISTENER ATTACHED TO [users/tasklist${myProps.currentUser.uid}]`);
-    const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
+    console.log(`LISTENER ATTACHED TO [users/${myProps.currentUser.uid}/simple-tasks]`);
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     // Before we setup our listener, let's pre load
     // the userTaskList so we can avoid all these renders
     //
@@ -100,6 +100,8 @@ class TasksIndex extends Component {
 
   completeTask(task) {
     console.log('completing task:', task)
+
+    
   }
 
   deleteTask(task) {
@@ -115,7 +117,7 @@ class TasksIndex extends Component {
     // actual task add
     //
 
-    let fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${this.props.currentUser.uid}`);
+    let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
     let childRef = fbRef.push({
       userEmail: this.props.currentUser.email,
       title: this.state.taskTitle,
@@ -177,7 +179,8 @@ class TasksIndex extends Component {
 
     return(
       <div>
-      stuff here <Link to='/tasks/nick'>advance to next level</Link>
+      <h3>What's on your mind?</h3>
+      <Link to='/tasks/nick'>advance to next level</Link>
       <Link to='/tasks'>back again</Link>
         <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
           <input
