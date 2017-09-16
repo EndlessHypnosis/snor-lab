@@ -21,7 +21,9 @@ class UserRegister extends Component {
         fbRef.set({
             email: data.payload.email,
             currentLevel: '/snor/welcome-splash',
-            points: 0
+            points: 0,
+            avatarUrl: '',
+            avatarName: ''
         })
     }
 

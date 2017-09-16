@@ -159,6 +159,78 @@ const FireBaseTools = {
      * @returns {!firebase.database.Reference|firebase.database.Reference}
      */
     getStorageReference: () => firebaseStorage.ref(),
+
+    getRandomSwapiName: () => {
+        let randomNameNum = Math.floor(Math.random() * (88 - 1 + 1)) + 1;
+        return fetch(`https://swapi.co/api/people/${randomNameNum}`)
+        .then(response => response.json())
+        .then(data => {
+            // console.log('SWAPI NAME:', data)
+            return data;
+        })
+    },
+
+    randomString: (length) => {
+        var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var result = '';
+        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+        return result;
+    },
+
+    // reRollToken: () => {
+    //     let randomNameNum = FireBaseTools.randomString(10);
+
+    // },
+
+    addImageToStorage: (key, folderPath, imgUrl, uid) => {
+        // just playing around with storage here
+        //
+
+        // if (rerollFlag) {
+        //     FireBaseTools.reRollToken();
+        // }
+
+        let prePath = 'snor/assets/';
+
+        let folderImages = firebaseStorage.ref().child(prePath + folderPath);
+        let newRoboFileName = `${key}.png`;
+        let newRobo = folderImages.child(newRoboFileName);
+        console.log('STORAGE:', newRobo.fullPath)
+
+        const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', proxyurl + imgUrl, true);
+        xhr.responseType = 'blob';
+        // if (folderPath === 'images/moods') {
+        //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+        //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        // }
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                var myBlob = this.response;
+                console.log('what is myBlob', myBlob)
+                newRobo.put(myBlob).then(snap => {
+                    console.log('File Upload Complete: ', newRobo.fullPath);
+
+                    FireBaseTools.getRandomSwapiName()
+                    .then(data => {
+                        // now update the avatar name and url in firebase
+                        firebaseDb.ref(`users/${uid}/account/level`).update({
+                            avatarUrl: snap.downloadURL,
+                            avatarName: data.name
+                        })
+                    })
+
+                    // console.log('HUHUHUH?', FireBaseTools.getRandomSwapiName())
+
+                })
+                // myBlob is now the blob that the object URL pointed to.
+            }
+        };
+        xhr.send();
+    },
+
 };
 
 export default FireBaseTools;

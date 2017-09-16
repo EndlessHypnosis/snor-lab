@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
 import FireBaseTools from '../../utils/firebase';
 import Task from '../tasks/task';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
+import { setAvatarUrl } from '../../actions/index';
 
 //TODO:
 // Need to add listener for not the insert, but the update
@@ -77,6 +79,7 @@ class TasksIndex extends Component {
         snap.child('currentLevel').ref.set('/snor/level2-splash');
         console.log('WENT TO /snor/level2-splash')
         
+        // dont think i need this anymore....
         // const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
         // only update if at level-1
         // this.fbRefCurrentLevel.child('currentLevel').once('value', snap => {
@@ -91,6 +94,33 @@ class TasksIndex extends Component {
         snap.child('currentLevel').ref.set('/snor/level3-splash');
         console.log('WENT TO /snor/level3-splash')
       }
+
+      if (pointTotal === 9 && snap.child('currentLevel').val() === '/snor/level-1/1b/1c') {
+        
+        FireBaseTools.addImageToStorage(this.props.currentUser.uid
+          , `user/${this.props.currentUser.uid}/avatar`
+          , `https://robohash.org/${this.props.currentUser.uid}`
+          , this.props.currentUser.uid
+        );
+
+        snap.child('currentLevel').ref.set('/snor/level4-splash');
+        console.log('WENT TO /snor/level4-splash');
+
+        // set the avatar url of the userPath store
+        // FireBaseTools.getStorageReference()
+        //   .child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
+        //   .getDownloadURL()
+        //   .then(url => {
+        //     console.log('******URL:', url);
+        //     // this.props.setAvatarUrl(url);
+        //   })
+
+
+        // let whatisthis = FireBaseTools.getStorageReference().child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
+        // debugger;
+      }
+
+
 
 
 
@@ -218,36 +248,38 @@ class TasksIndex extends Component {
 
   // https://api.adorable.io/avatars/200/abott@adorable.png
 
-  addImageToStorage(key, folderPath, imgUrl) {
-    // just playing around with storage here
-    //
+  // addImageToStorage(key, folderPath, imgUrl) {
+  //   // just playing around with storage here
+  //   //
 
-    let folderImages = FireBaseTools.getStorageReference().child(folderPath);
-    let newRoboFileName = `${key}.png`;
-    let newRobo = folderImages.child(newRoboFileName);
-    console.log('STORAGE:', newRobo.fullPath)
+  //   let prePath = 'snor/assets/';
 
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+  //   let folderImages = FireBaseTools.getStorageReference().child(prePath + folderPath);
+  //   let newRoboFileName = `${key}.png`;
+  //   let newRobo = folderImages.child(newRoboFileName);
+  //   console.log('STORAGE:', newRobo.fullPath)
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', proxyurl + imgUrl, true);
-    xhr.responseType = 'blob';
-    // if (folderPath === 'images/moods') {
-    //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-    //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-    // }
-    xhr.onload = function (e) {
-      if (this.status == 200) {
-        var myBlob = this.response;
-        console.log('what is myBlob', myBlob)
-        newRobo.put(myBlob).then(snap => {
-          console.log('File Upload Complete: ', newRobo.fullPath)
-        })
-        // myBlob is now the blob that the object URL pointed to.
-      }
-    };
-    xhr.send();
-  }
+  //   const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.open('GET', proxyurl + imgUrl, true);
+  //   xhr.responseType = 'blob';
+  //   // if (folderPath === 'images/moods') {
+  //   //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+  //   //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+  //   // }
+  //   xhr.onload = function (e) {
+  //     if (this.status == 200) {
+  //       var myBlob = this.response;
+  //       console.log('what is myBlob', myBlob)
+  //       newRobo.put(myBlob).then(snap => {
+  //         console.log('File Upload Complete: ', newRobo.fullPath)
+  //       })
+  //       // myBlob is now the blob that the object URL pointed to.
+  //     }
+  //   };
+  //   xhr.send();
+  // }
 
 
   render() {
@@ -305,6 +337,9 @@ class TasksIndex extends Component {
 
 }
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ setAvatarUrl }, dispatch);
+}
 
 function mapStateToProps(mall) {
   return { 
@@ -313,4 +348,4 @@ function mapStateToProps(mall) {
   };
 }
 
-export default connect(mapStateToProps, null)(TasksIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(TasksIndex);
