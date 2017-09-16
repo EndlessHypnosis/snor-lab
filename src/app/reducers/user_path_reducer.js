@@ -7,7 +7,9 @@ const user_path = (state = {}, action) => {
     case 'SET_AVATAR_URL':
       return Object.assign({}, state, {avatarUrl: action.payload})
     case 'SET_AVATAR_NAME':
-      return Object.assign({}, state, { avatarName: action.payload })
+      return Object.assign({}, state, {avatarName: action.payload})
+    case 'SET_AVATAR_TOKENS':
+      return Object.assign({}, state, {avatarTokens: action.payload})
     default:
       return state;
   }

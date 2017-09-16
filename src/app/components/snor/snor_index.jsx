@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FireBaseTools from '../../utils/firebase';
-import { Route } from 'react-router';
+import { Route, Switch } from 'react-router';
 import TasksIndex from '../tasks/tasks_index';
+import RemindersIndex from '../reminders/reminders_index';
 import AvatarOutput from './avatar_output';
-import { setPathLevel, setAvatarUrl, setAvatarName } from '../../actions/index';
+import { setPathLevel, setAvatarUrl, setAvatarName, setAvatarTokens } from '../../actions/index';
 import { bindActionCreators } from "redux";
 
 
@@ -13,24 +14,25 @@ class SnorIndex extends Component {
   constructor(props){
     super(props);
 
-    // this.state={
-    //   none: 'none'
-    // };
+    this.state={
+      taskOrReminder: 'task'
+    };
 
     // setup this ref globbaly so i can turn off the listener
     // in the component did unmount or something like that
     this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
 
+    this.toggleTaskReminder = this.toggleTaskReminder.bind(this);
     this.startLevel1 = this.startLevel1.bind(this);
     this.startLevel2 = this.startLevel2.bind(this);
     this.startLevel3 = this.startLevel3.bind(this);
     this.startLevel4 = this.startLevel4.bind(this);
+    this.startLevel5 = this.startLevel5.bind(this);
+
   }
   
   componentDidMount(){
-
     this.initFireBaseListeners();
-
   }
 
   whereDoYouBelong(currentLevel = 'invalid') {
@@ -65,6 +67,9 @@ class SnorIndex extends Component {
       this.whereDoYouBelong(snap.val());
     })
 
+    // TODO: THese could be all grouped into 1 action i think
+    // where we pass in the entire new object, and then
+    // keep doing the object.assign.
     this.fbRefCurrentLevel.child('avatarUrl').off();
     this.fbRefCurrentLevel.child('avatarUrl').on('value', snap => {
       this.props.setAvatarUrl(snap.val());
@@ -73,6 +78,11 @@ class SnorIndex extends Component {
     this.fbRefCurrentLevel.child('avatarName').off();
     this.fbRefCurrentLevel.child('avatarName').on('value', snap => {
       this.props.setAvatarName(snap.val());
+    })
+
+    this.fbRefCurrentLevel.child('avatarTokens').off();
+    this.fbRefCurrentLevel.child('avatarTokens').on('value', snap => {
+      this.props.setAvatarTokens(snap.val());
     })
 
     /////////////////////////////////////////////
@@ -119,6 +129,12 @@ class SnorIndex extends Component {
     
     const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
     fbRef.set('/snor/level-1/1b/1c/1d');
+  }
+
+  startLevel5() {
+    
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+    fbRef.set('/snor/level-1/1b/1c/1d/1e');
   }
 
 
@@ -187,8 +203,15 @@ class SnorIndex extends Component {
 
 
 
+  toggleTaskReminder() {
+    let newToggleVal = this.state.taskOrReminder === 'task' ? 'reminder' : 'task';
+    this.setState({
+      taskOrReminder: newToggleVal
+    })
 
+  }
 
+        // <Route path="/snor/level-1/1b/1c/1d/1e" component={RemindersIndex} />
 
 
   
@@ -196,10 +219,30 @@ class SnorIndex extends Component {
     return(
       <div>
         <h2>This is the SNOR INDEX</h2>
-        
+
         <Route path="/snor/level-1/1b/1c/1d" component={AvatarOutput} />
         
-        <Route path="/snor/level-1" component={TasksIndex} />
+        <Route path='/snor/level-1/1b/1c/1d/1e' render={(props) => {
+          return (
+            <div>
+            <p>this can be a cool switch flip thing?</p>
+            <button type='button' onClick={this.toggleTaskReminder}>
+              { this.state.taskOrReminder === 'task'
+                ? 'Switch To Reminders'
+                : 'Switch To Tasks'
+              }
+            </button>
+            </div>
+          );
+        }} />
+
+        { this.state.taskOrReminder === 'task' &&
+          <Route path="/snor/level-1" component={TasksIndex} />
+        }
+
+        { this.state.taskOrReminder === 'reminder' &&
+          <Route path="/snor/level-1/1b/1c/1d/1e" component={RemindersIndex} />
+        }
 
 
         <Route path='/snor/welcome-splash' render={(props) => {
@@ -243,7 +286,6 @@ class SnorIndex extends Component {
         }} />
 
         <Route path='/snor/level4-splash' render={(props) => {
-          // let robo = this.splashLevel4();
           return (
             <div>
               <h3>welcome to level 4!!!!: snor/level4-splash</h3>
@@ -260,6 +302,23 @@ class SnorIndex extends Component {
           );
         }} />
 
+        <Route path='/snor/level5-splash' render={(props) => {
+          return (
+            <div>
+              <img className='avatar-25' src={this.props.userPath.avatarUrl} />
+              <h3>welcome to level 5!!!!: snor/level5-splash</h3>
+              <h4>Level 5</h4>
+              <p>{this.props.userPath.avatarName} here...with some exciting news!</p>
+              <p>Now that :: BOSS NAME :: has assigned me as your personal assistant,</p>
+              <p>well...I'm kinda bored :( So I was thinking, I could remind you of</p>
+              <p>upcoming apointments, meetings, or just tasks you'd like to schedule.</p>
+              <p>Give it a whirl, and I'll stop in to let ya know when something is near :: creative time counter ::</p>
+              <p><em>:: when did you become a droid, {this.props.userPath.avatarName}? ::</em></p>
+              <button type='button' onClick={this.startLevel5}>Let's Go!</button>
+            </div>
+          );
+        }} />
+
 
 
         </div>
@@ -269,7 +328,7 @@ class SnorIndex extends Component {
   
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setPathLevel, setAvatarUrl, setAvatarName }, dispatch);
+  return bindActionCreators({ setPathLevel, setAvatarUrl, setAvatarName, setAvatarTokens }, dispatch);
 }
 
 function mapStateToProps(mall) {

@@ -23,6 +23,7 @@ class App extends Component {
     // this.runLoop();
 
     this.fbRefCurrentLevel = undefined;
+    this.runLoop = this.runLoop.bind(this);
     
     
     // FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
@@ -32,21 +33,77 @@ class App extends Component {
   }
 
   runLoop() {
-    // console.log('RUN LOOP WAS STARTED');
-      (function loop() {
+    console.log('RUN LOOP LOGGER');
+
+      // (function loop() {
         var now = new Date();
-        // console.log('DATE: ', now.getDate(), ' | TIME: ', now.getHours(), ':', now.getMinutes())
-        if (now.getDate() === 11 && now.getHours() === 16 && now.getMinutes() === 52) {
-          // check for notifications here. This is essentially our cron.
-          // console.log('RUN LOOP WAS TIME WAS TRIGGERED!!!')
+        // make sure user exists
+        if (this.props.currentUser && this.props.currentUser.uid) {
+
+
+          let fbLocalRefReminders = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-reminders`)
+            .orderByKey();
+
+          fbLocalRefReminders.once('value')
+            .then(snap => {
+              snap.forEach(childSnap => {
+                let key = childSnap.key;
+                let childData = childSnap.val();
+
+                console.log(  'Checking key:', key,
+                              ':with hour:', childData.hour,
+                              ':with minute:', childData.minute);
+                console.log('Actual Time:', now.getHours(), ':', now.getMinutes());
+
+
+                if  ( ( (childData.hour == now.getHours() && childData.minute <= now.getMinutes())
+                        ||
+                        (childData.hour < now.getHours())
+                      ) && childData.status === 'new'
+                    ) {
+                  console.log('+++++RUN LOOP REMINDER TRIGGERED++++++:KEY:', key, ':TITLE:', childData.title)
+
+                  // // award an avatar token - put this in the callback of
+                  // // completing a reminder! in the notification
+                  // let fbRefPoints = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+                  // fbRefPoints.child('points').once('value', snap => {
+
+                  //   let changer = 1;
+
+                  //   let newPointVal = parseInt(snap.val()) + changer;
+                  //   snap.ref.set(newPointVal);
+                  // })
+
+
+                }
+
+
+                // if (childData.hour <= now.getHours() && childData.minute <= now.getMinutes()) {
+                //   console.log('+++++RUN LOOP REMINDER TRIGGERED++++++:KEY:', key, ':TITLE:', childData.title)
+
+                //   // show notification here with callback button to delete the reminder or snooze for 2/5/10/15/30/45/60 mins
+
+                // }
+              })
+            })
+          
+          
         }
+
+        // console.log('DATE: ', now.getDate(), ' | TIME: ', now.getHours(), ':', now.getMinutes())
+        // if (now.getDate() === 11 && now.getHours() === 16 && now.getMinutes() === 52) {
+        //   // check for notifications here. This is essentially our cron.
+        //   // console.log('RUN LOOP WAS TIME WAS TRIGGERED!!!')
+        // }
         now = new Date();                  // allow for time passing
         var delay = 60000 - (now % 60000); // exact ms to next minute interval
-        setTimeout(loop, delay);
-      })();
+        setTimeout(this.runLoop, delay);
+        // })();
   }
 
   componentDidMount() {
+
+    this.runLoop();
     // let sound = new Audio(music_14);
     // sound.play();
 
@@ -182,8 +239,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchUser, logoutUser }, dispatch);
 }
 
-function mapStateToProps(state) {
-  return { currentUser: state.currentUser };
+function mapStateToProps(mall) {
+  return { currentUser: mall.currentUser };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
