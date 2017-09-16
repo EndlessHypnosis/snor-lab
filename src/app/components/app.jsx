@@ -55,9 +55,21 @@ class App extends Component {
                               ':with minute:', childData.minute);
                 console.log('Actual Time:', now.getHours(), ':', now.getMinutes());
 
-                if (childData.hour == now.getHours() && childData.minute == now.getMinutes()) {
+
+                if  ((  childData.hour == now.getHours() &&
+                        childData.minute <= now.getMinutes() )
+                    ||
+                    (   childData.hour < now.getHours() )) {
                   console.log('+++++RUN LOOP REMINDER TRIGGERED++++++:KEY:', key, ':TITLE:', childData.title)
                 }
+
+
+                // if (childData.hour <= now.getHours() && childData.minute <= now.getMinutes()) {
+                //   console.log('+++++RUN LOOP REMINDER TRIGGERED++++++:KEY:', key, ':TITLE:', childData.title)
+
+                //   // show notification here with callback button to delete the reminder or snooze for 2/5/10/15/30/45/60 mins
+
+                // }
               })
             })
           
