@@ -20,6 +20,7 @@ class TasksIndex extends Component {
     };
 
     this.onFormTaskAdd = this.onFormTaskAdd.bind(this);
+    this.reroute = this.reroute.bind(this);
 
   }
 
@@ -124,9 +125,13 @@ class TasksIndex extends Component {
 
 
 
-  deleteTask(task) {
-    // let prop = 'id of property to delete'
-    // delete myObject[prop]
+  reroute(to) {
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`)
+    fbRef.update({
+      currentLevel: to
+    })
+
+    // this.props.history.push(to);
   }
 
 
@@ -198,8 +203,8 @@ class TasksIndex extends Component {
     return(
       <div>
       <h3>What's on your mind?</h3>
-      <Link to='/snor/level-1/1b'>advance to next level</Link>
-      <Link to='/snor/level-1'>back again</Link>
+      <a onClick={e => this.reroute('/snor/level-1/1b')}>advance to next level</a>
+      <a onClick={e => this.reroute('/snor/level-1')}>back again</a>
         <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
           <input
             type="text"

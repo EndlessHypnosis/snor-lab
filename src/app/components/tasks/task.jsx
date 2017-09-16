@@ -13,8 +13,8 @@ class Task extends Component {
     }
 
     this.saveEditTask = this.saveEditTask.bind(this);
-    this.toggleCompleteTask = this.toggleCompleteTask.bind(this);
-
+    this.completeUncompleteTask = this.completeUncompleteTask.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
   }
 
   // componentDidMount() {
@@ -55,7 +55,7 @@ class Task extends Component {
 
 
 
-  toggleCompleteTask() {
+  completeUncompleteTask() {
 
     let newStatus = this.props.details.status === 'complete'
                     ? 'new'
@@ -68,9 +68,10 @@ class Task extends Component {
   }
 
 
-  deleteTask(task) {
+  deleteTask(e) {
     // let prop = 'id of property to delete'
     // delete myObject[prop]
+    console.log('DELETE TASK', e.target)
   }
 
 
@@ -109,7 +110,7 @@ class Task extends Component {
           {this.state.taskInEditMode ? 'Save' : 'Edit'}
         </button>
 
-        <button onClick={this.toggleCompleteTask}>
+        <button onClick={this.completeUncompleteTask}>
           { this.props.details.status === 'complete'
             ? 'undo complete'
             : 'Complete'
@@ -118,8 +119,10 @@ class Task extends Component {
 
         <Route path='/snor/level-1/1b' render={(props) => {
           return (
-            <div>hi nick!</div>
-          );
+            <div>
+              <button onClick={this.deleteTask}>Delete</button>
+            </div>
+          )
         }}  />
 
       </div>
@@ -131,7 +134,10 @@ class Task extends Component {
 
 
 function mapStateToProps(mall) {
-  return { currentUser: mall.currentUser };
+  return { 
+    currentUser: mall.currentUser,
+    userPath: mall.userPath
+  };
 }
 
 export default connect(mapStateToProps, null)(Task);

@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import FireBaseTools from '../../utils/firebase';
 import { Route } from 'react-router';
 import TasksIndex from '../tasks/tasks_index';
+import { setPathLevel } from '../../actions/index';
+import { bindActionCreators } from "redux";
+
 
 class SnorIndex extends Component {
   constructor(props){
@@ -29,7 +32,7 @@ class SnorIndex extends Component {
   whereDoYouBelong(currentLevel = 'invalid') {
 
     if (currentLevel !== 'invalid') {
-      console.log('SNOR INDEX:', this.props)
+      // console.log('SNOR INDEX:', this.props)
       this.props.history.push(currentLevel);
     }
 
@@ -48,7 +51,11 @@ class SnorIndex extends Component {
     // const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
 
     this.fbRefCurrentLevel.on('value', snap => {
-      console.log('FireBase Listener HIT in SNOR INDEX:', snap.val());
+      console.log('FireBase Listener - LEVEL - HIT:', snap.val());
+
+      // update userPath store
+      this.props.setPathLevel(snap.val().currentLevel);
+
       this.whereDoYouBelong(snap.val().currentLevel);
     })
   }
@@ -97,12 +104,15 @@ class SnorIndex extends Component {
   }
   
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ fetchUser, logoutUser }, dispatch);
-// }
-
-function mapStateToProps(mall) {
-  return { currentUser: mall.currentUser };
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ setPathLevel }, dispatch);
 }
 
-export default connect(mapStateToProps, null)(SnorIndex);
+function mapStateToProps(mall) {
+  return { 
+    currentUser: mall.currentUser,
+    userPath: mall.userPath
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SnorIndex);

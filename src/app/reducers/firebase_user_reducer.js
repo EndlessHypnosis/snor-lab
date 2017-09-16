@@ -10,7 +10,7 @@ import {
 } from '../actions/types';
 
 
-export default function (state = null, action) {
+const firebase_user = (state = null, action) => {
     switch (action.type) {
     case FETCH_FIREBASE_USER:
         return action.payload;
@@ -32,3 +32,5 @@ export default function (state = null, action) {
         return state;
     }
 }
+
+export default firebase_user;
