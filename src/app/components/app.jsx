@@ -159,7 +159,6 @@ class App extends Component {
             <li>
               <Link to="/profile">profile</Link>
             </li>
-            <li role="separator" className="divider" />
             <li>
               <Link to="/logout" onClick={this.logOut}>
                 Logout
@@ -195,38 +194,18 @@ class App extends Component {
 
     return (
       <div>
-        <header
-          className="navbar navbar-static-top"
-          id="top"
-          role="banner"
-        >
-          <div className="navbar-header">
-            <button
-              className="navbar-toggle collapsed"
-              type="button"
-              data-toggle="collapse"
-              data-target=".bs-navbar-collapse"
-            >
-              <span className="sr-only">Toggle navigation</span>
-              <span className="icon-bar" />
-              <span className="icon-bar" />
-              <span className="icon-bar" />
-            </button>
-            <Link to="/" className="navbar-brand">
+        <header>
+          <div>
+            <Link to="/">
               snorLab
             </Link>
           </div>
-          <nav
-            className="collapse navbar-collapse bs-navbar-collapse"
-            role="navigation"
-          >
-            <ul className="nav navbar-nav">
-              {this.renderContinueMenu(this.props.currentUser)}
-            </ul>
-            <ul className="nav navbar-nav navbar-right">
-              {this.renderUserMenu(this.props.currentUser)}
-            </ul>
-          </nav>
+          <ul>
+            {this.renderContinueMenu(this.props.currentUser)}
+          </ul>
+          <ul>
+            {this.renderUserMenu(this.props.currentUser)}
+          </ul>
         </header>
       </div>
     );

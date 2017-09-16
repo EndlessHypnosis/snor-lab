@@ -25,6 +25,8 @@ class UserRegister extends Component {
             avatarUrl: '',
             avatarName: '',
             avatarTokens: 2
+        }).then(any => {
+            this.props.history.push('/snor/welcome-splash');
         })
     }
 
@@ -42,7 +44,7 @@ class UserRegister extends Component {
                 // look into how we did it in movie tracker
                 // browserHistory.push('/profile');
                 this.initializeUserInDataBase(data);
-                this.props.history.push('/profile');
+                // this.props.history.push('/profile');
             }
         }
         );
