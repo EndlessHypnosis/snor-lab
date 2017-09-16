@@ -70,6 +70,10 @@ class TasksIndex extends Component {
     console.log('UPDATE TASK WATCHER STARTED!');
     fbRef.on('child_changed', snap => {
 
+      // can we get the completed count here?
+
+      
+
       let stateCopy = Object.assign({}, this.state.userTaskList);
       console.log('TASK update watcher HIT:', snap.key)
       // is this right? where we check if key is there,
