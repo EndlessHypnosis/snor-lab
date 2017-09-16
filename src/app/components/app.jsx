@@ -56,11 +56,25 @@ class App extends Component {
                 console.log('Actual Time:', now.getHours(), ':', now.getMinutes());
 
 
-                if  ((  childData.hour == now.getHours() &&
-                        childData.minute <= now.getMinutes() )
-                    ||
-                    (   childData.hour < now.getHours() )) {
+                if  ( ( (childData.hour == now.getHours() && childData.minute <= now.getMinutes())
+                        ||
+                        (childData.hour < now.getHours())
+                      ) && childData.status === 'new'
+                    ) {
                   console.log('+++++RUN LOOP REMINDER TRIGGERED++++++:KEY:', key, ':TITLE:', childData.title)
+
+                  // // award an avatar token - put this in the callback of
+                  // // completing a reminder! in the notification
+                  // let fbRefPoints = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+                  // fbRefPoints.child('points').once('value', snap => {
+
+                  //   let changer = 1;
+
+                  //   let newPointVal = parseInt(snap.val()) + changer;
+                  //   snap.ref.set(newPointVal);
+                  // })
+
+
                 }
 
 

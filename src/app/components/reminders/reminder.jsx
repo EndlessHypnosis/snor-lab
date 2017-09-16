@@ -10,13 +10,46 @@ class Reminder extends Component {
     // this.state = {
 
     // }
+
+    this.deleteReminder = this.deleteReminder.bind(this);
+    this.whatClassNameAmI = this.whatClassNameAmI.bind(this);
+
+
+  }
+
+  deleteReminder(e) {
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-reminders/${this.props.reminderId}`);
+    fbRef.update({
+      status: 'delete'
+    });
+
+  }
+
+  whatClassNameAmI() {
+    switch (this.props.details.status) {
+      case 'delete':
+        return 'reminder-delete';
+      default:
+        return 'reminder-new';
+    }
   }
 
 
   render() {
     return(
       <div>
-        <p>{this.props.details.title}</p>
+        { !(this.props.details.status === 'delete') &&
+
+          <div>
+            <p className={this.whatClassNameAmI()}>
+              <span>Title: {this.props.details.title}</span>
+              <span>Hour: {this.props.details.hour}</span>
+              <span>Minute: {this.props.details.minute}</span>
+            </p>
+            <button onClick={this.deleteReminder}>Delete</button>
+          </div>
+
+        }
       </div>
     );
   }
