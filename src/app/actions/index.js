@@ -12,3 +12,10 @@ export const setAvatarUrl = (url) => {
     payload: url
   }
 }
+
+export const setAvatarName = (url) => {
+  return {
+    type: 'SET_AVATAR_NAME',
+    payload: url
+  }
+}

@@ -13,7 +13,8 @@ class AvatarOutput extends Component {
   render() {
     return(
       <div>
-        Avatar here!!!!!!!!!!!11121222344!!!
+        <p><strong>{this.props.userPath.avatarName}</strong></p>
+        <img className='avatar-25' src={this.props.userPath.avatarUrl} />
       </div>
     );
   }

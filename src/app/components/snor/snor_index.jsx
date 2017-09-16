@@ -5,7 +5,7 @@ import FireBaseTools from '../../utils/firebase';
 import { Route } from 'react-router';
 import TasksIndex from '../tasks/tasks_index';
 import AvatarOutput from './avatar_output';
-import { setPathLevel, setAvatarUrl } from '../../actions/index';
+import { setPathLevel, setAvatarUrl, setAvatarName } from '../../actions/index';
 import { bindActionCreators } from "redux";
 
 
@@ -55,6 +55,7 @@ class SnorIndex extends Component {
     // const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
     
     console.log('---DB Listener: Updating path level---');
+    this.fbRefCurrentLevel.child('currentLevel').off();
     this.fbRefCurrentLevel.child('currentLevel').on('value', snap => {
       console.log('FireBase Listener - LEVEL - HIT:', snap.val());
 
@@ -64,8 +65,14 @@ class SnorIndex extends Component {
       this.whereDoYouBelong(snap.val());
     })
 
+    this.fbRefCurrentLevel.child('avatarUrl').off();
     this.fbRefCurrentLevel.child('avatarUrl').on('value', snap => {
       this.props.setAvatarUrl(snap.val());
+    })
+
+    this.fbRefCurrentLevel.child('avatarName').off();
+    this.fbRefCurrentLevel.child('avatarName').on('value', snap => {
+      this.props.setAvatarName(snap.val());
     })
 
     /////////////////////////////////////////////
@@ -117,64 +124,64 @@ class SnorIndex extends Component {
 
 
 
-  splashLevel4() {
-    console.log('#######SPLASH lvel 4');
-    if (this.props.history.location.pathname === '/snor/level4-splash') {
-      console.log('++++++SPLASH lvel 4');
+  // splashLevel4() {
+  //   console.log('#######SPLASH lvel 4');
+  //   if (this.props.history.location.pathname === '/snor/level4-splash') {
+  //     console.log('++++++SPLASH lvel 4');
 
-      // FireBaseTools.getStorageReference()
-      // .child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
-      // .getDownloadURL()
-      // .then(url => {
-      //   console.log('******URL:', url)
-      // })
+  //     // FireBaseTools.getStorageReference()
+  //     // .child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
+  //     // .getDownloadURL()
+  //     // .then(url => {
+  //     //   console.log('******URL:', url)
+  //     // })
 
-      // this.addImageToStorage(this.props.currentUser.uid, 'user/avatar', `https://robohash.org/${this.props.currentUser.uid}`);
-
-
-    }
+  //     // this.addImageToStorage(this.props.currentUser.uid, 'user/avatar', `https://robohash.org/${this.props.currentUser.uid}`);
 
 
-    return {
-      name: '::invalid::'
-    }
-
-  }
+  //   }
 
 
+  //   return {
+  //     name: '::invalid::'
+  //   }
 
-  addImageToStorage(key, folderPath, imgUrl) {
-    // just playing around with storage here
-    //
+  // }
 
-    let prePath = 'snor/assets/';
 
-    let folderImages = FireBaseTools.getStorageReference().child(prePath + folderPath);
-    let newRoboFileName = `${key}.png`;
-    let newRobo = folderImages.child(newRoboFileName);
-    console.log('STORAGE:', newRobo.fullPath)
 
-    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+  // addImageToStorage(key, folderPath, imgUrl) {
+  //   // just playing around with storage here
+  //   //
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', proxyurl + imgUrl, true);
-    xhr.responseType = 'blob';
-    // if (folderPath === 'images/moods') {
-    //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-    //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-    // }
-    xhr.onload = function (e) {
-      if (this.status == 200) {
-        var myBlob = this.response;
-        console.log('what is myBlob', myBlob)
-        newRobo.put(myBlob).then(snap => {
-          console.log('File Upload Complete: ', newRobo.fullPath)
-        })
-        // myBlob is now the blob that the object URL pointed to.
-      }
-    };
-    xhr.send();
-  }
+  //   let prePath = 'snor/assets/';
+
+  //   let folderImages = FireBaseTools.getStorageReference().child(prePath + folderPath);
+  //   let newRoboFileName = `${key}.png`;
+  //   let newRobo = folderImages.child(newRoboFileName);
+  //   console.log('STORAGE:', newRobo.fullPath)
+
+  //   const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.open('GET', proxyurl + imgUrl, true);
+  //   xhr.responseType = 'blob';
+  //   // if (folderPath === 'images/moods') {
+  //   //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+  //   //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+  //   // }
+  //   xhr.onload = function (e) {
+  //     if (this.status == 200) {
+  //       var myBlob = this.response;
+  //       console.log('what is myBlob', myBlob)
+  //       newRobo.put(myBlob).then(snap => {
+  //         console.log('File Upload Complete: ', newRobo.fullPath)
+  //       })
+  //       // myBlob is now the blob that the object URL pointed to.
+  //     }
+  //   };
+  //   xhr.send();
+  // }
 
 
 
@@ -245,7 +252,6 @@ class SnorIndex extends Component {
               <p>But I need to run...snorville is growing, and I'm stuck in :: meeting hell ::</p>
               <p>Don't you worry though, I'm leaving you in the hands of :: NAME::</p>
               <p>He has served me well and should be a suitable assistant</p>
-              <p>AVATAR URL: {this.props.userPath.avatarUrl}</p>
               <img src={this.props.userPath.avatarUrl}/>
               <button type='button' onClick={this.startLevel4}>Let's Go!</button>
             </div>
@@ -261,7 +267,7 @@ class SnorIndex extends Component {
   
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setPathLevel, setAvatarUrl }, dispatch);
+  return bindActionCreators({ setPathLevel, setAvatarUrl, setAvatarName }, dispatch);
 }
 
 function mapStateToProps(mall) {

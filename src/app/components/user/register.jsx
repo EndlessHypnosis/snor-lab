@@ -22,7 +22,8 @@ class UserRegister extends Component {
             email: data.payload.email,
             currentLevel: '/snor/welcome-splash',
             points: 0,
-            avatarUrl: ''
+            avatarUrl: '',
+            avatarName: ''
         })
     }
 

@@ -160,6 +160,16 @@ const FireBaseTools = {
      */
     getStorageReference: () => firebaseStorage.ref(),
 
+    getRandomSwapiName: () => {
+        let randomNameNum = Math.floor(Math.random() * (88 - 1 + 1)) + 1;
+        return fetch(`https://swapi.co/api/people/${randomNameNum}`)
+        .then(response => response.json())
+        .then(data => {
+            // console.log('SWAPI NAME:', data)
+            return data;
+        })
+    },
+
     addImageToStorage: (key, folderPath, imgUrl) => {
         // just playing around with storage here
         //
@@ -186,7 +196,17 @@ const FireBaseTools = {
                 console.log('what is myBlob', myBlob)
                 newRobo.put(myBlob).then(snap => {
                     console.log('File Upload Complete: ', newRobo.fullPath);
-                    firebaseDb.ref(`users/${key}/account/level/avatarUrl`).set(snap.downloadURL)
+
+                    FireBaseTools.getRandomSwapiName()
+                    .then(data => {
+                        // console.log('UMMM WHAT IS THIS DATA:', data)
+                        firebaseDb.ref(`users/${key}/account/level`).update({
+                            avatarUrl: snap.downloadURL,
+                            avatarName: data.name
+                        })
+                    })
+
+                    // console.log('HUHUHUH?', FireBaseTools.getRandomSwapiName())
 
                 })
                 // myBlob is now the blob that the object URL pointed to.
