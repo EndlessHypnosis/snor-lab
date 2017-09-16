@@ -128,6 +128,13 @@ class TasksIndex extends Component {
 
 
 
+      if (pointTotal === 13 && snap.child('currentLevel').val() === '/snor/level-1/1b/1c/1d') {
+        snap.child('currentLevel').ref.set('/snor/level5-splash');
+        console.log('WENT TO /snor/level5-splash')
+      }
+
+
+
 
 
     })
@@ -302,8 +309,6 @@ class TasksIndex extends Component {
     return(
       <div>
       <h3>What's on your mind?</h3>
-      <a onClick={e => this.reroute('/snor/level-1/1b')}>advance to next level</a>
-      <a onClick={e => this.reroute('/snor/level-1')}>back again</a>
         <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
           <input
             type="text"
