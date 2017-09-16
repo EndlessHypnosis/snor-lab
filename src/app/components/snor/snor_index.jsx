@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 import FireBaseTools from '../../utils/firebase';
 import { Route } from 'react-router';
 import TasksIndex from '../tasks/tasks_index';
-import { setPathLevel } from '../../actions/index';
+import AvatarOutput from './avatar_output';
+import { setPathLevel, setAvatarUrl } from '../../actions/index';
 import { bindActionCreators } from "redux";
 
 
@@ -12,9 +13,9 @@ class SnorIndex extends Component {
   constructor(props){
     super(props);
 
-    this.state={
-      none: 'none'
-    };
+    // this.state={
+    //   none: 'none'
+    // };
 
     // setup this ref globbaly so i can turn off the listener
     // in the component did unmount or something like that
@@ -23,6 +24,7 @@ class SnorIndex extends Component {
     this.startLevel1 = this.startLevel1.bind(this);
     this.startLevel2 = this.startLevel2.bind(this);
     this.startLevel3 = this.startLevel3.bind(this);
+    this.startLevel4 = this.startLevel4.bind(this);
   }
   
   componentDidMount(){
@@ -60,6 +62,10 @@ class SnorIndex extends Component {
       this.props.setPathLevel(snap.val());
       // actually do redirect
       this.whereDoYouBelong(snap.val());
+    })
+
+    this.fbRefCurrentLevel.child('avatarUrl').on('value', snap => {
+      this.props.setAvatarUrl(snap.val());
     })
 
     /////////////////////////////////////////////
@@ -101,11 +107,94 @@ class SnorIndex extends Component {
     const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
     fbRef.set('/snor/level-1/1b/1c');
   }
+
+  startLevel4() {
+    
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+    fbRef.set('/snor/level-1/1b/1c/1d');
+  }
+
+
+
+
+  splashLevel4() {
+    console.log('#######SPLASH lvel 4');
+    if (this.props.history.location.pathname === '/snor/level4-splash') {
+      console.log('++++++SPLASH lvel 4');
+
+      // FireBaseTools.getStorageReference()
+      // .child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
+      // .getDownloadURL()
+      // .then(url => {
+      //   console.log('******URL:', url)
+      // })
+
+      // this.addImageToStorage(this.props.currentUser.uid, 'user/avatar', `https://robohash.org/${this.props.currentUser.uid}`);
+
+
+    }
+
+
+    return {
+      name: '::invalid::'
+    }
+
+  }
+
+
+
+  addImageToStorage(key, folderPath, imgUrl) {
+    // just playing around with storage here
+    //
+
+    let prePath = 'snor/assets/';
+
+    let folderImages = FireBaseTools.getStorageReference().child(prePath + folderPath);
+    let newRoboFileName = `${key}.png`;
+    let newRobo = folderImages.child(newRoboFileName);
+    console.log('STORAGE:', newRobo.fullPath)
+
+    const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', proxyurl + imgUrl, true);
+    xhr.responseType = 'blob';
+    // if (folderPath === 'images/moods') {
+    //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+    //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+    // }
+    xhr.onload = function (e) {
+      if (this.status == 200) {
+        var myBlob = this.response;
+        console.log('what is myBlob', myBlob)
+        newRobo.put(myBlob).then(snap => {
+          console.log('File Upload Complete: ', newRobo.fullPath)
+        })
+        // myBlob is now the blob that the object URL pointed to.
+      }
+    };
+    xhr.send();
+  }
+
+
+
+
+
+
+
+
+
   
   render() {
     return(
       <div>
         <h2>This is the SNOR INDEX</h2>
+        
+        <Route path="/snor/level-1/1b/1c/1d" component={AvatarOutput} />
+        
+        <Route path="/snor/level-1" component={TasksIndex} />
+
+
         <Route path='/snor/welcome-splash' render={(props) => {
           return (
             <div>
@@ -119,7 +208,6 @@ class SnorIndex extends Component {
           );
         }} />
 
-        <Route path="/snor/level-1" component={TasksIndex} />
 
 
         <Route path='/snor/level2-splash' render={(props) => {
@@ -127,7 +215,7 @@ class SnorIndex extends Component {
             <div>
               <h3>welcome to level 2!!!!: snor/level2-splash</h3>
               <h4>Level 2</h4>
-              <p>Greetings snorling. I forgot to give you a delete button. Here you go :)</p>
+              <p>Greetings snorling. I forgot to give you a delete button. Here you go</p>
               <p><em>to edit or delete, that it the question</em></p>
               <button type='button' onClick={this.startLevel2}>Let's Go!</button>
             </div>
@@ -147,6 +235,23 @@ class SnorIndex extends Component {
           );
         }} />
 
+        <Route path='/snor/level4-splash' render={(props) => {
+          // let robo = this.splashLevel4();
+          return (
+            <div>
+              <h3>welcome to level 4!!!!: snor/level4-splash</h3>
+              <h4>Level 4</h4>
+              <p>Snorling...Sorry to keep interrupting your productivity...</p>
+              <p>But I need to run...snorville is growing, and I'm stuck in :: meeting hell ::</p>
+              <p>Don't you worry though, I'm leaving you in the hands of :: NAME::</p>
+              <p>He has served me well and should be a suitable assistant</p>
+              <p>AVATAR URL: {this.props.userPath.avatarUrl}</p>
+              <img src={this.props.userPath.avatarUrl}/>
+              <button type='button' onClick={this.startLevel4}>Let's Go!</button>
+            </div>
+          );
+        }} />
+
 
 
         </div>
@@ -156,7 +261,7 @@ class SnorIndex extends Component {
   
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setPathLevel }, dispatch);
+  return bindActionCreators({ setPathLevel, setAvatarUrl }, dispatch);
 }
 
 function mapStateToProps(mall) {

@@ -5,3 +5,10 @@ export const setPathLevel = (newLevel) => {
     payload: newLevel
   }
 }
+
+export const setAvatarUrl = (url) => {
+  return {
+    type: 'SET_AVATAR_URL',
+    payload: url
+  }
+}

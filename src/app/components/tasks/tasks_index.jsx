@@ -4,6 +4,8 @@ import FireBaseTools from '../../utils/firebase';
 import Task from '../tasks/task';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
+import { setAvatarUrl } from '../../actions/index';
+import { bindActionCreators } from "redux";
 
 //TODO:
 // Need to add listener for not the insert, but the update
@@ -77,6 +79,7 @@ class TasksIndex extends Component {
         snap.child('currentLevel').ref.set('/snor/level2-splash');
         console.log('WENT TO /snor/level2-splash')
         
+        // dont think i need this anymore....
         // const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
         // only update if at level-1
         // this.fbRefCurrentLevel.child('currentLevel').once('value', snap => {
@@ -91,6 +94,27 @@ class TasksIndex extends Component {
         snap.child('currentLevel').ref.set('/snor/level3-splash');
         console.log('WENT TO /snor/level3-splash')
       }
+
+      if (pointTotal === 9 && snap.child('currentLevel').val() === '/snor/level-1/1b/1c') {
+        FireBaseTools.addImageToStorage(this.props.currentUser.uid, 'user/avatar', `https://robohash.org/${this.props.currentUser.uid}`);
+        snap.child('currentLevel').ref.set('/snor/level4-splash');
+        console.log('WENT TO /snor/level4-splash');
+
+        // set the avatar url of the userPath store
+        // FireBaseTools.getStorageReference()
+        //   .child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
+        //   .getDownloadURL()
+        //   .then(url => {
+        //     console.log('******URL:', url);
+        //     // this.props.setAvatarUrl(url);
+        //   })
+
+
+        // let whatisthis = FireBaseTools.getStorageReference().child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
+        // debugger;
+      }
+
+
 
 
 
@@ -222,7 +246,9 @@ class TasksIndex extends Component {
     // just playing around with storage here
     //
 
-    let folderImages = FireBaseTools.getStorageReference().child(folderPath);
+    let prePath = 'snor/assets/';
+
+    let folderImages = FireBaseTools.getStorageReference().child(prePath + folderPath);
     let newRoboFileName = `${key}.png`;
     let newRobo = folderImages.child(newRoboFileName);
     console.log('STORAGE:', newRobo.fullPath)
@@ -305,6 +331,9 @@ class TasksIndex extends Component {
 
 }
 
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ setAvatarUrl }, dispatch);
+}
 
 function mapStateToProps(mall) {
   return { 
@@ -313,4 +342,4 @@ function mapStateToProps(mall) {
   };
 }
 
-export default connect(mapStateToProps, null)(TasksIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(TasksIndex);

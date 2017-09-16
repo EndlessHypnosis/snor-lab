@@ -159,6 +159,42 @@ const FireBaseTools = {
      * @returns {!firebase.database.Reference|firebase.database.Reference}
      */
     getStorageReference: () => firebaseStorage.ref(),
+
+    addImageToStorage: (key, folderPath, imgUrl) => {
+        // just playing around with storage here
+        //
+
+        let prePath = 'snor/assets/';
+
+        let folderImages = firebaseStorage.ref().child(prePath + folderPath);
+        let newRoboFileName = `${key}.png`;
+        let newRobo = folderImages.child(newRoboFileName);
+        console.log('STORAGE:', newRobo.fullPath)
+
+        const proxyurl = "https://cors-anywhere.herokuapp.com/";
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', proxyurl + imgUrl, true);
+        xhr.responseType = 'blob';
+        // if (folderPath === 'images/moods') {
+        //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
+        //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        // }
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                var myBlob = this.response;
+                console.log('what is myBlob', myBlob)
+                newRobo.put(myBlob).then(snap => {
+                    console.log('File Upload Complete: ', newRobo.fullPath);
+                    firebaseDb.ref(`users/${key}/account/level/avatarUrl`).set(snap.downloadURL)
+
+                })
+                // myBlob is now the blob that the object URL pointed to.
+            }
+        };
+        xhr.send();
+    },
+
 };
 
 export default FireBaseTools;
