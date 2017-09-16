@@ -9,7 +9,8 @@ class Task extends Component {
 
     this.state={
       taskInEditMode: false,
-      editTaskInput: ''
+      editTaskInput: '',
+      editTaskDesc: ''
     }
 
     this.saveEditTask = this.saveEditTask.bind(this);
@@ -37,7 +38,8 @@ class Task extends Component {
       
       const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks/${this.props.taskId}`);
       fbRef.update({
-        title: this.state.editTaskInput
+        title: this.state.editTaskInput,
+        description: this.state.editTaskDesc
       });
 
       this.setState({
@@ -48,7 +50,8 @@ class Task extends Component {
       // swap to edit
       this.setState({
         taskInEditMode: !this.state.taskInEditMode,
-        editTaskInput: this.props.details.title
+        editTaskInput: this.props.details.title,
+        editTaskDesc: this.props.details.description
       })
 
     }
@@ -98,53 +101,74 @@ class Task extends Component {
 
   render() {
 
-    console.log('TASK RENDERED:', this.props)
+    // console.log('TASK RENDERED:', this.props)
 
     return(
       <div>
-
-        { this.state.taskInEditMode &&
-          <input  value={this.state.editTaskInput} 
-                  className='task-edit'
-                  onChange={(e) => {
-                    this.setState({
-                      editTaskInput: e.target.value
-                    })
-                  }}
-          />
-        }
-
-        { !this.state.taskInEditMode &&
-          <span className={this.whatClassNameAmI()}>
-            { this.props.details.title }
-          </span>
-        }
-
+      
         { !(this.props.details.status === 'delete') &&
           <div>
 
-          <button onClick={this.saveEditTask}>
-            {this.state.taskInEditMode ? 'Save' : 'Edit'}
-          </button>
-
-          <button onClick={this.completeUncompleteTask}>
-            { this.props.details.status === 'complete'
-              ? 'undo complete'
-              : 'Complete'
-            }
-          </button>
-
-          <Route path='/snor/level-1/1b' render={(props) => {
-            return (
+            { this.state.taskInEditMode &&
               <div>
-                <button onClick={this.deleteTask}>Delete</button>
+              <input  value={this.state.editTaskInput} 
+                      className='task-edit'
+                      placeholder='Task'
+                      onChange={(e) => {
+                        this.setState({
+                          editTaskInput: e.target.value
+                        })
+                      }}
+              />
+              <Route path='/snor/level-1/1b/1c' render={(props) => {
+                return (
+                  <input value={this.state.editTaskDesc}
+                    className='task-edit'
+                    placeholder='Description'
+                    onChange={(e) => {
+                      this.setState({
+                        editTaskDesc: e.target.value
+                      })
+                    }}
+                  />
+                )
+              }} />
               </div>
-            )
-          }}  />
+            }
 
-        </div>
+            { !this.state.taskInEditMode &&
+              <p className={this.whatClassNameAmI()}>
+                <span>{this.props.details.title}</span>
+                <Route path='/snor/level-1/1b/1c' render={(props) => {
+                  return (
+                    <span>
+                      {this.props.details.description}
+                    </span>
+                  )
+                }} />
+              </p>
+            }
+
+            <button onClick={this.saveEditTask}>
+              {this.state.taskInEditMode ? 'Save' : 'Edit'}
+            </button>
+
+            <button onClick={this.completeUncompleteTask}>
+              { this.props.details.status === 'complete'
+                ? 'undo complete'
+                : 'Complete'
+              }
+            </button>
+
+            <Route path='/snor/level-1/1b' render={(props) => {
+              return (
+                <div>
+                  <button onClick={this.deleteTask}>Delete</button>
+                </div>
+              )
+            }}  />
+          </div>
         }
-
       </div>
     );
   }

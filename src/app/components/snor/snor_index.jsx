@@ -22,6 +22,7 @@ class SnorIndex extends Component {
 
     this.startLevel1 = this.startLevel1.bind(this);
     this.startLevel2 = this.startLevel2.bind(this);
+    this.startLevel3 = this.startLevel3.bind(this);
   }
   
   componentDidMount(){
@@ -94,6 +95,12 @@ class SnorIndex extends Component {
     const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
     fbRef.set('/snor/level-1/1b');
   }
+
+  startLevel3() {
+    
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+    fbRef.set('/snor/level-1/1b/1c');
+  }
   
   render() {
     return(
@@ -123,6 +130,19 @@ class SnorIndex extends Component {
               <p>Greetings snorling. I forgot to give you a delete button. Here you go :)</p>
               <p><em>to edit or delete, that it the question</em></p>
               <button type='button' onClick={this.startLevel2}>Let's Go!</button>
+            </div>
+          );
+        }} />
+
+        <Route path='/snor/level3-splash' render={(props) => {
+          return (
+            <div>
+              <h3>welcome to level 3!!!!: snor/level3-splash</h3>
+              <h4>Level 3</h4>
+              <p>Hello again. Looks like you've been busy, so I was thinking...</p>
+              <p>Maybe you could use a description field for your tasks</p>
+              <p><em>but what am I supposed to describe?</em></p>
+              <button type='button' onClick={this.startLevel3}>Let's Go!</button>
             </div>
           );
         }} />

@@ -3,12 +3,16 @@ import { connect } from "react-redux";
 import FireBaseTools from '../../utils/firebase';
 import Task from '../tasks/task';
 import { Link } from 'react-router-dom';
+import { Route } from 'react-router';
 
 //TODO:
 // Need to add listener for not the insert, but the update
 // to the tasks...so i can use the status to do actions
 // like completed should remove buttons and strike through
 
+//TODO:
+// Deleting a task removes the counter for complete,
+// making it hard to level up. Might need a new level up mechanic
 
 class TasksIndex extends Component {
   constructor(props) {
@@ -16,6 +20,7 @@ class TasksIndex extends Component {
 
     this.state = {
       taskTitle: '',
+      taskDesc: '',
       userTaskList: {}
     };
 
@@ -23,6 +28,7 @@ class TasksIndex extends Component {
     this.reroute = this.reroute.bind(this);
 
     this.fbRefSimpleTasks = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
+    this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
     
   }
 
@@ -62,14 +68,23 @@ class TasksIndex extends Component {
 
     console.log('-----TOTAL COMPLETE:', totalComplete);
 
-    if (totalComplete > 2) { // TODO: set this level advance trigger
-      const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+    if (totalComplete === 3) { // TODO: set this level advance trigger
+      // const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
       
       // only update if at level-1
-      fbRefB.once('value', snap => {
+      this.fbRefCurrentLevel.once('value', snap => {
         if (snap.val() === '/snor/level-1') {
-          fbRefB.set('/snor/level2-splash');
+          this.fbRefCurrentLevel.set('/snor/level2-splash');
           console.log('WENT TO /snor/level2-splash')
+        }
+      })
+    }
+
+    if (totalComplete === 5) {
+      this.fbRefCurrentLevel.once('value', snap => {
+        if (snap.val() === '/snor/level-1/1b') {
+          this.fbRefCurrentLevel.set('/snor/level3-splash');
+          console.log('WENT TO /snor/level3-splash')
         }
       })
     }
@@ -181,6 +196,7 @@ class TasksIndex extends Component {
     let childRef = fbRef.push({
       userEmail: this.props.currentUser.email,
       title: this.state.taskTitle,
+      description: this.state.taskDesc,
       status: 'new'
     }).then(response => {
       // console.log('Task Added Successfully');
@@ -244,9 +260,25 @@ class TasksIndex extends Component {
           <input
             type="text"
             className="sl-btn"
+            placeholder="Task"
             value={this.state.taskTitle}
             onChange={(e) => { this.setState({ taskTitle: e.target.value }); }}
           />
+
+          <Route path='/snor/level-1/1b/1c' render={(props) => {
+            return (
+              <div>
+                <input
+                  type="text"
+                  placeholder="Description"
+                  value={this.state.taskDesc}
+                  onChange={(e) => { this.setState({ taskDesc: e.target.value }); }}
+                />
+              </div>
+            )
+          }} />
+
+
           <button
             type="submit"
             className="sl-btn"
