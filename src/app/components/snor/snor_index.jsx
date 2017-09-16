@@ -5,7 +5,7 @@ import FireBaseTools from '../../utils/firebase';
 import { Route } from 'react-router';
 import TasksIndex from '../tasks/tasks_index';
 import AvatarOutput from './avatar_output';
-import { setPathLevel, setAvatarUrl, setAvatarName } from '../../actions/index';
+import { setPathLevel, setAvatarUrl, setAvatarName, setAvatarTokens } from '../../actions/index';
 import { bindActionCreators } from "redux";
 
 
@@ -65,6 +65,9 @@ class SnorIndex extends Component {
       this.whereDoYouBelong(snap.val());
     })
 
+    // TODO: THese could be all grouped into 1 action i think
+    // where we pass in the entire new object, and then
+    // keep doing the object.assign.
     this.fbRefCurrentLevel.child('avatarUrl').off();
     this.fbRefCurrentLevel.child('avatarUrl').on('value', snap => {
       this.props.setAvatarUrl(snap.val());
@@ -73,6 +76,11 @@ class SnorIndex extends Component {
     this.fbRefCurrentLevel.child('avatarName').off();
     this.fbRefCurrentLevel.child('avatarName').on('value', snap => {
       this.props.setAvatarName(snap.val());
+    })
+
+    this.fbRefCurrentLevel.child('avatarTokens').off();
+    this.fbRefCurrentLevel.child('avatarTokens').on('value', snap => {
+      this.props.setAvatarTokens(snap.val());
     })
 
     /////////////////////////////////////////////
@@ -269,7 +277,7 @@ class SnorIndex extends Component {
   
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setPathLevel, setAvatarUrl, setAvatarName }, dispatch);
+  return bindActionCreators({ setPathLevel, setAvatarUrl, setAvatarName, setAvatarTokens }, dispatch);
 }
 
 function mapStateToProps(mall) {

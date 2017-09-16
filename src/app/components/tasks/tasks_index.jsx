@@ -120,6 +120,12 @@ class TasksIndex extends Component {
         // debugger;
       }
 
+      if (pointTotal > 9 && (pointTotal % 2 === 0)) {
+        console.log('**&&** GIVING YOU A FREE AVATAR TOKEN :)')
+        let currTokenCount = snap.child('avatarTokens').val();
+        snap.child('avatarTokens').ref.set(currTokenCount + 1);
+      }
+
 
 
 

@@ -23,7 +23,8 @@ class UserRegister extends Component {
             currentLevel: '/snor/welcome-splash',
             points: 0,
             avatarUrl: '',
-            avatarName: ''
+            avatarName: '',
+            avatarTokens: 2
         })
     }
 

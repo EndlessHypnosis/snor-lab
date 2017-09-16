@@ -19,3 +19,10 @@ export const setAvatarName = (url) => {
     payload: url
   }
 }
+
+export const setAvatarTokens = (count) => {
+  return {
+    type: 'SET_AVATAR_TOKENS',
+    payload: count
+  }
+}
