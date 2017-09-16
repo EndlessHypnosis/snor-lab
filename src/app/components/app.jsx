@@ -23,6 +23,7 @@ class App extends Component {
     // this.runLoop();
 
     this.fbRefCurrentLevel = undefined;
+    this.runLoop = this.runLoop.bind(this);
     
     
     // FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
@@ -32,21 +33,51 @@ class App extends Component {
   }
 
   runLoop() {
-    // console.log('RUN LOOP WAS STARTED');
-      (function loop() {
+    console.log('RUN LOOP LOGGER');
+
+      // (function loop() {
         var now = new Date();
-        // console.log('DATE: ', now.getDate(), ' | TIME: ', now.getHours(), ':', now.getMinutes())
-        if (now.getDate() === 11 && now.getHours() === 16 && now.getMinutes() === 52) {
-          // check for notifications here. This is essentially our cron.
-          // console.log('RUN LOOP WAS TIME WAS TRIGGERED!!!')
+        // make sure user exists
+        if (this.props.currentUser && this.props.currentUser.uid) {
+
+
+          let fbLocalRefReminders = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-reminders`)
+            .orderByKey();
+
+          fbLocalRefReminders.once('value')
+            .then(snap => {
+              snap.forEach(childSnap => {
+                let key = childSnap.key;
+                let childData = childSnap.val();
+
+                console.log(  'Checking key:', key,
+                              ':with hour:', childData.hour,
+                              ':with minute:', childData.minute);
+                console.log('Actual Time:', now.getHours(), ':', now.getMinutes());
+
+                if (childData.hour == now.getHours() && childData.minute == now.getMinutes()) {
+                  console.log('+++++RUN LOOP REMINDER TRIGGERED++++++:KEY:', key, ':TITLE:', childData.title)
+                }
+              })
+            })
+          
+          
         }
+
+        // console.log('DATE: ', now.getDate(), ' | TIME: ', now.getHours(), ':', now.getMinutes())
+        // if (now.getDate() === 11 && now.getHours() === 16 && now.getMinutes() === 52) {
+        //   // check for notifications here. This is essentially our cron.
+        //   // console.log('RUN LOOP WAS TIME WAS TRIGGERED!!!')
+        // }
         now = new Date();                  // allow for time passing
         var delay = 60000 - (now % 60000); // exact ms to next minute interval
-        setTimeout(loop, delay);
-      })();
+        setTimeout(this.runLoop, delay);
+        // })();
   }
 
   componentDidMount() {
+
+    this.runLoop();
     // let sound = new Audio(music_14);
     // sound.play();
 
@@ -182,8 +213,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchUser, logoutUser }, dispatch);
 }
 
-function mapStateToProps(state) {
-  return { currentUser: state.currentUser };
+function mapStateToProps(mall) {
+  return { currentUser: mall.currentUser };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import FireBaseTools from '../../utils/firebase';
-import Task from '../tasks/task';
+import Task from './task';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import { setAvatarUrl } from '../../actions/index';
@@ -37,14 +37,14 @@ class TasksIndex extends Component {
 
   // Need to review how we filling in the userTaskList array from the DB.
   // can probably be refactored to approach it differently
-  componentWillReceiveProps(nextProps) {
+  // componentWillReceiveProps(nextProps) {
     // console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
 
     // if (!this.props.currentUser && nextProps.currentUser) {
     //   // console.log('LISTENING to nextProps');
     //   this.listenForTasks(nextProps);
     // }
-  }
+  // }
 
   componentDidMount() {
 
@@ -53,7 +53,7 @@ class TasksIndex extends Component {
       // console.log('LISTENING to this.props');
 
       this.fbRefSimpleTasks.off();
-      this.listenForTasks(this.props);
+      this.listenForTasks();
     }
   }
 
@@ -120,15 +120,15 @@ class TasksIndex extends Component {
         // debugger;
       }
 
-      if (pointTotal > 9 && (pointTotal % 2 === 0)) {
-        console.log('**&&** GIVING YOU A FREE AVATAR TOKEN :)')
+      if (pointTotal > 9 && (pointTotal % 3 === 0)) {
+        console.log('**&&**TASK: GIVING YOU A FREE AVATAR TOKEN :)')
         let currTokenCount = snap.child('avatarTokens').val();
         snap.child('avatarTokens').ref.set(currTokenCount + 1);
       }
 
 
 
-      if (pointTotal === 13 && snap.child('currentLevel').val() === '/snor/level-1/1b/1c/1d') {
+      if (pointTotal === 14 && snap.child('currentLevel').val() === '/snor/level-1/1b/1c/1d') {
         snap.child('currentLevel').ref.set('/snor/level5-splash');
         console.log('WENT TO /snor/level5-splash')
       }
@@ -145,7 +145,7 @@ class TasksIndex extends Component {
 
 
 
-  actualTaskListener(myProps) {
+  actualTaskListener() {
     // const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     //
     // fbRef.off();
@@ -162,7 +162,7 @@ class TasksIndex extends Component {
     })
   }
 
-  actualTaskUpdateListener(myProps) {
+  actualTaskUpdateListener() {
     // const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     // console.log('UPDATE TASK WATCHER STARTED!');
     // fbRef.off();
@@ -190,19 +190,20 @@ class TasksIndex extends Component {
   }
 
 
-  listenForTasks(myProps) {
+  listenForTasks() {
     //
     // ref.on('child_added') will return all children and then maintain a listener for more.
     // ref.on('value') just detects change in path item itself?
     //
 
     // how do we store the current user logged in "uid" so then we just listen for that here:
-    console.log(`LISTENER ATTACHED TO [users/${myProps.currentUser.uid}/simple-tasks]`);
-    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
+    console.log(`LISTENER ATTACHED TO [users/${this.props.currentUser.uid}/simple-tasks]`);
+    // const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
+    
     // Before we setup our listener, let's pre load
     // the userTaskList so we can avoid all these renders
     // do we really need to do this?
-    fbRef.once('value', snap => {
+    this.fbRefSimpleTasks.once('value', snap => {
       let stateCopy = Object.assign({}, this.state.userTaskList);
       console.log('ONE TIME .ONCE CALL:', snap, ' | val: ', snap.val());
       // make sure there is a snap val before setting
@@ -215,9 +216,9 @@ class TasksIndex extends Component {
         });
       }
     }).then(stuff => {
-      console.log('ONCE FINISHED!!!!!!!!!!!!!!!', stuff);
-      this.actualTaskListener(myProps);
-      this.actualTaskUpdateListener(myProps);
+      console.log('ONCE FINISHED!!!TASKS!!', stuff);
+      this.actualTaskListener();
+      this.actualTaskUpdateListener();
     })
 
     // var users = [];
@@ -245,8 +246,8 @@ class TasksIndex extends Component {
     // actual task add
     //
 
-    let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
-    let childRef = fbRef.push({
+    // let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
+    let childRef = this.fbRefSimpleTasks.push({
       userEmail: this.props.currentUser.email,
       title: this.state.taskTitle,
       description: this.state.taskDesc,
@@ -298,7 +299,7 @@ class TasksIndex extends Component {
   render() {
 
     const listOfTasks = Object.keys(this.state.userTaskList).map(task => {
-      return  <Task  key={task} 
+      return  <Task key={task} 
                     details={this.state.userTaskList[task]}
                     taskId={task}
               />
@@ -342,7 +343,7 @@ class TasksIndex extends Component {
           {listOfTasks}
         </div>
       </div>
-    )
+    );
 
   }
 
