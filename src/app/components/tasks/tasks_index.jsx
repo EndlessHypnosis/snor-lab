@@ -22,18 +22,20 @@ class TasksIndex extends Component {
     this.onFormTaskAdd = this.onFormTaskAdd.bind(this);
     this.reroute = this.reroute.bind(this);
 
+    this.fbRefSimpleTasks = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
+    
   }
 
 
   // Need to review how we filling in the userTaskList array from the DB.
   // can probably be refactored to approach it differently
   componentWillReceiveProps(nextProps) {
-    console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
+    // console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
 
-    if (!this.props.currentUser && nextProps.currentUser) {
-      // console.log('LISTENING to nextProps');
-      this.listenForTasks(nextProps);
-    }
+    // if (!this.props.currentUser && nextProps.currentUser) {
+    //   // console.log('LISTENING to nextProps');
+    //   this.listenForTasks(nextProps);
+    // }
   }
 
   componentDidMount() {
@@ -41,11 +43,15 @@ class TasksIndex extends Component {
     console.log('COMPONENT DID MOUNT: what are props:', this.props)
     if (this.props.currentUser) {
       // console.log('LISTENING to this.props');
+
+      this.fbRefSimpleTasks.off();
       this.listenForTasks(this.props);
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  // componentDidUpdate(prevProps, prevState) {
+
+  levelUpChecker() {
 
     let totalComplete = Object.keys(this.state.userTaskList).reduce((acum, task) => {
       if (this.state.userTaskList[task].status === 'complete') {
@@ -63,7 +69,7 @@ class TasksIndex extends Component {
       fbRefB.once('value', snap => {
         if (snap.val() === '/snor/level-1') {
           fbRefB.set('/snor/level2-splash');
-          console.log('WENT TO LEVEL 1b')
+          console.log('WENT TO /snor/level2-splash')
         }
       })
     }
@@ -72,9 +78,10 @@ class TasksIndex extends Component {
 
 
   actualTaskListener(myProps) {
-    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
+    // const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     //
-    fbRef.on('child_added', snap => {
+    // fbRef.off();
+    this.fbRefSimpleTasks.on('child_added', snap => {
       let stateCopy = Object.assign({}, this.state.userTaskList);
       // only add if it's not there yet. could run into issues later with this,
       // where updated tasks should still be 'updated', but because the key is there, it doesnt update
@@ -88,14 +95,13 @@ class TasksIndex extends Component {
   }
 
   actualTaskUpdateListener(myProps) {
-    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
+    // const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     // console.log('UPDATE TASK WATCHER STARTED!');
-    fbRef.on('child_changed', snap => {
+    // fbRef.off();
+    this.fbRefSimpleTasks.on('child_changed', snap => {
 
-      // can we get the completed count here?
-      // fbRef.
-
-
+      
+      
       let stateCopy = Object.assign({}, this.state.userTaskList);
       // console.log('TASK update watcher HIT:', snap.key)
       // is this right? where we check if key is there,
@@ -104,6 +110,9 @@ class TasksIndex extends Component {
         stateCopy[snap.key] = snap.val();
         this.setState({
           userTaskList: stateCopy
+        }, () => {
+          // see if its time to level up
+          this.levelUpChecker();
         })
       } else {
         console.log('ERROR - shouldnt reach this path. key should exist in task list')
