@@ -13,6 +13,8 @@ class Task extends Component {
       editTaskDesc: ''
     }
 
+    this.fbRefLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+
     this.saveEditTask = this.saveEditTask.bind(this);
     this.completeUncompleteTask = this.completeUncompleteTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
@@ -69,6 +71,14 @@ class Task extends Component {
     fbRef.update({
       status: newStatus
     });
+
+    // update the level/points - this is what determins level up
+    this.fbRefLevel.child('points').once('value', snap => {
+      let upOrDown = newStatus === 'complete' ? 1 : -1;
+      let newPointVal = parseInt(snap.val()) + upOrDown;
+      snap.ref.set(newPointVal);
+    })
+
   }
 
 

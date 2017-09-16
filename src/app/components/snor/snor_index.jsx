@@ -53,13 +53,13 @@ class SnorIndex extends Component {
     // const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
     
     console.log('---DB Listener: Updating path level---');
-    this.fbRefCurrentLevel.on('value', snap => {
+    this.fbRefCurrentLevel.child('currentLevel').on('value', snap => {
       console.log('FireBase Listener - LEVEL - HIT:', snap.val());
 
       // update userPath store
-      this.props.setPathLevel(snap.val().currentLevel);
+      this.props.setPathLevel(snap.val());
       // actually do redirect
-      this.whereDoYouBelong(snap.val().currentLevel);
+      this.whereDoYouBelong(snap.val());
     })
 
     /////////////////////////////////////////////

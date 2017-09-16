@@ -28,7 +28,7 @@ class TasksIndex extends Component {
     this.reroute = this.reroute.bind(this);
 
     this.fbRefSimpleTasks = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
-    this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+    this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`)
     
   }
 
@@ -59,35 +59,45 @@ class TasksIndex extends Component {
 
   levelUpChecker() {
 
-    let totalComplete = Object.keys(this.state.userTaskList).reduce((acum, task) => {
-      if (this.state.userTaskList[task].status === 'complete') {
-        acum ++;
+    // let totalComplete = Object.keys(this.state.userTaskList).reduce((acum, task) => {
+    //   if (this.state.userTaskList[task].status === 'complete') {
+    //     acum ++;
+    //   }
+    //   return acum;
+    // }, 0);
+
+    this.fbRefCurrentLevel.once('value', snap => {
+      console.log('----CHECK ME OUT:', snap.val());
+
+      let pointTotal = snap.child('points').val();
+      console.log('-----TOTAL SCORE:', pointTotal);
+
+      //these if's could probably be combined into a function where we pass in the next lvel number??
+      if (pointTotal === 3 && snap.child('currentLevel').val() === '/snor/level-1') { // TODO: set this level advance trigger
+        snap.child('currentLevel').ref.set('/snor/level2-splash');
+        console.log('WENT TO /snor/level2-splash')
+        
+        // const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+        // only update if at level-1
+        // this.fbRefCurrentLevel.child('currentLevel').once('value', snap => {
+        //   if (snap.val() === '/snor/level-1') {
+        //     this.fbRefCurrentLevel.child('currentLevel').set('/snor/level2-splash');
+        //   }
+        // })
       }
-      return acum;
-    }, 0);
 
-    console.log('-----TOTAL COMPLETE:', totalComplete);
+  
+      if (pointTotal === 6 && snap.child('currentLevel').val() === '/snor/level-1/1b') {
+        snap.child('currentLevel').ref.set('/snor/level3-splash');
+        console.log('WENT TO /snor/level3-splash')
+      }
 
-    if (totalComplete === 3) { // TODO: set this level advance trigger
-      // const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
-      
-      // only update if at level-1
-      this.fbRefCurrentLevel.once('value', snap => {
-        if (snap.val() === '/snor/level-1') {
-          this.fbRefCurrentLevel.set('/snor/level2-splash');
-          console.log('WENT TO /snor/level2-splash')
-        }
-      })
-    }
 
-    if (totalComplete === 5) {
-      this.fbRefCurrentLevel.once('value', snap => {
-        if (snap.val() === '/snor/level-1/1b') {
-          this.fbRefCurrentLevel.set('/snor/level3-splash');
-          console.log('WENT TO /snor/level3-splash')
-        }
-      })
-    }
+
+    })
+
+
+
   }
 
 
