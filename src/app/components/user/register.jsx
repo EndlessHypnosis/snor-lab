@@ -19,6 +19,7 @@ class UserRegister extends Component {
 
         const fbRef = FireBaseTools.getDatabaseReference(`users/${data.payload.uid}/account/level`)
         fbRef.set({
+            email: data.payload.email,
             currentLevel: '/snor/welcome-splash'
         })
     }
@@ -37,7 +38,7 @@ class UserRegister extends Component {
                 // look into how we did it in movie tracker
                 // browserHistory.push('/profile');
                 this.initializeUserInDataBase(data);
-                this.props.history.push('/profile')
+                this.props.history.push('/profile');
             }
         }
         );

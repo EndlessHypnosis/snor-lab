@@ -4,10 +4,15 @@ import FireBaseTools from '../../utils/firebase';
 import Task from '../tasks/task';
 import { Link } from 'react-router-dom';
 
+//TODO:
+// Need to add listener for not the insert, but the update
+// to the tasks...so i can use the status to do actions
+// like completed should remove buttons and strike through
+
 
 class TasksIndex extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       taskTitle: '',
@@ -15,7 +20,7 @@ class TasksIndex extends Component {
     };
 
     this.onFormTaskAdd = this.onFormTaskAdd.bind(this);
-    this.completeTask = this.completeTask.bind(this);
+    this.reroute = this.reroute.bind(this);
 
   }
 
@@ -45,11 +50,10 @@ class TasksIndex extends Component {
 
 
   actualTaskListener(myProps) {
-    const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     //
     fbRef.on('child_added', snap => {
       let stateCopy = Object.assign({}, this.state.userTaskList);
-      console.log('SNAP from users/tasklist watcher:', snap.key)
       // only add if it's not there yet. could run into issues later with this,
       // where updated tasks should still be 'updated', but because the key is there, it doesnt update
       if (!stateCopy[snap.key]) {
@@ -61,6 +65,27 @@ class TasksIndex extends Component {
     })
   }
 
+  actualTaskUpdateListener(myProps) {
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
+    console.log('UPDATE TASK WATCHER STARTED!');
+    fbRef.on('child_changed', snap => {
+
+      let stateCopy = Object.assign({}, this.state.userTaskList);
+      console.log('TASK update watcher HIT:', snap.key)
+      // is this right? where we check if key is there,
+      // then update.
+      if (stateCopy[snap.key]) {
+        stateCopy[snap.key] = snap.val();
+        this.setState({
+          userTaskList: stateCopy
+        })
+      } else {
+        console.log('ERROR - shouldnt reach this path. key should exist in task list')
+      }
+    
+    })
+  }
+
 
   listenForTasks(myProps) {
     //
@@ -69,11 +94,11 @@ class TasksIndex extends Component {
     //
 
     // how do we store the current user logged in "uid" so then we just listen for that here:
-    console.log(`LISTENER ATTACHED TO [users/tasklist${myProps.currentUser.uid}]`);
-    const fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${myProps.currentUser.uid}`);
+    console.log(`LISTENER ATTACHED TO [users/${myProps.currentUser.uid}/simple-tasks]`);
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     // Before we setup our listener, let's pre load
     // the userTaskList so we can avoid all these renders
-    //
+    // do we really need to do this?
     fbRef.once('value', snap => {
       let stateCopy = Object.assign({}, this.state.userTaskList);
       console.log('ONE TIME .ONCE CALL:', snap, ' | val: ', snap.val());
@@ -89,6 +114,7 @@ class TasksIndex extends Component {
     }).then(stuff => {
       console.log('ONCE FINISHED!!!!!!!!!!!!!!!', stuff);
       this.actualTaskListener(myProps);
+      this.actualTaskUpdateListener(myProps);
     })
 
     // var users = [];
@@ -98,13 +124,14 @@ class TasksIndex extends Component {
   }
 
 
-  completeTask(task) {
-    console.log('completing task:', task)
-  }
 
-  deleteTask(task) {
-    // let prop = 'id of property to delete'
-    // delete myObject[prop]
+  reroute(to) {
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`)
+    fbRef.update({
+      currentLevel: to
+    })
+
+    // this.props.history.push(to);
   }
 
 
@@ -115,7 +142,7 @@ class TasksIndex extends Component {
     // actual task add
     //
 
-    let fbRef = FireBaseTools.getDatabaseReference(`users/tasklist/${this.props.currentUser.uid}`);
+    let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
     let childRef = fbRef.push({
       userEmail: this.props.currentUser.email,
       title: this.state.taskTitle,
@@ -164,11 +191,9 @@ class TasksIndex extends Component {
 
   render() {
 
-
     const listOfTasks = Object.keys(this.state.userTaskList).map(task => {
       return  <Task  key={task} 
                     details={this.state.userTaskList[task]}
-                    completeTask={this.completeTask}
                     taskId={task}
               />
     })
@@ -177,8 +202,9 @@ class TasksIndex extends Component {
 
     return(
       <div>
-      stuff here <Link to='/tasks/nick'>advance to next level</Link>
-      <Link to='/tasks'>back again</Link>
+      <h3>What's on your mind?</h3>
+      <a onClick={e => this.reroute('/snor/level-1/1b')}>advance to next level</a>
+      <a onClick={e => this.reroute('/snor/level-1')}>back again</a>
         <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
           <input
             type="text"

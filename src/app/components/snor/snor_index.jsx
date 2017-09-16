@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import FireBaseTools from '../../utils/firebase';
 import { Route } from 'react-router';
+import TasksIndex from '../tasks/tasks_index';
+import { setPathLevel } from '../../actions/index';
+import { bindActionCreators } from "redux";
+
 
 class SnorIndex extends Component {
   constructor(props){
@@ -16,6 +20,7 @@ class SnorIndex extends Component {
     // in the component did unmount or something like that
     this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
 
+    this.startLevel1 = this.startLevel1.bind(this);
   }
   
   componentDidMount(){
@@ -27,6 +32,7 @@ class SnorIndex extends Component {
   whereDoYouBelong(currentLevel = 'invalid') {
 
     if (currentLevel !== 'invalid') {
+      // console.log('SNOR INDEX:', this.props)
       this.props.history.push(currentLevel);
     }
 
@@ -45,7 +51,11 @@ class SnorIndex extends Component {
     // const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
 
     this.fbRefCurrentLevel.on('value', snap => {
-      console.log('FireBase Listener HIT in SNOR INDEX:', snap.val());
+      console.log('FireBase Listener - LEVEL - HIT:', snap.val());
+
+      // update userPath store
+      this.props.setPathLevel(snap.val().currentLevel);
+
       this.whereDoYouBelong(snap.val().currentLevel);
     })
   }
@@ -62,30 +72,47 @@ class SnorIndex extends Component {
   // or better yet have a listener to the database, and when
   // it detects a level upgrade, force the user to a new route :)
 
+  startLevel1() {
+    console.log('start level 1 hit');
+
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+    fbRef.set('/snor/level-1');
+  }
   
   render() {
     return(
       <div>
-        <h1>This is the SNOR INDEX</h1>
+        <h2>This is the SNOR INDEX</h2>
         <Route path='/snor/welcome-splash' render={(props) => {
           return (
             <div>
-              <h3>this is the starting point: welcome-splash</h3>
+              <h3>this is the starting point: snor/welcome-splash</h3>
+              <h4>Level 1</h4>
+              <p>Greetings snorling. You're ready to embark on your journey of productivity.</p>
+              <p>In level 1, you're only allowed to enter simple tasks</p>
+              <p><em>i wonder how many levels there are...</em></p>
+              <button type='button' onClick={this.startLevel1}>Let's Go!</button>
             </div>
           );
         }} />
-      </div>
-    );
+
+        <Route path="/snor/level-1" component={TasksIndex} />
+
+        </div>
+      );
+    }
   }
+  
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ setPathLevel }, dispatch);
 }
-
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ fetchUser, logoutUser }, dispatch);
-// }
 
 function mapStateToProps(mall) {
-  return { currentUser: mall.currentUser };
+  return { 
+    currentUser: mall.currentUser,
+    userPath: mall.userPath
+  };
 }
 
-export default connect(mapStateToProps, null)(SnorIndex);
+export default connect(mapStateToProps, mapDispatchToProps)(SnorIndex);

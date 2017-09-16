@@ -43,10 +43,8 @@ const browserHistory = createBrowserHistory();
 // OR
 // const history = createHistory();
 
-
 // from boiler - replaced with const store below
 // const store = applyMiddleware(ReduxPromise)(createStore);
-
 
 // from movie tracker
 // const middleware = routerMiddleware(browserHistory)
@@ -58,10 +56,8 @@ const store = createStore(
     devTools,
     applyMiddleware(ReduxPromise) // from thunk to ReduxPromise
 )
-
 window.appStore = store;    //In case you want to see what's inside
 // by executing appStore.getState() in console;
-
 
 // ifyou use a <Switch> wrapper </Switch> only the first child that
 // matches the path.
