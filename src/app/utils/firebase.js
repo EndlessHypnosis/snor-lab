@@ -170,9 +170,25 @@ const FireBaseTools = {
         })
     },
 
-    addImageToStorage: (key, folderPath, imgUrl) => {
+    randomString: (length) => {
+        var chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        var result = '';
+        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+        return result;
+    },
+
+    // reRollToken: () => {
+    //     let randomNameNum = FireBaseTools.randomString(10);
+
+    // },
+
+    addImageToStorage: (key, folderPath, imgUrl, uid) => {
         // just playing around with storage here
         //
+
+        // if (rerollFlag) {
+        //     FireBaseTools.reRollToken();
+        // }
 
         let prePath = 'snor/assets/';
 
@@ -199,8 +215,8 @@ const FireBaseTools = {
 
                     FireBaseTools.getRandomSwapiName()
                     .then(data => {
-                        // console.log('UMMM WHAT IS THIS DATA:', data)
-                        firebaseDb.ref(`users/${key}/account/level`).update({
+                        // now update the avatar name and url in firebase
+                        firebaseDb.ref(`users/${uid}/account/level`).update({
                             avatarUrl: snap.downloadURL,
                             avatarName: data.name
                         })

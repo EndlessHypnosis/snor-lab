@@ -250,8 +250,10 @@ class SnorIndex extends Component {
               <h4>Level 4</h4>
               <p>Snorling...Sorry to keep interrupting your productivity...</p>
               <p>But I need to run...snorville is growing, and I'm stuck in :: meeting hell ::</p>
-              <p>Don't you worry though, I'm leaving you in the hands of :: NAME::</p>
+              <p>Don't you worry though, I'm leaving you in the hands of {this.props.userPath.avatarName}</p>
               <p>He has served me well and should be a suitable assistant</p>
+              <p>If he doesn't work out, I'm also giving you 2 re-roll tokens.</p>
+              <p><em>:: maybe a link to reroll token faq ::</em></p>
               <img src={this.props.userPath.avatarUrl}/>
               <button type='button' onClick={this.startLevel4}>Let's Go!</button>
             </div>
