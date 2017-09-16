@@ -13,6 +13,11 @@ import ResetPassword from '../components/user/reset_password';
 import requireAuth from '../utils/authenticated.js';
 
 
+// TODO:
+// - Need to move all firebase database references to
+//   probably class level properties? just something global
+
+
 // import Sound from "react-sound";
 // import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 // import FireBaseTools from '../utils/firebase';
@@ -68,7 +73,7 @@ class HomeIndex extends Component {
   renderLoginCheck(currentUser) {
     // if current user exists and user id exists than make user navigation
     if (currentUser && currentUser.uid) {
-      console.log('Home Index With User:', currentUser)
+      // console.log('Home Index With User:', currentUser)
       return (
         <div>
           {currentUser.displayName

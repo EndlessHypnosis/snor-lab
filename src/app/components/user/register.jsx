@@ -20,7 +20,8 @@ class UserRegister extends Component {
         const fbRef = FireBaseTools.getDatabaseReference(`users/${data.payload.uid}/account/level`)
         fbRef.set({
             email: data.payload.email,
-            currentLevel: '/snor/welcome-splash'
+            currentLevel: '/snor/welcome-splash',
+            points: 0
         })
     }
 

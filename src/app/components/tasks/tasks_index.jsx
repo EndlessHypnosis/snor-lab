@@ -3,12 +3,16 @@ import { connect } from "react-redux";
 import FireBaseTools from '../../utils/firebase';
 import Task from '../tasks/task';
 import { Link } from 'react-router-dom';
+import { Route } from 'react-router';
 
 //TODO:
 // Need to add listener for not the insert, but the update
 // to the tasks...so i can use the status to do actions
 // like completed should remove buttons and strike through
 
+//TODO:
+// Deleting a task removes the counter for complete,
+// making it hard to level up. Might need a new level up mechanic
 
 class TasksIndex extends Component {
   constructor(props) {
@@ -16,33 +20,82 @@ class TasksIndex extends Component {
 
     this.state = {
       taskTitle: '',
+      taskDesc: '',
       userTaskList: {}
     };
 
     this.onFormTaskAdd = this.onFormTaskAdd.bind(this);
     this.reroute = this.reroute.bind(this);
 
+    this.fbRefSimpleTasks = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
+    this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`)
+    
   }
 
 
   // Need to review how we filling in the userTaskList array from the DB.
   // can probably be refactored to approach it differently
   componentWillReceiveProps(nextProps) {
-    console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
+    // console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
 
-    if (!this.props.currentUser && nextProps.currentUser) {
-      console.log('LISTENING to nextProps');
-      this.listenForTasks(nextProps);
-    }
+    // if (!this.props.currentUser && nextProps.currentUser) {
+    //   // console.log('LISTENING to nextProps');
+    //   this.listenForTasks(nextProps);
+    // }
   }
 
   componentDidMount() {
 
     console.log('COMPONENT DID MOUNT: what are props:', this.props)
     if (this.props.currentUser) {
-      console.log('LISTENING to this.props');
+      // console.log('LISTENING to this.props');
+
+      this.fbRefSimpleTasks.off();
       this.listenForTasks(this.props);
     }
+  }
+
+  // componentDidUpdate(prevProps, prevState) {
+
+  levelUpChecker() {
+
+    // let totalComplete = Object.keys(this.state.userTaskList).reduce((acum, task) => {
+    //   if (this.state.userTaskList[task].status === 'complete') {
+    //     acum ++;
+    //   }
+    //   return acum;
+    // }, 0);
+
+    this.fbRefCurrentLevel.once('value', snap => {
+      console.log('----CHECK ME OUT:', snap.val());
+
+      let pointTotal = snap.child('points').val();
+      console.log('-----TOTAL SCORE:', pointTotal);
+
+      //these if's could probably be combined into a function where we pass in the next lvel number??
+      if (pointTotal === 3 && snap.child('currentLevel').val() === '/snor/level-1') { // TODO: set this level advance trigger
+        snap.child('currentLevel').ref.set('/snor/level2-splash');
+        console.log('WENT TO /snor/level2-splash')
+        
+        // const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+        // only update if at level-1
+        // this.fbRefCurrentLevel.child('currentLevel').once('value', snap => {
+        //   if (snap.val() === '/snor/level-1') {
+        //     this.fbRefCurrentLevel.child('currentLevel').set('/snor/level2-splash');
+        //   }
+        // })
+      }
+
+  
+      if (pointTotal === 6 && snap.child('currentLevel').val() === '/snor/level-1/1b') {
+        snap.child('currentLevel').ref.set('/snor/level3-splash');
+        console.log('WENT TO /snor/level3-splash')
+      }
+
+
+
+    })
+
 
 
   }
@@ -50,9 +103,10 @@ class TasksIndex extends Component {
 
 
   actualTaskListener(myProps) {
-    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
+    // const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
     //
-    fbRef.on('child_added', snap => {
+    // fbRef.off();
+    this.fbRefSimpleTasks.on('child_added', snap => {
       let stateCopy = Object.assign({}, this.state.userTaskList);
       // only add if it's not there yet. could run into issues later with this,
       // where updated tasks should still be 'updated', but because the key is there, it doesnt update
@@ -66,18 +120,24 @@ class TasksIndex extends Component {
   }
 
   actualTaskUpdateListener(myProps) {
-    const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
-    console.log('UPDATE TASK WATCHER STARTED!');
-    fbRef.on('child_changed', snap => {
+    // const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
+    // console.log('UPDATE TASK WATCHER STARTED!');
+    // fbRef.off();
+    this.fbRefSimpleTasks.on('child_changed', snap => {
 
+      
+      
       let stateCopy = Object.assign({}, this.state.userTaskList);
-      console.log('TASK update watcher HIT:', snap.key)
+      // console.log('TASK update watcher HIT:', snap.key)
       // is this right? where we check if key is there,
       // then update.
       if (stateCopy[snap.key]) {
         stateCopy[snap.key] = snap.val();
         this.setState({
           userTaskList: stateCopy
+        }, () => {
+          // see if its time to level up
+          this.levelUpChecker();
         })
       } else {
         console.log('ERROR - shouldnt reach this path. key should exist in task list')
@@ -137,7 +197,7 @@ class TasksIndex extends Component {
 
   onFormTaskAdd(event) {
     event.preventDefault();
-    console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
+    // console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
 
     // actual task add
     //
@@ -146,9 +206,10 @@ class TasksIndex extends Component {
     let childRef = fbRef.push({
       userEmail: this.props.currentUser.email,
       title: this.state.taskTitle,
+      description: this.state.taskDesc,
       status: 'new'
     }).then(response => {
-      console.log('Task Added Successfully');
+      // console.log('Task Added Successfully');
       // saving random images
       // this.addImageToStorage(response.key, 'images/avatars', `https://robohash.org/${response.key}`);
       // this.addImageToStorage(response.key, 'images/moods', `https://api.adorable.io/avatars/200/${response.key}.png`);
@@ -209,9 +270,25 @@ class TasksIndex extends Component {
           <input
             type="text"
             className="sl-btn"
+            placeholder="Task"
             value={this.state.taskTitle}
             onChange={(e) => { this.setState({ taskTitle: e.target.value }); }}
           />
+
+          <Route path='/snor/level-1/1b/1c' render={(props) => {
+            return (
+              <div>
+                <input
+                  type="text"
+                  placeholder="Description"
+                  value={this.state.taskDesc}
+                  onChange={(e) => { this.setState({ taskDesc: e.target.value }); }}
+                />
+              </div>
+            )
+          }} />
+
+
           <button
             type="submit"
             className="sl-btn"
@@ -230,7 +307,10 @@ class TasksIndex extends Component {
 
 
 function mapStateToProps(mall) {
-  return { currentUser: mall.currentUser };
+  return { 
+    currentUser: mall.currentUser,
+    userPath: mall.userPath
+  };
 }
 
 export default connect(mapStateToProps, null)(TasksIndex);

@@ -19,7 +19,8 @@ class App extends Component {
     this.props.fetchUser();
     this.logOut = this.logOut.bind(this);
 
-    this.runLoop();
+    // this is a keeper...needed for reminders
+    // this.runLoop();
 
     this.fbRefCurrentLevel = undefined;
     
@@ -31,13 +32,13 @@ class App extends Component {
   }
 
   runLoop() {
-    console.log('RUN LOOP WAS STARTED');
+    // console.log('RUN LOOP WAS STARTED');
       (function loop() {
         var now = new Date();
-        console.log('DATE: ', now.getDate(), ' | TIME: ', now.getHours(), ':', now.getMinutes())
+        // console.log('DATE: ', now.getDate(), ' | TIME: ', now.getHours(), ':', now.getMinutes())
         if (now.getDate() === 11 && now.getHours() === 16 && now.getMinutes() === 52) {
           // check for notifications here. This is essentially our cron.
-          console.log('RUN LOOP WAS TIME WAS TRIGGERED!!!')
+          // console.log('RUN LOOP WAS TIME WAS TRIGGERED!!!')
         }
         now = new Date();                  // allow for time passing
         var delay = 60000 - (now % 60000); // exact ms to next minute interval
@@ -60,7 +61,7 @@ class App extends Component {
   logOut() {
     this.props.logoutUser().then(data => {
       // reload props from reducer
-      console.log("logout log:", data);
+      // console.log("logout log:", data);
       this.props.fetchUser();
     });
   }
@@ -73,7 +74,7 @@ class App extends Component {
             this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
 
             this.fbRefCurrentLevel.once('value', snap => {
-              console.log('Continue My Journey WHERE:', snap.val());
+              // console.log('Continue My Journey WHERE:', snap.val());
               this.props.history.push(snap.val().currentLevel);
             })
           }}>continue my journey</button>
