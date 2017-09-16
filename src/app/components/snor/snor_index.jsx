@@ -63,12 +63,10 @@ class SnorIndex extends Component {
     /////////////////////////////////////////////
     console.log('---DB Listener: 3 Tasks Complete---');
     let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
-    console.log('-=-=-=-=-=SUP:', fbRef);
-    fbRef.orderByChild('/status').equalTo('complete')
-      .on('child_changed', snap => {
-        console.log('FireBase Listener - TASK COMPLETE - HIT', snap.val())
-      })
-
+    // console.log('-=-=-=-=-=SUP:', fbRef);
+    fbRef.on('child_changed', snap => {
+      console.log('FireBase Listener - TASK COMPLETE - HIT', snap.val())
+    })
   }
 
   // componentWillUpdate(nextProps, nextState) {
@@ -84,7 +82,7 @@ class SnorIndex extends Component {
   // it detects a level upgrade, force the user to a new route :)
 
   startLevel1() {
-    console.log('start level 1 hit');
+    // console.log('start level 1 hit');
 
     const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
     fbRef.set('/snor/level-1');

@@ -68,7 +68,7 @@ class HomeIndex extends Component {
   renderLoginCheck(currentUser) {
     // if current user exists and user id exists than make user navigation
     if (currentUser && currentUser.uid) {
-      console.log('Home Index With User:', currentUser)
+      // console.log('Home Index With User:', currentUser)
       return (
         <div>
           {currentUser.displayName

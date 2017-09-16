@@ -31,7 +31,7 @@ class TasksIndex extends Component {
     console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
 
     if (!this.props.currentUser && nextProps.currentUser) {
-      console.log('LISTENING to nextProps');
+      // console.log('LISTENING to nextProps');
       this.listenForTasks(nextProps);
     }
   }
@@ -40,11 +40,33 @@ class TasksIndex extends Component {
 
     console.log('COMPONENT DID MOUNT: what are props:', this.props)
     if (this.props.currentUser) {
-      console.log('LISTENING to this.props');
+      // console.log('LISTENING to this.props');
       this.listenForTasks(this.props);
     }
+  }
 
+  componentDidUpdate(prevProps, prevState) {
 
+    let totalComplete = Object.keys(this.state.userTaskList).reduce((acum, task) => {
+      if (this.state.userTaskList[task].status === 'complete') {
+        acum ++;
+      }
+      return acum;
+    }, 0);
+
+    console.log('-----TOTAL COMPLETE:', totalComplete);
+
+    if (totalComplete > 2) { // TODO: set this level advance trigger
+      const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+      
+      // only update if at level-1
+      fbRefB.once('value', snap => {
+        if (snap.val() === '/snor/level-1') {
+          fbRefB.set('/snor/level-1/1b');
+          console.log('WENT TO LEVEL 1b')
+        }
+      })
+    }
   }
 
 
@@ -67,15 +89,15 @@ class TasksIndex extends Component {
 
   actualTaskUpdateListener(myProps) {
     const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
-    console.log('UPDATE TASK WATCHER STARTED!');
+    // console.log('UPDATE TASK WATCHER STARTED!');
     fbRef.on('child_changed', snap => {
 
       // can we get the completed count here?
+      // fbRef.
 
-      
 
       let stateCopy = Object.assign({}, this.state.userTaskList);
-      console.log('TASK update watcher HIT:', snap.key)
+      // console.log('TASK update watcher HIT:', snap.key)
       // is this right? where we check if key is there,
       // then update.
       if (stateCopy[snap.key]) {
@@ -141,7 +163,7 @@ class TasksIndex extends Component {
 
   onFormTaskAdd(event) {
     event.preventDefault();
-    console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
+    // console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
 
     // actual task add
     //
@@ -152,7 +174,7 @@ class TasksIndex extends Component {
       title: this.state.taskTitle,
       status: 'new'
     }).then(response => {
-      console.log('Task Added Successfully');
+      // console.log('Task Added Successfully');
       // saving random images
       // this.addImageToStorage(response.key, 'images/avatars', `https://robohash.org/${response.key}`);
       // this.addImageToStorage(response.key, 'images/moods', `https://api.adorable.io/avatars/200/${response.key}.png`);
@@ -234,7 +256,10 @@ class TasksIndex extends Component {
 
 
 function mapStateToProps(mall) {
-  return { currentUser: mall.currentUser };
+  return { 
+    currentUser: mall.currentUser,
+    userPath: mall.userPath
+  };
 }
 
 export default connect(mapStateToProps, null)(TasksIndex);

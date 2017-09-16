@@ -71,14 +71,14 @@ class Task extends Component {
   deleteTask(e) {
     // let prop = 'id of property to delete'
     // delete myObject[prop]
-    console.log('DELETE TASK', e.target)
+    // console.log('DELETE TASK', e.target)
   }
 
 
 
   render() {
 
-    console.log('TASK STUFF HERE:', this.props)
+    console.log('TASK RENDERED:', this.props)
 
     return(
       <div>
