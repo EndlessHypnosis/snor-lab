@@ -62,7 +62,7 @@ class TasksIndex extends Component {
       // only update if at level-1
       fbRefB.once('value', snap => {
         if (snap.val() === '/snor/level-1') {
-          fbRefB.set('/snor/level-1/1b');
+          fbRefB.set('/snor/level2-splash');
           console.log('WENT TO LEVEL 1b')
         }
       })

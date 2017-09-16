@@ -15,6 +15,7 @@ class Task extends Component {
     this.saveEditTask = this.saveEditTask.bind(this);
     this.completeUncompleteTask = this.completeUncompleteTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
+    this.whatClassNameAmI = this.whatClassNameAmI.bind(this);
   }
 
   // componentDidMount() {
@@ -69,11 +70,30 @@ class Task extends Component {
 
 
   deleteTask(e) {
+
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks/${this.props.taskId}`);
+    fbRef.update({
+      status: 'delete'
+    });
+
     // let prop = 'id of property to delete'
     // delete myObject[prop]
     // console.log('DELETE TASK', e.target)
   }
 
+
+  whatClassNameAmI() {
+
+    switch (this.props.details.status) {
+      case 'complete':
+        return 'task-complete';
+      case 'delete':
+        return 'task-delete';
+      default:
+        return 'task-new';
+    }
+
+  }
 
 
   render() {
@@ -95,35 +115,35 @@ class Task extends Component {
         }
 
         { !this.state.taskInEditMode &&
-          <span className={
-              this.props.details.status === 'complete'
-              ? 'task-complete'
-              : 'task-new'
-            }
-          >
+          <span className={this.whatClassNameAmI()}>
             { this.props.details.title }
           </span>
         }
 
+        { !(this.props.details.status === 'delete') &&
+          <div>
 
-        <button onClick={this.saveEditTask}>
-          {this.state.taskInEditMode ? 'Save' : 'Edit'}
-        </button>
+          <button onClick={this.saveEditTask}>
+            {this.state.taskInEditMode ? 'Save' : 'Edit'}
+          </button>
 
-        <button onClick={this.completeUncompleteTask}>
-          { this.props.details.status === 'complete'
-            ? 'undo complete'
-            : 'Complete'
-          }
-        </button>
+          <button onClick={this.completeUncompleteTask}>
+            { this.props.details.status === 'complete'
+              ? 'undo complete'
+              : 'Complete'
+            }
+          </button>
 
-        <Route path='/snor/level-1/1b' render={(props) => {
-          return (
-            <div>
-              <button onClick={this.deleteTask}>Delete</button>
-            </div>
-          )
-        }}  />
+          <Route path='/snor/level-1/1b' render={(props) => {
+            return (
+              <div>
+                <button onClick={this.deleteTask}>Delete</button>
+              </div>
+            )
+          }}  />
+
+        </div>
+        }
 
       </div>
     );

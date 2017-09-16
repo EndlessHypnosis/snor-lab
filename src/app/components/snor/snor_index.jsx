@@ -21,6 +21,7 @@ class SnorIndex extends Component {
     this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
 
     this.startLevel1 = this.startLevel1.bind(this);
+    this.startLevel2 = this.startLevel2.bind(this);
   }
   
   componentDidMount(){
@@ -61,12 +62,12 @@ class SnorIndex extends Component {
     })
 
     /////////////////////////////////////////////
-    console.log('---DB Listener: 3 Tasks Complete---');
-    let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
-    // console.log('-=-=-=-=-=SUP:', fbRef);
-    fbRef.on('child_changed', snap => {
-      console.log('FireBase Listener - TASK COMPLETE - HIT', snap.val())
-    })
+    // console.log('---DB Listener: 3 Tasks Complete---');
+    // let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
+    // // console.log('-=-=-=-=-=SUP:', fbRef);
+    // fbRef.on('child_changed', snap => {
+    //   console.log('FireBase Listener - TASK COMPLETE - HIT', snap.val())
+    // })
   }
 
   // componentWillUpdate(nextProps, nextState) {
@@ -88,6 +89,12 @@ class SnorIndex extends Component {
     fbRef.set('/snor/level-1');
   }
   
+  startLevel2() {
+    
+    const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
+    fbRef.set('/snor/level-1/1b');
+  }
+  
   render() {
     return(
       <div>
@@ -106,6 +113,21 @@ class SnorIndex extends Component {
         }} />
 
         <Route path="/snor/level-1" component={TasksIndex} />
+
+
+        <Route path='/snor/level2-splash' render={(props) => {
+          return (
+            <div>
+              <h3>welcome to level 2!!!!: snor/level2-splash</h3>
+              <h4>Level 2</h4>
+              <p>Greetings snorling. I forgot to give you a delete button. Here you go :)</p>
+              <p><em>to edit or delete, that it the question</em></p>
+              <button type='button' onClick={this.startLevel2}>Let's Go!</button>
+            </div>
+          );
+        }} />
+
+
 
         </div>
       );

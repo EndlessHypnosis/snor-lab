@@ -13,6 +13,11 @@ import ResetPassword from '../components/user/reset_password';
 import requireAuth from '../utils/authenticated.js';
 
 
+// TODO:
+// - Need to move all firebase database references to
+//   probably class level properties? just something global
+
+
 // import Sound from "react-sound";
 // import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 // import FireBaseTools from '../utils/firebase';
