@@ -186,35 +186,38 @@ class App extends Component {
     });
   }
 
-  renderContinueMenu(currentUser) {
-    if (currentUser && currentUser.uid) {
-      return (
-        <ul>
-          <li>
-            <button onClick={() => {
-              this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
+  // renderContinueMenu(currentUser) {
+  //   if (currentUser && currentUser.uid) {
+  //     return (
+  //       <ul>
+  //         <li>
+  //           <button onClick={() => {
+  //             this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
 
-              this.fbRefCurrentLevel.once('value', snap => {
-                // console.log('Continue My Journey WHERE:', snap.val());
-                this.props.history.push(snap.val().currentLevel);
-              })
-            }}>continue my journey</button>
-          </li>
-        </ul>
-      );
-    }
-  }
+  //             this.fbRefCurrentLevel.once('value', snap => {
+  //               // console.log('Continue My Journey WHERE:', snap.val());
+  //               this.props.history.push(snap.val().currentLevel);
+  //             })
+  //           }}>continue my journey</button>
+  //         </li>
+  //       </ul>
+  //     );
+  //   }
+  // }
 
-  renderUserMenu(currentUser) {
+  renderUserMenu() {
     // if current user exists and user id exists than make user navigation
-    if (currentUser && currentUser.uid) {
+    if (this.props.currentUser && this.props.currentUser.uid) {
       return (
         <ul>
           <li>
-            {currentUser.email} 
+            Hello, 
+            {this.props.currentUser.displayName
+            ? this.props.currentUser.displayName
+            : 'snorLing'} 
           </li>
           <li>
-            <Link to="/profile">profile</Link>
+            <Link to="/profile">Profile</Link>
           </li>
           <li>
             <Link to="/logout" onClick={this.logOut}>
@@ -225,14 +228,17 @@ class App extends Component {
       );
     } else {
       return (
-        <ul>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-        </ul>
+        <div>
+
+          <button className='btn-primary' onClick={() => {
+            this.props.history.push('/login');
+          }}>Login</button>
+
+          <button className='btn-primary' onClick={() => {
+            this.props.history.push('/register');
+          }}>Register</button>
+          
+        </div>
       );
     }
   }
@@ -251,17 +257,13 @@ class App extends Component {
     // const myDatePicker = DatePickerFactory();
 
     return (
-      <div className='app-component'>
-        <p className='logo-wrapper'>snorLab</p>
-        <header>
-          <div>
-            <Link to="/">
-              snorLab
-            </Link>
-          </div>
-          {this.renderContinueMenu(this.props.currentUser)}
-          {this.renderUserMenu(this.props.currentUser)}
-        </header>
+      <div>
+        
+        <button className='btn-primary btn-mega' onClick={() => {
+          this.props.history.push('/');
+        }}>Home</button>
+
+        {this.renderUserMenu()}
         <Notifications notifications={this.props.notifications}
           style={notificationStyle}
         />

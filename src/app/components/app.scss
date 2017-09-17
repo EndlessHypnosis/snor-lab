@@ -49,6 +49,15 @@
   src: local('love_story'),
     url('assets/fonts/love_story.ttf') format('truetype');
 }
+
+.love-orange-big {
+  font-family: 'love_story';
+  font-size: 45px;
+  color: orangered;
+  font-weight: normal;
+}
+
+
 .app-core {
   font-size: 16px;
   // font-family: 'Roboto', sans-serif;
@@ -119,12 +128,15 @@
   display: flex;
   flex: 1;
 }
+
 .holygrail-content {
   flex: 1;
 }
+
 .holygrail-left, .holygrail-right {
   flex: 0 0 12em;
 }
+
 .holygrail-left {
   order: -1;
 }
@@ -148,12 +160,56 @@
   flex-direction: column;
 }
 
-.logo-wrapper {
-  // background-size: cover;
-  // height: 100px;
-  // widows: 150px;
-  // background-image: url('assets/images/dilogoanim.gif');
+
+
+
+// HTML COMPONENT STYLES
+
+
+.btn-primary {
+  cursor: pointer;
+  font-family: Nova Square;
+  font-size: 22px;
+  text-decoration: none;
+  color: mediumpurple;
+  border: 1px solid slategray;
+  border-radius: 4px;
+  padding: 4px 8px;
+  background: linear-gradient(to right, #ece9e6, #ffffff);
+  box-shadow: 0px 0px 5px 0px rgba(119, 119, 119, 0.75);
 }
+
+
+.btn-primary:hover {
+  background: mediumpurple;
+  color: #ffffff;
+}
+
+// inherits: .btn-primary
+.btn-mega {
+  background: linear-gradient(to right, #badfe4, #80d6e5);
+  color: darkslategray;
+}
+
+.btn-mega:hover {
+  background: #76b2c6;
+  color: darkslategray;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
