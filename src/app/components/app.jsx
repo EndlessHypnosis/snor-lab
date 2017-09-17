@@ -68,7 +68,7 @@ class App extends Component {
     super(props);
 
     this.props.fetchUser();
-    this.logOut = this.logOut.bind(this);
+    // this.logOut = this.logOut.bind(this);
 
     // this is a keeper...needed for reminders
     // this.runLoop();
@@ -178,13 +178,13 @@ class App extends Component {
 
   }
 
-  logOut() {
-    this.props.logoutUser().then(data => {
-      // reload props from reducer
-      // console.log("logout log:", data);
-      this.props.fetchUser();
-    });
-  }
+  // logOut() {
+  //   this.props.logoutUser().then(data => {
+  //     // reload props from reducer
+  //     // console.log("logout log:", data);
+  //     this.props.fetchUser();
+  //   });
+  // }
 
   // renderContinueMenu(currentUser) {
   //   if (currentUser && currentUser.uid) {
@@ -209,22 +209,23 @@ class App extends Component {
     // if current user exists and user id exists than make user navigation
     if (this.props.currentUser && this.props.currentUser.uid) {
       return (
-        <ul>
-          <li>
-            Hello, 
-            {this.props.currentUser.displayName
-            ? this.props.currentUser.displayName
-            : 'snorLing'} 
-          </li>
-          <li>
-            <Link to="/profile">Profile</Link>
-          </li>
-          <li>
-            <Link to="/logout" onClick={this.logOut}>
-              Logout
-            </Link>
-          </li>
-        </ul>
+        <div>
+
+          
+
+          <button className='btn-primary' onClick={() => {
+            this.props.history.push('/profile');
+          }}>Profile</button>
+
+          <button className='btn-primary' onClick={() => {
+            this.props.logoutUser().then(data => {
+              this.props.fetchUser().then(data => {
+                this.props.history.push('/logout');
+              })
+            });
+          }}>Logout</button>
+
+        </div>
       );
     } else {
       return (

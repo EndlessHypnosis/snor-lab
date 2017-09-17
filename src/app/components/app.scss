@@ -57,6 +57,94 @@
   font-weight: normal;
 }
 
+.ubuntu-gray-medium {
+  font-family: 'Ubuntu', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.nova-gray-medbig {
+  font-family: 'Nova Square', cursive;
+  font-size: 24px;
+}
+
+.card-primary {
+  padding: 10px;
+  border: 1px solid #c5d2da;
+  border-radius: 5px;
+  color: #727578;
+  // flex: 1;
+  font-size: 18px;
+  margin: 10px;
+}
+
+.card-error {
+  padding: 10px;
+  border: 1px solid #c5d2da;
+  border-radius: 5px;
+  color: indianred;
+  // flex: 1;
+  font-size: 16px;
+  margin: 10px;
+}
+
+
+// need to flex stuff up
+.card-skinny {
+  display: flex;
+  flex-direction: row;
+  margin: 10px;
+}
+
+.card-skinny-span {
+  // outline: none;
+  padding: 10px;
+  border: 1px solid #c5d2da;
+  border-radius: 5px 0 0 5px;
+  color: #727578;
+  flex: 1;
+  font-size: 14px;
+}
+
+
+.card-skinny-btn {
+  cursor: pointer;
+  outline: none;
+  padding: 10px;
+  border: 1px solid #c5d2da;
+  border-left: 0;
+  border-radius: 0 5px 5px 0;
+  background-color: #3fb7c0;
+  color: #ffffff;
+  font-family: 'Nova Square', cursive;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+
+.input-primary {
+  outline: none;
+  padding: 6px;
+  border: 1px solid darkgrey;
+  border-radius: 3px;
+  color: #727578;
+  font-size: 18px;
+  margin: 10px;
+  box-shadow: inset 0px 0px 5px 0px rgba(119, 119, 119, 0.75);
+  -moz-box-shadow: inset 0px 0px 5px 0px rgba(119, 119, 119, 0.75);
+}
+
+.input-primary::placeholder {
+  color: darkgrey;
+}
+
+
+
+
+
+
+
+
 
 .app-core {
   font-size: 16px;
@@ -73,6 +161,7 @@
 
 .app-wrapper {
   min-width: 945px;
+  max-width: 945px;
   min-height: 100vh;
   margin: 30px auto;
   // padding: 30px;
@@ -168,7 +257,7 @@
 
 .btn-primary {
   cursor: pointer;
-  font-family: Nova Square;
+  font-family: 'Nova Square', cursive;
   font-size: 22px;
   text-decoration: none;
   color: mediumpurple;
@@ -195,6 +284,13 @@
   background: #76b2c6;
   color: darkslategray;
 }
+
+
+
+
+
+
+
 
 
 

@@ -52,25 +52,35 @@ class UserRegister extends Component {
 
     render() {
         return (
-            <div className="col-md-4">
+            <div>
                 <form id="frmRegister" role="form" onSubmit={this.onFormSubmit}>
-                    <p>{this.state.message}</p>
-                    <h2>Register</h2>
-                    <div className="form-group">
-                        <label htmlFor="txtRegEmail">Email address</label>
-                        <input
-                            type="email" className="form-control" ref="email" id="txtEmail" placeholder="Enter email"
-                            name="email"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="txtRegPass">Password</label>
-                        <input
-                            type="password" className="form-control" ref="password" id="txtPass" placeholder="Password"
-                            name="password"
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-default">Register</button>
+                    {this.state.message !== '' &&
+                        <p className='card-error'>
+                            {this.state.message}
+                        </p>
+                    }
+                    
+                    <p className='nova-gray-medbig'>Register</p>
+                    
+                    <label htmlFor="txtRegEmail" className='ubuntu-gray-medium'>
+                        Email Address:
+                    </label>
+                    <input
+                        type="email" className="input-primary"
+                        ref="email" id="txtEmail"
+                        placeholder="Enter Email" name="email"
+                    />
+
+                    <label htmlFor="txtRegPass" className='ubuntu-gray-medium'>
+                        Password:
+                    </label>
+                    <input
+                        type="password" className="input-primary"
+                        ref="password" id="txtPass"
+                        placeholder="Password" name="password"
+                    />
+                    
+                    <button type="submit" className="btn-primary btn-mega">Register</button>
                     
 
                 </form>

@@ -48,36 +48,45 @@ class UserLogin extends Component {
 
     render() {
         return (
-            <div className="col-md-4">
-                <form id="frmLogin" role="form" onSubmit={this.onFormSubmit}>
-                    <p>
-                        {this.state.message}
+            <div>
+            <form id="frmLogin" role="form" onSubmit={this.onFormSubmit}>
+                { this.state.message !== '' &&
+                    <p className='card-error'>
+                    {this.state.message}
                     </p>
-                    <h2>Login</h2>
-                    <div className="form-group">
-                        <label htmlFor="txtEmail">Email address</label>
-                        <input
-                            type="email" className="form-control" id="txtEmail" ref="email" placeholder="Enter email"
-                            name="email"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="txtPass">Password</label>
-                        <input
-                            type="password" className="form-control" id="txtPass" ref="password" placeholder="Password"
-                            name="password"
-                        />
-                    </div>
-                    <button type="submit" className="btn btn-default btn-block">Login</button>
-                    <br />
-                    <h5><Link to="/reset">Forgot password?</Link></h5>
-                </form>
-            </div>
+                }
+                <p className='nova-gray-medbig'>Login</p>
 
-        );
+                <label htmlFor="txtEmail" className='ubuntu-gray-medium'>
+                    Email Address:
+                </label>
+                <input
+                    type="email" className="input-primary"
+                    id="txtEmail" ref="email"
+                    placeholder="Enter Email" name="email"
+                />
+
+                <label htmlFor="txtPass" className='ubuntu-gray-medium'>
+                    Password:
+                </label>
+                <input
+                    type="password" className="input-primary"
+                    id="txtPass" ref="password"
+                    placeholder="Password" name="password"
+                />
+
+                <button type="submit" className="btn-primary btn-mega">Login</button>
+                </form>
+                </div>
+                
+            );
+        }
+        
     }
 
-}
+    // This could be setup, but don't know if the email system is working
+    // <h5><Link to="/reset">Forgot password?</Link></h5>
+
 
 
 // <h4>Login with</h4>
