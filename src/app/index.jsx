@@ -68,7 +68,7 @@ ReactDOM.render(
             <div className='app-core'>
                 <div className='app-wrapper'>
                     <div className='holygrail-header'>
-                        <h1>sNOrLaB</h1>
+                        <h1>snorLab</h1>
                     </div>
                     <div className='holygrail-body'>
                         <div className='holygrail-content'>
@@ -83,7 +83,7 @@ ReactDOM.render(
                             <Route path="/logout" component={UserLogout} />
                         </div>
                     </div>
-                    <div className='holygrail-footer'>Footer here</div>
+                    <div className='holygrail-footer'><span>Micky McGruff<i className="icon ion-chevron-down"></i></span></div>
                 </div>
             </div>
         </ConnectedRouter>
