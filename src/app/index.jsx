@@ -67,7 +67,9 @@ ReactDOM.render(
         <ConnectedRouter history={browserHistory}>
             <div className='app-core'>
                 <div className='app-wrapper'>
-                    <div className='holygrail-header'>Header here</div>
+                    <div className='holygrail-header'>
+                        <h1>sNOrLaB</h1>
+                    </div>
                     <div className='holygrail-body'>
                         <div className='holygrail-content'>
                             <Route path="/" component={HomeIndex} />

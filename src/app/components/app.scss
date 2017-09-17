@@ -5,6 +5,50 @@
   outline: none;
 }
 
+@font-face {
+  font-family: 'doodle_gum';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/doodle_gum.ttf');
+  src: local('doodle_gum'),
+    url('assets/fonts/doodle_gum.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'dimitri_white';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/dimitri_white.ttf');
+  src: local('dimitri_white'),
+    url('assets/fonts/dimitri_white.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'cross_town';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/cross_town.ttf');
+  src: local('cross_town'),
+    url('assets/fonts/cross_town.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'cracked_code';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/cracked_code.ttf');
+  src: local('cracked_code'),
+    url('assets/fonts/cracked_code.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'love_story';
+  font-style: normal;
+  font-weight: 400;
+  src: url('assets/fonts/love_story.ttf');
+  src: local('love_story'),
+    url('assets/fonts/love_story.ttf') format('truetype');
+}
 .app-core {
   font-size: 16px;
   display: flex;
@@ -57,6 +101,12 @@
 
   display: flex;
   flex-direction: column;
+}
+
+.holygrail-header h1 {
+  margin: 70px auto;
+  font-weight: normal;
+  font-family: 'love_story';
 }
 
 .holygrail-body {
