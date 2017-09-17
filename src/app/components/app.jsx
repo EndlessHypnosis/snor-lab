@@ -7,6 +7,57 @@ import music_14 from "../sounds/music_14.mp3";
 import make_yourself_comfortable from "../sounds/make_yourself_comfortable.mp3";
 import FireBaseTools from '../utils/firebase';
 
+import Notifications, { success } from 'react-notification-system-redux';
+
+
+const notificationStyle = {
+  NotificationItem: { // Override the notification item
+    DefaultStyle: { // Applied to every notification, regardless of the notification level
+      margin: '10px 5px 2px 1px',
+      borderRadius: '12px',
+      fontSize: '18px',
+    },
+
+    success: { // Applied only to the success notification item
+      color: 'red',
+      fontSize: '20px',
+      backgroundColor: '#000000',
+      borderTop: '4px solid red',
+      borderBottom: '4px solid red'
+    }
+  },
+  Title: {
+    DefaultStyle: {
+      fontSize: '18px',
+      margin: '10px',
+      padding: 0,
+      fontWeight: 'bold'
+    },
+
+    success: {
+      color: '#ffffff'
+    }
+  },
+  Action: {
+    DefaultStyle: {
+      background: '#ffffff',
+      borderRadius: '3px',
+      fontSize: '16px',
+      padding: '8px 20px',
+      fontWeight: 'bold',
+      margin: '10px',
+      border: 0
+    },
+
+    success: {
+      backgroundColor: '#c74148',
+      color: '#ffffff',
+      cursor: 'pointer'
+    }
+  }
+}
+
+
 
 // TODO:
 // when changing display name in profile,
@@ -63,6 +114,16 @@ class App extends Component {
                     ) {
                   console.log('+++++RUN LOOP REMINDER TRIGGERED++++++:KEY:', key, ':TITLE:', childData.title)
 
+
+                  const notificationOpts = {
+                    title: 'Whoops!',
+                    message: 'You currently have no movies selected as favorites',
+                    position: 'tc',
+                    autoDismiss: 45
+                  };
+
+                  this.props.success(notificationOpts);
+
                   // // award an avatar token - put this in the callback of
                   // // completing a reminder! in the notification
                   // let fbRefPoints = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
@@ -104,6 +165,8 @@ class App extends Component {
   componentDidMount() {
 
     this.runLoop();
+
+
     // let sound = new Audio(music_14);
     // sound.play();
 
@@ -207,6 +270,9 @@ class App extends Component {
             {this.renderUserMenu(this.props.currentUser)}
           </ul>
         </header>
+        <Notifications notifications={this.props.notifications}
+          style={notificationStyle}
+        />
       </div>
     );
   }
@@ -215,11 +281,13 @@ class App extends Component {
 // {this.props.children}
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchUser, logoutUser }, dispatch);
+  return bindActionCreators({ fetchUser, logoutUser, success }, dispatch);
 }
 
 function mapStateToProps(mall) {
-  return { currentUser: mall.currentUser };
+  return  { currentUser: mall.currentUser,
+            notifications: mall.notifications
+          };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
