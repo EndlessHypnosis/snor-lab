@@ -10,20 +10,25 @@
   display: flex;
   height: 100vh;
   width: 100vw;
-  background-image: url('assets/images/bg_waves.jpg');
+  background-image: url('assets/images/bg_bw.jpg');
   background-size: cover;
 }
 
 .app-wrapper {
-  width: 100%;
-  margin: 30px;
+  width: 950px;
+  margin: 30px auto;
   padding: 30px;
-  background: linear-gradient(to bottom left, #FFFFFF, #99C7FF);
+  background-color: #ffffff;
+  background-image: url('assets/images/waves_top.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  // background: linear-gradient(to top right, #ffffff, #c4e0e5);
   box-shadow: 6px 6px 6px -4px rgba(0,0,0,0.75);
-  opacity: 0.7;
+  opacity: 0.85;
   border: 1px solid #a2a2a2;
   border-radius: 8px;
   display: flex;
+  flex-direction: column;
 }
 
 .logo-wrapper {
