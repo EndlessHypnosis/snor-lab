@@ -5,8 +5,32 @@
   outline: none;
 }
 
-body {
+.app-core {
   font-size: 16px;
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-image: url('assets/images/bg_waves.jpg');
+  background-size: cover;
+}
+
+.app-wrapper {
+  width: 100%;
+  margin: 30px;
+  padding: 30px;
+  background: linear-gradient(to bottom left, #FFFFFF, #99C7FF);
+  box-shadow: 6px 6px 6px -4px rgba(0,0,0,0.75);
+  opacity: 0.7;
+  border: 1px solid #a2a2a2;
+  border-radius: 8px;
+  display: flex;
+}
+
+.logo-wrapper {
+  // background-size: cover;
+  // height: 100px;
+  // widows: 150px;
+  // background-image: url('assets/images/dilogoanim.gif');
 }
 
 .avatar-25 {

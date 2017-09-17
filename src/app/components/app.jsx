@@ -189,16 +189,18 @@ class App extends Component {
   renderContinueMenu(currentUser) {
     if (currentUser && currentUser.uid) {
       return (
-        <li>
-          <button onClick={() => {
-            this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
+        <ul>
+          <li>
+            <button onClick={() => {
+              this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
 
-            this.fbRefCurrentLevel.once('value', snap => {
-              // console.log('Continue My Journey WHERE:', snap.val());
-              this.props.history.push(snap.val().currentLevel);
-            })
-          }}>continue my journey</button>
-        </li>
+              this.fbRefCurrentLevel.once('value', snap => {
+                // console.log('Continue My Journey WHERE:', snap.val());
+                this.props.history.push(snap.val().currentLevel);
+              })
+            }}>continue my journey</button>
+          </li>
+        </ul>
       );
     }
   }
@@ -207,38 +209,31 @@ class App extends Component {
     // if current user exists and user id exists than make user navigation
     if (currentUser && currentUser.uid) {
       return (
-        <li className="dropdown">
-          <a
-            href="#"
-            className="dropdown-toggle"
-            data-toggle="dropdown"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            {currentUser.email} <span className="caret" />
-          </a>
-          <ul className="dropdown-menu">
-            <li>
-              <Link to="/profile">profile</Link>
-            </li>
-            <li>
-              <Link to="/logout" onClick={this.logOut}>
-                Logout
-              </Link>
-            </li>
-          </ul>
-        </li>
+        <ul>
+          <li>
+            {currentUser.email} 
+          </li>
+          <li>
+            <Link to="/profile">profile</Link>
+          </li>
+          <li>
+            <Link to="/logout" onClick={this.logOut}>
+              Logout
+            </Link>
+          </li>
+        </ul>
       );
     } else {
-      return [
-        <li key={1}>
-          <Link to="/login">Login</Link>
-        </li>,
-        <li key={2}>
-          <Link to="/register">Register</Link>
-        </li>
-      ];
+      return (
+        <ul>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
+          <li>
+            <Link to="/register">Register</Link>
+          </li>
+        </ul>
+      );
     }
   }
 
@@ -256,19 +251,16 @@ class App extends Component {
     // const myDatePicker = DatePickerFactory();
 
     return (
-      <div>
+      <div className='app-component'>
+        <p className='logo-wrapper'>snorLab</p>
         <header>
           <div>
             <Link to="/">
               snorLab
             </Link>
           </div>
-          <ul>
-            {this.renderContinueMenu(this.props.currentUser)}
-          </ul>
-          <ul>
-            {this.renderUserMenu(this.props.currentUser)}
-          </ul>
+          {this.renderContinueMenu(this.props.currentUser)}
+          {this.renderUserMenu(this.props.currentUser)}
         </header>
         <Notifications notifications={this.props.notifications}
           style={notificationStyle}

@@ -32,7 +32,7 @@ import rootReducers from './reducers';
 // import routes from './routes';
 
 // will remove bootstrap
-import 'bootstrap-social';
+// import 'bootstrap-social';
 
 // for bundling your styles
 import './bundle.scss';
@@ -65,15 +65,16 @@ window.appStore = store;    //In case you want to see what's inside
 ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={browserHistory}>
-            <div>
-                <Route path="/" component={App} />
-                <Route path="/" component={HomeIndex} />
-                <Route path="/logout" component={UserLogout} />
-                
+            <div className='app-core'>
+                <div className='app-wrapper'>
+                    <Route path="/" component={App} />
+                    <Route path="/" component={HomeIndex} />
+                    <Route path="/logout" component={UserLogout} />
                 </div>
-                </ConnectedRouter>
-                </Provider>
-                , document.querySelector('.react-root'));
+            </div>
+        </ConnectedRouter>
+    </Provider>
+    , document.querySelector('.react-root'));
                 
                 // <Route path="/snor" component={SnorIndex} />
                 // <Route path="/register" component={UserRegister} />
