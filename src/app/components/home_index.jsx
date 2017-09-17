@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Route } from 'react-router';
 import { Link } from 'react-router-dom';
+import FireBaseTools from '../utils/firebase';
 
 import TasksIndex from '../components/tasks/tasks_index';
 import SnorIndex from '../components/snor/snor_index';
@@ -80,10 +81,23 @@ class HomeIndex extends Component {
             ? `Good day, ${currentUser.displayName}`
             : `psst head over to your profile and fill out your name`
           }
-        <Route path="/snor" component={SnorIndex} />
 
+          <Route exact path='/' render={(props) => {
+            return (
+              <div>
+                <button onClick={() => {
+                  let fbRefLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
         
+                  fbRefLevel.once('value', snap => {
+                    // console.log('Continue My Journey WHERE:', snap.val());
+                    this.props.history.push(snap.val().currentLevel);
+                  })
+                }}>Lets DO THIS</button>
+              </div>
+            );
+          }} />
 
+        <Route path="/snor" component={SnorIndex} />
 
         <Route path="/reset" component={ResetPassword} />
         <Route path="/profile" component={UserProfile} onEnter={requireAuth} />
