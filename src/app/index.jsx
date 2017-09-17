@@ -67,9 +67,21 @@ ReactDOM.render(
         <ConnectedRouter history={browserHistory}>
             <div className='app-core'>
                 <div className='app-wrapper'>
-                    <Route path="/" component={App} />
-                    <Route path="/" component={HomeIndex} />
-                    <Route path="/logout" component={UserLogout} />
+                    <div className='holygrail-header'>Header here</div>
+                    <div className='holygrail-body'>
+                        <div className='holygrail-content'>
+                            <Route path="/" component={HomeIndex} />
+                        </div>
+                        
+                        <div className='holygrail-left'>
+                            <Route path="/" component={App} />
+                        </div>
+                        
+                        <div className='holygrail-right'>
+                            <Route path="/logout" component={UserLogout} />
+                        </div>
+                    </div>
+                    <div className='holygrail-footer'>Footer here</div>
                 </div>
             </div>
         </ConnectedRouter>

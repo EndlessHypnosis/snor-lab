@@ -8,25 +8,86 @@
 .app-core {
   font-size: 16px;
   display: flex;
-  height: 100vh;
+  // height: 100vh;
   width: 100vw;
   background-image: url('assets/images/bg_bw.jpg');
-  background-size: cover;
+  background-size: contain;
 }
 
 .app-wrapper {
-  width: 950px;
+  min-width: 945px;
+  min-height: 100vh;
   margin: 30px auto;
-  padding: 30px;
+  // padding: 30px;
+  background-color: #ffffff;
+  // background-image: url('assets/images/waves_top.png');
+  // background-size: contain;
+  // background-repeat: no-repeat;
+  // background: linear-gradient(to top right, #ffffff, #c4e0e5);
+  // box-shadow: 6px 6px 6px -2px rgba(0,0,0,0.75);
+  
+  box-shadow: 0px 0px 10px 2px rgba(119, 119, 119, 0.8);
+  -moz-box-shadow: 0px 0px 10px 2px rgba(119, 119, 119, 0.8);
+  -webkit-box-shadow: 0px 0px 10px 2px rgba(119, 119, 119, 0.8);
+
+
+  opacity: 0.85;
+  border: 1px solid #718EA7;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.holygrail-header {
+  min-width: 945px;
+  min-height: 312px;
+  // margin: 30px auto;
+  // padding: 30px;
   background-color: #ffffff;
   background-image: url('assets/images/waves_top.png');
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
   // background: linear-gradient(to top right, #ffffff, #c4e0e5);
-  box-shadow: 6px 6px 6px -4px rgba(0,0,0,0.75);
+  // box-shadow: 6px 6px 6px -2px rgba(0,0,0,0.75);
   opacity: 0.85;
-  border: 1px solid #a2a2a2;
-  border-radius: 8px;
+  // border: 1px solid #a2a2a2;
+  // border-radius: 8px;
+  border-top-right-radius: 8px;
+  border-top-left-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.holygrail-body {
+  display: flex;
+  flex: 1;
+}
+.holygrail-content {
+  flex: 1;
+}
+.holygrail-left, .holygrail-right {
+  flex: 0 0 12em;
+}
+.holygrail-left {
+  order: -1;
+}
+
+.holygrail-footer {
+  min-width: 945px;
+  min-height: 223px;
+  background-color: #ffffff;
+  background-image: url('assets/images/waves_bottom.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  // box-shadow: 6px 6px 6px -2px rgba(0, 0, 0, 0.75);
+  opacity: 0.85;
+  // border-bottom: 1px solid #a2a2a2;
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
+
+  // opacity: 0.85;
   display: flex;
   flex-direction: column;
 }
@@ -37,6 +98,8 @@
   // widows: 150px;
   // background-image: url('assets/images/dilogoanim.gif');
 }
+
+
 
 .avatar-25 {
   height: 20%;
