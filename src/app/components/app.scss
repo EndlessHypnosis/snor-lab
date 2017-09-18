@@ -57,6 +57,13 @@
   font-weight: normal;
 }
 
+.ubuntu-dark-small {
+  font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    color: darkslategray;
+}
+
 .ubuntu-gray-medium {
   font-family: 'Ubuntu', sans-serif;
     font-size: 20px;
@@ -190,7 +197,7 @@
 
 
   opacity: 0.85;
-  border: 1px solid #718EA7;
+  // border: 1px solid #718EA7;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -261,6 +268,52 @@
   flex-direction: column;
 }
 
+.footer-span {
+  padding-top: 190px;
+  padding-left: 20px;
+}
+
+
+
+.sidebar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bot-padding {
+  margin-bottom: 20px;
+}
+
+.top-padding {
+  margin-top: 20px;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+}
+
+.card-flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.min-length-med {
+  min-width: 135px;
+}
+
+
+
+
+
+
 
 
 
@@ -308,6 +361,7 @@
   border: 1px solid slategray;
   border-radius: 4px;
   padding: 2px 4px;
+  margin-left: 4px;
   background: linear-gradient(to right, #ece9e6, #ffffff);
   box-shadow: 0px 0px 5px 0px rgba(119, 119, 119, 0.75);
 }

@@ -19,11 +19,11 @@ const notificationStyle = {
     },
 
     success: { // Applied only to the success notification item
-      color: 'red',
+      color: '#000000',
       fontSize: '20px',
-      backgroundColor: '#000000',
-      borderTop: '4px solid red',
-      borderBottom: '4px solid red'
+      backgroundColor: '#ffffff',
+      borderTop: '4px solid darkgray',
+      borderBottom: '4px solid darkgray'
     }
   },
   Title: {
@@ -35,7 +35,7 @@ const notificationStyle = {
     },
 
     success: {
-      color: '#ffffff'
+      color: '#000000'
     }
   },
   Action: {
@@ -208,11 +208,11 @@ class App extends Component {
     // if current user exists and user id exists than make user navigation
     if (this.props.currentUser && this.props.currentUser.uid) {
       return (
-        <div>
+        <div className='flex-column'>
 
           
 
-          <button className='btn-primary' onClick={() => {
+          <button className='btn-primary bot-padding' onClick={() => {
             this.props.history.push('/profile');
           }}>Profile</button>
 
@@ -228,9 +228,9 @@ class App extends Component {
       );
     } else {
       return (
-        <div>
+        <div className='flex-column'>
 
-          <button className='btn-primary' onClick={() => {
+          <button className='btn-primary bot-padding' onClick={() => {
             this.props.history.push('/login');
           }}>Login</button>
 
@@ -257,9 +257,9 @@ class App extends Component {
     // const myDatePicker = DatePickerFactory();
 
     return (
-      <div>
+      <div className='sidebar-wrapper'>
         
-        <button className='btn-primary btn-mega' onClick={() => {
+        <button className='btn-primary btn-mega bot-padding' onClick={() => {
           this.props.history.push('/');
         }}>Home</button>
 

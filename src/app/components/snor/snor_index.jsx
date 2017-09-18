@@ -292,8 +292,8 @@ class SnorIndex extends Component {
                 <p>Sorry to keep interrupting your productivity...but I have to get going.
                 Don't you worry though, I'm leaving you in the hands of {this.props.userPath.avatarName},
                 who has served me well and should be a suitable assistant. Just dont ask about the force ;)</p>
-                <p>If {this.props.userPath.avatarName} doesn't work out, I'm also giving you 2 re-roll tokens.</p>
-                <p>You can use these to ask for a new assistant.</p>
+                <p>If {this.props.userPath.avatarName} doesn't work out, I'm also giving you 2 re-roll tokens.
+                You can use these to ask for a new assistant.</p>
                 </div>
               <button type='button' className='btn-primary btn-mega' onClick={this.startLevel4}>Continue</button>
             </div>
