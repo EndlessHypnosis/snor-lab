@@ -41,35 +41,41 @@ class UserProfile extends Component {
         }
 
         return (
-            <div className="col-md-6">
+            <div>
                 <form id="frmProfile" role="form" onSubmit={this.onFormSubmit}>
-                    <h2>User Profile Page</h2>
-                    <p>{this.state.message}</p>
-                    <br />
-                    <div className="form-group">
-                        <label htmlFor="email">Email: </label>
+                    {this.state.message !== '' &&
+                        <p className='card-error'>
+                            {this.state.message}
+                        </p>
+                    }
+                
+                    <p className='nova-gray-medbig'>User Profile</p>
+
+                    <p className='card-primary'>
+                        <label htmlFor="email" className='ubuntu-gray-medium'>Email: </label>
                         <input
                             type="text" defaultValue={this.props.currentUser.email}
-                            className="form-control" id="email" ref="email" placeholder="Email" name="email"
+                            className="input-primary" id="email"
+                            ref="email" placeholder="Email" name="email"
                         />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="displayName">Display name: </label>
+                        
+                        <label htmlFor="displayName" className='ubuntu-gray-medium'>Display name: </label>
                         <input
-                            type="text" defaultValue={this.props.currentUser.displayName}
-                            className="form-control" ref="displayName" id="displayName" placeholder="Display name"
-                            name="displayName"
+                        type="text" defaultValue={this.props.currentUser.displayName}
+                        className="input-primary" ref="displayName"
+                        id="displayName" placeholder="Display name"
+                        name="displayName"
                         />
-                    </div>
-                    <button type="submit" className="btn btn-primary">Update</button>
+                        <button type="submit" className="btn-primary btn-mega">Update</button>
+                    </p>
                 </form>
-                <ChangePassword />
-            </div>
-        );
+                </div>
+            );
+        }
+        
     }
-
-}
-
+    // needs more testing before it can be used
+    // <ChangePassword />
 
 function mapDispatchToProps(dispatch) {
     return bindActionCreators({ fetchUser, updateUser }, dispatch);

@@ -99,11 +99,11 @@ class Task extends Component {
 
     switch (this.props.details.status) {
       case 'complete':
-        return 'task-complete';
+        return 'task-primary task-complete';
       case 'delete':
-        return 'task-delete';
+        return 'task-primary task-delete';
       default:
-        return 'task-new';
+        return 'task-primary';
     }
 
   }
@@ -122,7 +122,7 @@ class Task extends Component {
             { this.state.taskInEditMode &&
               <div>
               <input  value={this.state.editTaskInput} 
-                      className='task-edit'
+                      className='input-primary'
                       placeholder='Task'
                       onChange={(e) => {
                         this.setState({
@@ -133,7 +133,7 @@ class Task extends Component {
               <Route path='/snor/level-1/1b/1c' render={(props) => {
                 return (
                   <input value={this.state.editTaskDesc}
-                    className='task-edit'
+                    className='input-primary'
                     placeholder='Description'
                     onChange={(e) => {
                       this.setState({
@@ -148,10 +148,11 @@ class Task extends Component {
 
             { !this.state.taskInEditMode &&
               <p className={this.whatClassNameAmI()}>
-                <span>{this.props.details.title}</span>
+            <span className='ubuntu-light-medium'>{this.props.details.title}</span>
                 <Route path='/snor/level-1/1b/1c' render={(props) => {
                   return (
-                    <span>
+                    <span className='ubuntu-gray-medium'>
+                      <i className="icon ion-chevron-down"></i>
                       {this.props.details.description}
                     </span>
                   )
@@ -159,11 +160,11 @@ class Task extends Component {
               </p>
             }
 
-            <button onClick={this.saveEditTask}>
+            <button onClick={this.saveEditTask} className="btn-primary-small">
               {this.state.taskInEditMode ? 'Save' : 'Edit'}
             </button>
 
-            <button onClick={this.completeUncompleteTask}>
+            <button onClick={this.completeUncompleteTask} className="btn-primary-small">
               { this.props.details.status === 'complete'
                 ? 'undo complete'
                 : 'Complete'
@@ -173,7 +174,7 @@ class Task extends Component {
             <Route path='/snor/level-1/1b' render={(props) => {
               return (
                 <div>
-                  <button onClick={this.deleteTask}>Delete</button>
+                  <button onClick={this.deleteTask} className="btn-primary-small">Delete</button>
                 </div>
               )
             }}  />

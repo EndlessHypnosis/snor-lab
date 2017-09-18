@@ -32,7 +32,7 @@ import rootReducers from './reducers';
 // import routes from './routes';
 
 // will remove bootstrap
-import 'bootstrap-social';
+// import 'bootstrap-social';
 
 // for bundling your styles
 import './bundle.scss';
@@ -65,15 +65,30 @@ window.appStore = store;    //In case you want to see what's inside
 ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={browserHistory}>
-            <div>
-                <Route path="/" component={App} />
-                <Route path="/" component={HomeIndex} />
-                <Route path="/logout" component={UserLogout} />
-                
+            <div className='app-core'>
+                <div className='app-wrapper'>
+                    <div className='holygrail-header'>
+                        <h1>snorLab</h1>
+                    </div>
+                    <div className='holygrail-body'>
+                        <div className='holygrail-content'>
+                            <Route path="/" component={HomeIndex} />
+                        </div>
+                        
+                        <div className='holygrail-left'>
+                            <Route path="/" component={App} />
+                        </div>
+                        
+                        <div className='holygrail-right'>
+                            <Route path="/logout" component={UserLogout} />
+                        </div>
+                    </div>
+                    <div className='holygrail-footer'><span>:<i className="icon ion-chevron-down"></i>:</span></div>
                 </div>
-                </ConnectedRouter>
-                </Provider>
-                , document.querySelector('.react-root'));
+            </div>
+        </ConnectedRouter>
+    </Provider>
+    , document.querySelector('.react-root'));
                 
                 // <Route path="/snor" component={SnorIndex} />
                 // <Route path="/register" component={UserRegister} />

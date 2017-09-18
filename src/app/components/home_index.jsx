@@ -71,28 +71,49 @@ class HomeIndex extends Component {
   //   // });
   // }
 
-  renderLoginCheck(currentUser) {
+  renderLoginCheck() {
     // if current user exists and user id exists than make user navigation
-    if (currentUser && currentUser.uid) {
-      // console.log('Home Index With User:', currentUser)
+    if (this.props.currentUser && this.props.currentUser.uid) {
+      // console.log('Home Index With User:', this.props.currentUser)
       return (
         <div>
-          {currentUser.displayName
-            ? `Good day, ${currentUser.displayName}`
-            : `psst head over to your profile and fill out your name`
+
+          { this.props.currentUser.displayName
+            ? <p className='ubuntu-gray-medium'>
+                Hello,
+                { this.props.currentUser.displayName
+                ? this.props.currentUser.displayName
+                : 'snorLing'}
+              </p>
+            : <div className="card-skinny">
+                <span className="card-skinny-span">
+                  Hey snorLing, did you know you can change you name in your profile?
+                </span>
+                <button className="card-skinny-btn" onClick={() => {
+                  this.props.history.push('/profile');
+                  }}>
+                  TAKE ME
+                </button>
+              </div>
+            
           }
 
           <Route exact path='/' render={(props) => {
             return (
-              <div>
-                <button onClick={() => {
-                  let fbRefLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
-        
-                  fbRefLevel.once('value', snap => {
-                    // console.log('Continue My Journey WHERE:', snap.val());
-                    this.props.history.push(snap.val().currentLevel);
-                  })
-                }}>Lets DO THIS</button>
+              <div className="card-skinny">
+                <span className="card-skinny-span medium-text">
+                  Hey, how'd you get here? jk, there might be some neato stuff
+                  here in the future. But for now, click the button to continue
+                </span>
+                <button className="card-skinny-btn" onClick={() => {
+                    let fbRefLevel = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
+
+                    fbRefLevel.once('value', snap => {
+                      this.props.history.push(snap.val().currentLevel);
+                    })
+                  }}>
+                  Continue
+                </button>
               </div>
             );
           }} />
@@ -111,11 +132,14 @@ class HomeIndex extends Component {
           <Route exact path="/" render={(props) => {
             return (
               <div>
-                <h4>No User Logged In</h4>
-                <p>The snorLab would like to keep track of you...I mean your progress.</p>
-                <p>For this, we require you to login/register before continuing your journey :)</p>
-                <Link to='/login'>click here to login</Link>
-                <Link to='/register'>click here to register</Link>
+
+                <p className='nova-gray-medbig'>:unknown snorLing detected:</p>
+                
+                <p className="card-primary">
+                  The snorLab would like to keep track of you...err...I mean <em>your</em> progress.
+                  For this, we require you to login/register before continuing your journey :)
+                </p>
+
               </div>
             );
           }} />
@@ -131,11 +155,9 @@ class HomeIndex extends Component {
 
       return (
         <div>
-          <h3>Welcome to the snorLab</h3>
-          <p>this is a sub message</p>
-          {this.renderLoginCheck(this.props.currentUser) }
-          </div>
-        );
+          {this.renderLoginCheck() }
+        </div>
+      );
         
       } // end render
     } // end class

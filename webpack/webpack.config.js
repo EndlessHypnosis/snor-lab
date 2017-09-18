@@ -30,6 +30,7 @@ module.exports = (options) => {
         {test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream"},
         {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=image/svg+xml"},
         // { test: /\.mp3$/, loader: 'file-loader'}
+        {test: /\.(jpe?g|png|gif|svg)$/i, loader: "url-loader?name=assets/images/[name].[ext]"},
         {test: /\.mp3$/, loader: 'file', query: { name: '/[name].[hash:8].[ext]' }}
       ],
     },

@@ -3,6 +3,6 @@ import React from 'react';
 
 export default () => (
     <form id="frmLogout" role="form">
-        <h2>You are logged out!</h2>
+        <h3 className='love-orange-big'>You are logged out!</h3>
     </form>
   );

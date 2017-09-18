@@ -68,7 +68,7 @@ class App extends Component {
     super(props);
 
     this.props.fetchUser();
-    this.logOut = this.logOut.bind(this);
+    // this.logOut = this.logOut.bind(this);
 
     // this is a keeper...needed for reminders
     // this.runLoop();
@@ -116,9 +116,8 @@ class App extends Component {
 
 
                   const notificationOpts = {
-                    title: 'Whoops!',
-                    message: 'You currently have no movies selected as favorites',
-                    position: 'tc',
+                    title: childData.title,
+                    position: 'tl',
                     autoDismiss: 45
                   };
 
@@ -178,67 +177,69 @@ class App extends Component {
 
   }
 
-  logOut() {
-    this.props.logoutUser().then(data => {
-      // reload props from reducer
-      // console.log("logout log:", data);
-      this.props.fetchUser();
-    });
-  }
+  // logOut() {
+  //   this.props.logoutUser().then(data => {
+  //     // reload props from reducer
+  //     // console.log("logout log:", data);
+  //     this.props.fetchUser();
+  //   });
+  // }
 
-  renderContinueMenu(currentUser) {
-    if (currentUser && currentUser.uid) {
-      return (
-        <li>
-          <button onClick={() => {
-            this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
+  // renderContinueMenu(currentUser) {
+  //   if (currentUser && currentUser.uid) {
+  //     return (
+  //       <ul>
+  //         <li>
+  //           <button onClick={() => {
+  //             this.fbRefCurrentLevel = FireBaseTools.getDatabaseReference(`users/${currentUser.uid}/account/level`);
 
-            this.fbRefCurrentLevel.once('value', snap => {
-              // console.log('Continue My Journey WHERE:', snap.val());
-              this.props.history.push(snap.val().currentLevel);
-            })
-          }}>continue my journey</button>
-        </li>
-      );
-    }
-  }
+  //             this.fbRefCurrentLevel.once('value', snap => {
+  //               // console.log('Continue My Journey WHERE:', snap.val());
+  //               this.props.history.push(snap.val().currentLevel);
+  //             })
+  //           }}>continue my journey</button>
+  //         </li>
+  //       </ul>
+  //     );
+  //   }
+  // }
 
-  renderUserMenu(currentUser) {
+  renderUserMenu() {
     // if current user exists and user id exists than make user navigation
-    if (currentUser && currentUser.uid) {
+    if (this.props.currentUser && this.props.currentUser.uid) {
       return (
-        <li className="dropdown">
-          <a
-            href="#"
-            className="dropdown-toggle"
-            data-toggle="dropdown"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
-            {currentUser.email} <span className="caret" />
-          </a>
-          <ul className="dropdown-menu">
-            <li>
-              <Link to="/profile">profile</Link>
-            </li>
-            <li>
-              <Link to="/logout" onClick={this.logOut}>
-                Logout
-              </Link>
-            </li>
-          </ul>
-        </li>
+        <div>
+
+          
+
+          <button className='btn-primary' onClick={() => {
+            this.props.history.push('/profile');
+          }}>Profile</button>
+
+          <button className='btn-primary' onClick={() => {
+            this.props.logoutUser().then(data => {
+              this.props.fetchUser().then(data => {
+                this.props.history.push('/logout');
+              })
+            });
+          }}>Logout</button>
+
+        </div>
       );
     } else {
-      return [
-        <li key={1}>
-          <Link to="/login">Login</Link>
-        </li>,
-        <li key={2}>
-          <Link to="/register">Register</Link>
-        </li>
-      ];
+      return (
+        <div>
+
+          <button className='btn-primary' onClick={() => {
+            this.props.history.push('/login');
+          }}>Login</button>
+
+          <button className='btn-primary' onClick={() => {
+            this.props.history.push('/register');
+          }}>Register</button>
+          
+        </div>
+      );
     }
   }
 
@@ -257,19 +258,12 @@ class App extends Component {
 
     return (
       <div>
-        <header>
-          <div>
-            <Link to="/">
-              snorLab
-            </Link>
-          </div>
-          <ul>
-            {this.renderContinueMenu(this.props.currentUser)}
-          </ul>
-          <ul>
-            {this.renderUserMenu(this.props.currentUser)}
-          </ul>
-        </header>
+        
+        <button className='btn-primary btn-mega' onClick={() => {
+          this.props.history.push('/');
+        }}>Home</button>
+
+        {this.renderUserMenu()}
         <Notifications notifications={this.props.notifications}
           style={notificationStyle}
         />

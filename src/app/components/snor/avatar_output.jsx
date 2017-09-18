@@ -42,18 +42,16 @@ class AvatarOutput extends Component {
 
     return(
       <div>
-        <p><strong>{this.props.userPath.avatarName}</strong></p>
+      <img className='avatar-20' src={this.props.userPath.avatarUrl} />
+        <p className='ubuntu-gray-medium'>{this.props.userPath.avatarName}</p>
         {this.props.userPath.avatarTokens > 0 &&
-          <div>
-            <p>
-              <button type='button' onClick={this.reRollAvatar}>
-                Get a New Assistant
-              </button>
-              {this.props.userPath.avatarTokens} Tokens left
-            </p>
-          </div>
+          <p>
+            <button type='button' className='btn-primary-small' onClick={this.reRollAvatar}>
+              Get a New Assistant
+            </button>
+            <span className='nova-gray-medium'>{this.props.userPath.avatarTokens} Tokens left</span>
+          </p>
         }
-        <img className='avatar-25' src={this.props.userPath.avatarUrl} />
       </div>
     );
   }
