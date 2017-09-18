@@ -7,6 +7,7 @@ import { Route } from 'react-router';
 import Reminder from './reminder';
 
 import { setAvatarUrl } from '../../actions/index';
+import Notifications, { success } from 'react-notification-system-redux';
 
 
 class RemindersIndex extends Component {
@@ -102,6 +103,16 @@ class RemindersIndex extends Component {
         console.log('**&&**REMINDER: GIVING YOU A FREE AVATAR TOKEN :)')
         let currTokenCount = snap.child('avatarTokens').val();
         snap.child('avatarTokens').ref.set(currTokenCount + 1);
+
+        const notificationOpts = {
+          title: 'Avatar Token Granted!',
+          message: 'Incase your assistant doesnt work out, and need a new one',
+          position: 'tc',
+          autoDismiss: 5
+        };
+
+        this.props.success(notificationOpts);
+
       }
 
 
@@ -179,7 +190,7 @@ class RemindersIndex extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setAvatarUrl }, dispatch);
+  return bindActionCreators({ setAvatarUrl, success }, dispatch);
 }
 
 function mapStateToProps(mall) {
