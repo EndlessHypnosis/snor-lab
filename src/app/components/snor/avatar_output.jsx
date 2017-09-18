@@ -15,7 +15,6 @@ class AvatarOutput extends Component {
     //re roll token here
     console.log('RE ROLL TOKEN AVATAR');
     let newAvatarId = FireBaseTools.randomString(10);
-    // FireBaseTools.addImageToStorage(this.props.currentUser.uid, 'user/avatar', `https://robohash.org/${this.props.currentUser.uid}`);
     console.log('#$#$#$:', FireBaseTools.addImageToStorage(newAvatarId, `user/${this.props.currentUser.uid}/avatar`, `https://robohash.org/${newAvatarId}`, this.props.currentUser.uid));
 
     let fbDBref = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
@@ -28,16 +27,6 @@ class AvatarOutput extends Component {
 
 
   render() {
-
-    // let fbDBref = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
-    // fbDBref.child('avatarTokens').once('value', snap => {
-    //   avatarTokenCount = parseInt(snap.val());
-    // })
-
-    // fbDBref.update({
-    //   avatarTokens: snap.downloadURL,
-    //   avatarName: data.name
-    // })
 
     debugger;
     return(
@@ -63,10 +52,6 @@ class AvatarOutput extends Component {
 
 }
 
-
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ setPathLevel }, dispatch);
-// }
 
 function mapStateToProps(mall) {
   return {

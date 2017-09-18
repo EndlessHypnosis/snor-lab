@@ -1,4 +1,4 @@
-import {renderComponent, expect} from '../test_helper';
+import {renderComponent, expect} from './test_helper';
 // import App from '../../app/components/app';
 
 import { shallow, mount } from 'enzyme';

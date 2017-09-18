@@ -177,18 +177,7 @@ const FireBaseTools = {
         return result;
     },
 
-    // reRollToken: () => {
-    //     let randomNameNum = FireBaseTools.randomString(10);
-
-    // },
-
     addImageToStorage: (key, folderPath, imgUrl, uid) => {
-        // just playing around with storage here
-        //
-
-        // if (rerollFlag) {
-        //     FireBaseTools.reRollToken();
-        // }
 
         let prePath = 'snor/assets/';
 
@@ -202,10 +191,6 @@ const FireBaseTools = {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', proxyurl + imgUrl, true);
         xhr.responseType = 'blob';
-        // if (folderPath === 'images/moods') {
-        //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-        //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-        // }
         xhr.onload = function (e) {
             if (this.status == 200) {
                 var myBlob = this.response;
@@ -221,16 +206,11 @@ const FireBaseTools = {
                             avatarName: data.name
                         })
                     })
-
-                    // console.log('HUHUHUH?', FireBaseTools.getRandomSwapiName())
-
                 })
-                // myBlob is now the blob that the object URL pointed to.
             }
         };
         xhr.send();
     },
-
 };
 
 export default FireBaseTools;

@@ -1,6 +1,25 @@
-# snorLab
+# snorLab by Nick Svetnicka for Turing
 
-> TODOs
-- [done] on register shouldn't go to profile...should go to where the continue my journey btn goes
+![ScreenShot of App](_ss.png?raw=true "ScreenShot of App")
 
-- [future] the delete could actual be a drag and drop to trash can. which could be clicked on to open the deleted items, and could be restored from there.
+## Introduction
+
+> snorLab is an advanced reminder and task tracking app which slowely unlocks features as more tasks/reminders are completed. There are several 'fun', non-functional rewards also granted upon completing tasks/reminders. This creates incentive for the user to continually use the app, as rewards are forever granted for completing tasks, creating an infinite level system.
+
+## Features
+
+* Tasks - Initially can only enter title, but through unlocks can add a description. Tasks can be edited/completed/deleted.
+* Reminders - Reminders are entered with a task title, and the hour/minute to be reminded on. If the application is open when the reminder goes off, the user will receive a notification.
+
+## Built With
+
+* HTML
+* CSS
+* JavaScript
+* React/Redux/Router
+* Firebase
+
+
+## Team
+
+> Nick Svetnicka
