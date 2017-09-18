@@ -136,11 +136,11 @@ class RemindersIndex extends Component {
 
     return(
       <div>
-        <h3>What can I help remember for you?</h3>
+        <h2>What can I help remember for you?</h2>
         <form id='frmReminder' role='form' onSubmit={this.onFormReminderAdd}>
           <input
             type='text'
-            className='sl-btn'
+            className="input-primary"
             placeholder='Reminder'
             value={this.state.reminderTitle}
             onChange={(e) => { this.setState({ reminderTitle: e.target.value }); }}
@@ -148,12 +148,14 @@ class RemindersIndex extends Component {
           <h4>TIME 24 hr format (<em>same day only in Beta</em>)</h4>
           <input
             type='text'
+            className="input-primary"
             placeholder='hour'
             value={this.state.reminderHour}
             onChange={(e) => { this.setState({ reminderHour: e.target.value }); }}
           />
           <input
             type='text'
+            className="input-primary"
             placeholder='minute'
             value={this.state.reminderMinute}
             onChange={(e) => { this.setState({ reminderMinute: e.target.value }); }}
@@ -161,7 +163,7 @@ class RemindersIndex extends Component {
 
           <button
             type="submit"
-            className="sl-btn"
+            className="btn-primary btn-mega"
           >Add Reminder</button>
           
           </form>

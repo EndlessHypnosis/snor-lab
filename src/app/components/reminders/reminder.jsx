@@ -30,7 +30,7 @@ class Reminder extends Component {
       case 'delete':
         return 'reminder-delete';
       default:
-        return 'reminder-new';
+        return 'reminder-primary';
     }
   }
 
@@ -40,13 +40,13 @@ class Reminder extends Component {
       <div>
         { !(this.props.details.status === 'delete') &&
 
-          <div>
+          <div className='ubuntu-gray-medium'>
             <p className={this.whatClassNameAmI()}>
-              <span>Title: {this.props.details.title}</span>
-              <span>Hour: {this.props.details.hour}</span>
-              <span>Minute: {this.props.details.minute}</span>
+              <span><strong>Title:</strong> {this.props.details.title}</span>
+              <span><strong>Hour:</strong> {this.props.details.hour}</span>
+              <span><strong>Minute:</strong> {this.props.details.minute}</span>
             </p>
-            <button onClick={this.deleteReminder}>Delete</button>
+            <button className='btn-primary-small' onClick={this.deleteReminder}>Delete</button>
           </div>
 
         }

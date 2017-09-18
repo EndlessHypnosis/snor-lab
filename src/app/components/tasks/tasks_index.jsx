@@ -309,11 +309,11 @@ class TasksIndex extends Component {
 
     return(
       <div>
-      <h3>What's on your mind?</h3>
+      <h2>What's on your mind?</h2>
         <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
           <input
             type="text"
-            className="sl-btn"
+            className="input-primary"
             placeholder="Task"
             value={this.state.taskTitle}
             onChange={(e) => { this.setState({ taskTitle: e.target.value }); }}
@@ -324,6 +324,7 @@ class TasksIndex extends Component {
               <div>
                 <input
                   type="text"
+                  className='input-primary'
                   placeholder="Description"
                   value={this.state.taskDesc}
                   onChange={(e) => { this.setState({ taskDesc: e.target.value }); }}
@@ -335,7 +336,7 @@ class TasksIndex extends Component {
 
           <button
             type="submit"
-            className="sl-btn"
+            className="btn-primary btn-mega"
           >Add Task</button>
         </form>
 

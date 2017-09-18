@@ -116,9 +116,8 @@ class App extends Component {
 
 
                   const notificationOpts = {
-                    title: 'Whoops!',
-                    message: 'You currently have no movies selected as favorites',
-                    position: 'tc',
+                    title: childData.title,
+                    position: 'tl',
                     autoDismiss: 45
                   };
 

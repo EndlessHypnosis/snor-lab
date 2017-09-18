@@ -218,15 +218,13 @@ class SnorIndex extends Component {
   render() {
     return(
       <div>
-        <h2>This is the SNOR INDEX</h2>
 
         <Route path="/snor/level-1/1b/1c/1d" component={AvatarOutput} />
         
         <Route path='/snor/level-1/1b/1c/1d/1e' render={(props) => {
           return (
             <div>
-            <p>this can be a cool switch flip thing?</p>
-            <button type='button' onClick={this.toggleTaskReminder}>
+              <button type='button' className="btn-primary btn-mega" onClick={this.toggleTaskReminder}>
               { this.state.taskOrReminder === 'task'
                 ? 'Switch To Reminders'
                 : 'Switch To Tasks'
@@ -248,12 +246,12 @@ class SnorIndex extends Component {
         <Route path='/snor/welcome-splash' render={(props) => {
           return (
             <div>
-              <h3>this is the starting point: snor/welcome-splash</h3>
-              <h4>Level 1</h4>
-              <p>Greetings snorling. You're ready to embark on your journey of productivity.</p>
-              <p>In level 1, you're only allowed to enter simple tasks</p>
-              <p><em>i wonder how many levels there are...</em></p>
-              <button type='button' onClick={this.startLevel1}>Let's Go!</button>
+              <div className='card-primary'>
+                <p>You're ready to embark on your journey of productivity.</p>
+                <p>For now, you're only allowed to enter simple tasks.</p>
+                <p>Something tells me that'll change soon ;)</p>
+              </div>
+              <button type='button' className='btn-primary btn-mega' onClick={this.startLevel1}>Let's Go!</button>
             </div>
           );
         }} />
@@ -263,11 +261,12 @@ class SnorIndex extends Component {
         <Route path='/snor/level2-splash' render={(props) => {
           return (
             <div>
-              <h3>welcome to level 2!!!!: snor/level2-splash</h3>
-              <h4>Level 2</h4>
-              <p>Greetings snorling. I forgot to give you a delete button. Here you go</p>
-              <p><em>to edit or delete, that it the question</em></p>
-              <button type='button' onClick={this.startLevel2}>Let's Go!</button>
+              <div className='card-primary'>
+                <p>Greetings snorLing,</p>
+                <p>I forgot to give you a delete button, but that's OK</p>
+                <p>You'll soon see there's lots to discover here in the snorLab.</p>
+              </div>
+              <button type='button' className='btn-primary btn-mega' onClick={this.startLevel2}>Thanks!</button>
             </div>
           );
         }} />
@@ -275,12 +274,12 @@ class SnorIndex extends Component {
         <Route path='/snor/level3-splash' render={(props) => {
           return (
             <div>
-              <h3>welcome to level 3!!!!: snor/level3-splash</h3>
-              <h4>Level 3</h4>
-              <p>Hello again. Looks like you've been busy, so I was thinking...</p>
-              <p>Maybe you could use a description field for your tasks</p>
-              <p><em>but what am I supposed to describe?</em></p>
-              <button type='button' onClick={this.startLevel3}>Let's Go!</button>
+              <div className='card-primary'>
+                <p>Hello again. Looks like you've been busy, so I was thinking...</p>
+                <p>Maybe you could use a description field for your tasks.</p>
+                <p>Don't worry, it's not required...I never know what I'm describing either</p>
+              </div>
+              <button type='button' className="btn-primary btn-mega" onClick={this.startLevel3}>Let's Go!</button>
             </div>
           );
         }} />
@@ -288,16 +287,15 @@ class SnorIndex extends Component {
         <Route path='/snor/level4-splash' render={(props) => {
           return (
             <div>
-              <h3>welcome to level 4!!!!: snor/level4-splash</h3>
-              <h4>Level 4</h4>
-              <p>Snorling...Sorry to keep interrupting your productivity...</p>
-              <p>But I need to run...snorville is growing, and I'm stuck in :: meeting hell ::</p>
-              <p>Don't you worry though, I'm leaving you in the hands of {this.props.userPath.avatarName}</p>
-              <p>He has served me well and should be a suitable assistant</p>
-              <p>If he doesn't work out, I'm also giving you 2 re-roll tokens.</p>
-              <p><em>:: maybe a link to reroll token faq ::</em></p>
-              <img src={this.props.userPath.avatarUrl}/>
-              <button type='button' onClick={this.startLevel4}>Let's Go!</button>
+              <img src={this.props.userPath.avatarUrl} className='avatar-30-hug'/>
+              <div className='card-primary'>
+                <p>Sorry to keep interrupting your productivity...but I have to get going.
+                Don't you worry though, I'm leaving you in the hands of {this.props.userPath.avatarName},
+                who has served me well and should be a suitable assistant. Just dont ask about the force ;)</p>
+                <p>If {this.props.userPath.avatarName} doesn't work out, I'm also giving you 2 re-roll tokens.</p>
+                <p>You can use these to ask for a new assistant.</p>
+                </div>
+              <button type='button' className='btn-primary btn-mega' onClick={this.startLevel4}>Continue</button>
             </div>
           );
         }} />
@@ -305,16 +303,16 @@ class SnorIndex extends Component {
         <Route path='/snor/level5-splash' render={(props) => {
           return (
             <div>
-              <img className='avatar-25' src={this.props.userPath.avatarUrl} />
-              <h3>welcome to level 5!!!!: snor/level5-splash</h3>
-              <h4>Level 5</h4>
-              <p>{this.props.userPath.avatarName} here...with some exciting news!</p>
-              <p>Now that :: BOSS NAME :: has assigned me as your personal assistant,</p>
-              <p>well...I'm kinda bored :( So I was thinking, I could remind you of</p>
-              <p>upcoming apointments, meetings, or just tasks you'd like to schedule.</p>
-              <p>Give it a whirl, and I'll stop in to let ya know when something is near :: creative time counter ::</p>
-              <p><em>:: when did you become a droid, {this.props.userPath.avatarName}? ::</em></p>
-              <button type='button' onClick={this.startLevel5}>Let's Go!</button>
+              <img src={this.props.userPath.avatarUrl} className='avatar-30-hug' />
+              <div className='card-primary'>
+                <p>Hey snorLing, now that I'm your personal assistant,
+                well...I'm kinda bored :( So I was thinking, I could remind you of
+                upcoming appointments, meetings, or just tasks you'd like to schedule.</p>
+                <p>Give it a whirl, and I'll stop in to let ya know when something needs your attention.</p>
+                <p><em>I should tell you however, my memory bank is wiped every night,
+                so until my master gives me an upgrade, reminders are limited to same day only.</em></p>
+                <button type='button' className="btn-primary btn-mega" onClick={this.startLevel5}>Let's Go!</button>
+              </div>
             </div>
           );
         }} />
