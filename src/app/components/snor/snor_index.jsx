@@ -220,28 +220,34 @@ class SnorIndex extends Component {
       <div>
 
         <Route path="/snor/level-1/1b/1c/1d" component={AvatarOutput} />
-        
-        <Route path='/snor/level-1/1b/1c/1d/1e' render={(props) => {
+        <Route path='/snor/level-1' render={(props) => {
           return (
-            <div>
-              <button type='button' className="btn-primary btn-mega" onClick={this.toggleTaskReminder}>
-              { this.state.taskOrReminder === 'task'
-                ? 'Switch To Reminders'
-                : 'Switch To Tasks'
-              }
-            </button>
-            </div>
+          <div className='card-primary card-flex-column'>
+
+          <Route path='/snor/level-1/1b/1c/1d/1e' render={(props) => {
+            return (
+              <div>
+                <button type='button' className="btn-primary btn-mega" onClick={this.toggleTaskReminder}>
+                  { this.state.taskOrReminder === 'task'
+                    ? 'Switch To Reminders'
+                    : 'Switch To Tasks'
+                  }
+                </button>
+              </div>
+            );
+          }} />
+
+          { this.state.taskOrReminder === 'task' &&
+            <Route path="/snor/level-1" component={TasksIndex} />
+          }
+
+          { this.state.taskOrReminder === 'reminder' &&
+            <Route path="/snor/level-1/1b/1c/1d/1e" component={RemindersIndex} />
+          }
+
+        </div>
           );
         }} />
-
-        { this.state.taskOrReminder === 'task' &&
-          <Route path="/snor/level-1" component={TasksIndex} />
-        }
-
-        { this.state.taskOrReminder === 'reminder' &&
-          <Route path="/snor/level-1/1b/1c/1d/1e" component={RemindersIndex} />
-        }
-
 
         <Route path='/snor/welcome-splash' render={(props) => {
           return (
@@ -287,11 +293,16 @@ class SnorIndex extends Component {
         <Route path='/snor/level4-splash' render={(props) => {
           return (
             <div>
-              <img src={this.props.userPath.avatarUrl} className='avatar-30-hug'/>
+              { this.props.userPath.avatarUrl &&
+                <img src={this.props.userPath.avatarUrl} className='avatar-30-hug'/>
+              }
+              { !this.props.userPath.avatarUrl &&
+                <p>loading...</p>
+              }
               <div className='card-primary'>
                 <p>Sorry to keep interrupting your productivity...but I have to get going.
                 Don't you worry though, I'm leaving you in the hands of {this.props.userPath.avatarName},
-                who has served me well and should be a suitable assistant. Just dont ask about the force ;)</p>
+                who has served me well and should be a suitable assistant. Just dont ask about the force <i className="icon ion-happy-outline"></i></p>
                 <p>If {this.props.userPath.avatarName} doesn't work out, I'm also giving you 2 re-roll tokens.
                 You can use these to ask for a new assistant.</p>
                 </div>

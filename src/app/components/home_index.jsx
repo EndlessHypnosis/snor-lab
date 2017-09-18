@@ -84,6 +84,9 @@ class HomeIndex extends Component {
                 { this.props.currentUser.displayName
                 ? this.props.currentUser.displayName
                 : 'snorLing'}
+                { this.props.userPath.avatarName &&
+                  <span>. I am {this.props.userPath.avatarName}, I'll be your assistant</span>
+                }
               </p>
             : <div className="card-skinny">
                 <span className="card-skinny-span">
@@ -189,7 +192,9 @@ class HomeIndex extends Component {
 // }
 
 function mapStateToProps(mall) {
-  return { currentUser: mall.currentUser };
+  return  { currentUser: mall.currentUser,
+            userPath: mall.userPath
+          };
 }
 
 export default connect(mapStateToProps, null)(HomeIndex);

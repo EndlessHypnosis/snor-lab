@@ -39,19 +39,24 @@ class AvatarOutput extends Component {
     //   avatarName: data.name
     // })
 
-
+    debugger;
     return(
-      <div>
-      <img className='avatar-20' src={this.props.userPath.avatarUrl} />
-        <p className='ubuntu-gray-medium'>{this.props.userPath.avatarName}</p>
+      <div className='avatar-wrapper'>
+        <img className='avatar-20-hug' src={this.props.userPath.avatarUrl} />
+        <div>
+        { ( this.props.currentUser.displayName === 'snorLing' ||
+            !this.props.currentUser.displayName) &&
+          <p className='ubuntu-gray-medium'>Hi, I'm {this.props.userPath.avatarName}. I'm here to assist you</p>
+        }
         {this.props.userPath.avatarTokens > 0 &&
           <p>
-            <button type='button' className='btn-primary-small' onClick={this.reRollAvatar}>
+            <button type='button' className='btn-primary-small right-padding top-padding' onClick={this.reRollAvatar}>
               Get a New Assistant
             </button>
-            <span className='nova-gray-medium'>{this.props.userPath.avatarTokens} Tokens left</span>
+            <span className='nova-gray-medium top-padding'>{this.props.userPath.avatarTokens} Tokens left</span>
           </p>
         }
+        </div>
       </div>
     );
   }

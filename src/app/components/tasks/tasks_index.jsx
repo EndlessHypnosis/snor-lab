@@ -253,6 +253,10 @@ class TasksIndex extends Component {
       description: this.state.taskDesc,
       status: 'new'
     }).then(response => {
+      this.setState({
+        taskTitle: '',
+        taskDesc: ''
+      })
       // console.log('Task Added Successfully');
       // saving random images
       // this.addImageToStorage(response.key, 'images/avatars', `https://robohash.org/${response.key}`);

@@ -152,32 +152,33 @@ class Task extends Component {
                 <Route path='/snor/level-1/1b/1c' render={(props) => {
                   return (
                     <span className='ubuntu-gray-medium'>
-                      <i className="icon ion-chevron-down"></i>
+                      <i className="icon ion-ios-redo icon-inline"></i>
                       {this.props.details.description}
                     </span>
                   )
                 }} />
               </p>
             }
+            
+            <div>
+              <button onClick={this.saveEditTask} className="btn-primary-small">
+                {this.state.taskInEditMode ? 'Save' : 'Edit'}
+              </button>
 
-            <button onClick={this.saveEditTask} className="btn-primary-small">
-              {this.state.taskInEditMode ? 'Save' : 'Edit'}
-            </button>
+              <button onClick={this.completeUncompleteTask} className="btn-primary-small">
+                { this.props.details.status === 'complete'
+                  ? 'undo complete'
+                  : 'Complete'
+                }
+              </button>
 
-            <button onClick={this.completeUncompleteTask} className="btn-primary-small">
-              { this.props.details.status === 'complete'
-                ? 'undo complete'
-                : 'Complete'
-              }
-            </button>
-
-            <Route path='/snor/level-1/1b' render={(props) => {
-              return (
-                <div>
-                  <button onClick={this.deleteTask} className="btn-primary-small">Delete</button>
-                </div>
-              )
-            }}  />
+              <Route path='/snor/level-1/1b' render={(props) => {
+                return (
+                    <button onClick={this.deleteTask} className="btn-primary-small">Delete</button>
+                  )
+                }}
+              />
+            </div>
           </div>
         }
       </div>
