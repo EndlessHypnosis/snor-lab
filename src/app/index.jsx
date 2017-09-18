@@ -83,7 +83,7 @@ ReactDOM.render(
                             <Route path="/logout" component={UserLogout} />
                         </div>
                     </div>
-                    <div className='holygrail-footer'><span>Micky McGruff<i className="icon ion-chevron-down"></i></span></div>
+                    <div className='holygrail-footer'><span>:<i className="icon ion-chevron-down"></i>:</span></div>
                 </div>
             </div>
         </ConnectedRouter>
