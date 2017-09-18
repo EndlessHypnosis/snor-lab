@@ -6,6 +6,7 @@ import Task from './task';
 import { Link } from 'react-router-dom';
 import { Route } from 'react-router';
 import { setAvatarUrl } from '../../actions/index';
+import Notifications, { success } from 'react-notification-system-redux';
 
 //TODO:
 // Need to add listener for not the insert, but the update
@@ -124,6 +125,16 @@ class TasksIndex extends Component {
         console.log('**&&**TASK: GIVING YOU A FREE AVATAR TOKEN :)')
         let currTokenCount = snap.child('avatarTokens').val();
         snap.child('avatarTokens').ref.set(currTokenCount + 1);
+
+        const notificationOpts = {
+          title: 'Avatar Token Granted!',
+          message: 'Incase your assistant doesnt work out, and need a new one',
+          position: 'tc',
+          autoDismiss: 5
+        };
+
+        this.props.success(notificationOpts);
+
       }
 
 
@@ -253,6 +264,10 @@ class TasksIndex extends Component {
       description: this.state.taskDesc,
       status: 'new'
     }).then(response => {
+      this.setState({
+        taskTitle: '',
+        taskDesc: ''
+      })
       // console.log('Task Added Successfully');
       // saving random images
       // this.addImageToStorage(response.key, 'images/avatars', `https://robohash.org/${response.key}`);
@@ -351,7 +366,7 @@ class TasksIndex extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ setAvatarUrl }, dispatch);
+  return bindActionCreators({ setAvatarUrl, success }, dispatch);
 }
 
 function mapStateToProps(mall) {

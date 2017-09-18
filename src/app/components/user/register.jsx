@@ -60,28 +60,36 @@ class UserRegister extends Component {
                         </p>
                     }
                     
-                    <p className='nova-gray-medbig'>Register</p>
+                    <p className='nova-gray-medbig top-padding'>Register</p>
                     
-                    <label htmlFor="txtRegEmail" className='ubuntu-gray-medium'>
-                        Email Address:
-                    </label>
-                    <input
-                        type="email" className="input-primary"
-                        ref="email" id="txtEmail"
-                        placeholder="Enter Email" name="email"
-                    />
+                    <div className='card-primary card-flex-column'>
+                        <p className='flex-row'>
 
-                    <label htmlFor="txtRegPass" className='ubuntu-gray-medium'>
-                        Password:
-                    </label>
-                    <input
-                        type="password" className="input-primary"
-                        ref="password" id="txtPass"
-                        placeholder="Password" name="password"
-                    />
-                    
-                    <button type="submit" className="btn-primary btn-mega">Register</button>
-                    
+                            <label htmlFor="txtRegEmail" className='ubuntu-gray-medium min-length-med'>
+                            Email Address:
+                        </label>
+                        <input
+                            type="email" className="input-primary"
+                            ref="email" id="txtEmail"
+                            placeholder="Enter Email" name="email"
+                        />
+                        </p>
+
+                        <p className='flex-row'>
+
+                            <label htmlFor="txtRegPass" className='ubuntu-gray-medium min-length-med'>
+                                Password:
+                            </label>
+                            <input
+                                type="password" className="input-primary"
+                                ref="password" id="txtPass"
+                                placeholder="Password" name="password"
+                            />
+                        </p>
+                        <p>
+                            <button type="submit" className="btn-primary btn-mega">Register</button>
+                        </p>
+                    </div>
 
                 </form>
             </div>

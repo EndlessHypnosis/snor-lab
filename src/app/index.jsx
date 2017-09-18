@@ -83,7 +83,7 @@ ReactDOM.render(
                             <Route path="/logout" component={UserLogout} />
                         </div>
                     </div>
-                    <div className='holygrail-footer'><span>:<i className="icon ion-chevron-down"></i>:</span></div>
+                    <div className='holygrail-footer'><span className='footer-span ubuntu-dark-small'><i className="icon ion-ios-analytics"></i> snorLab built by Nick Svetnicka for Turing</span></div>
                 </div>
             </div>
         </ConnectedRouter>

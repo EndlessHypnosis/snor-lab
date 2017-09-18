@@ -49,25 +49,31 @@ class UserProfile extends Component {
                         </p>
                     }
                 
-                    <p className='nova-gray-medbig'>User Profile</p>
+                    <p className='nova-gray-medbig top-padding'>User Profile</p>
 
-                    <p className='card-primary'>
-                        <label htmlFor="email" className='ubuntu-gray-medium'>Email: </label>
-                        <input
-                            type="text" defaultValue={this.props.currentUser.email}
-                            className="input-primary" id="email"
-                            ref="email" placeholder="Email" name="email"
-                        />
-                        
-                        <label htmlFor="displayName" className='ubuntu-gray-medium'>Display name: </label>
-                        <input
-                        type="text" defaultValue={this.props.currentUser.displayName}
-                        className="input-primary" ref="displayName"
-                        id="displayName" placeholder="Display name"
-                        name="displayName"
-                        />
-                        <button type="submit" className="btn-primary btn-mega">Update</button>
-                    </p>
+                    <div className='card-primary card-flex-column'>
+                        <p className='flex-row'>
+                            <label htmlFor="email" className='ubuntu-gray-medium min-length-med'>Email: </label>
+                            <input
+                                type="text" defaultValue={this.props.currentUser.email}
+                                className="input-primary" id="email"
+                                ref="email" placeholder="Email" name="email"
+                            />
+                        </p>
+
+                        <p className='flex-row'>
+                            <label htmlFor="displayName" className='ubuntu-gray-medium min-length-med'>Display name: </label>
+                            <input
+                            type="text" defaultValue={this.props.currentUser.displayName}
+                            className="input-primary" ref="displayName"
+                            id="displayName" placeholder="Display name"
+                            name="displayName"
+                            />
+                        </p>
+                        <p>
+                            <button type="submit" className="btn-primary btn-mega">Update</button>
+                        </p>
+                    </div>
                 </form>
                 </div>
             );
