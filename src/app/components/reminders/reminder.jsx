@@ -7,10 +7,6 @@ class Reminder extends Component {
   constructor(props) {
     super(props);
 
-    // this.state = {
-
-    // }
-
     this.deleteReminder = this.deleteReminder.bind(this);
     this.whatClassNameAmI = this.whatClassNameAmI.bind(this);
 
@@ -34,7 +30,6 @@ class Reminder extends Component {
     }
   }
 
-
   render() {
     return(
       <div>
@@ -55,8 +50,6 @@ class Reminder extends Component {
   }
 
 }
-
-
 
 function mapStateToProps(mall) {
   return {

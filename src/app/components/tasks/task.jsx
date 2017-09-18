@@ -21,17 +21,6 @@ class Task extends Component {
     this.whatClassNameAmI = this.whatClassNameAmI.bind(this);
   }
 
-  // componentDidMount() {
-  //   this.setTaskStyle();
-  // }
-
-  // componentWillReceiveProps(nextProps) {
-  //   this.setTaskStyle();
-  // }
-
-  // setTaskStyle() {
-
-  // }
 
   saveEditTask() {
 
@@ -89,9 +78,6 @@ class Task extends Component {
       status: 'delete'
     });
 
-    // let prop = 'id of property to delete'
-    // delete myObject[prop]
-    // console.log('DELETE TASK', e.target)
   }
 
 
@@ -110,8 +96,6 @@ class Task extends Component {
 
 
   render() {
-
-    // console.log('TASK RENDERED:', this.props)
 
     return(
       <div>

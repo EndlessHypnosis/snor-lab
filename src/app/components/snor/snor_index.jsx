@@ -38,23 +38,14 @@ class SnorIndex extends Component {
   whereDoYouBelong(currentLevel = 'invalid') {
 
     if (currentLevel !== 'invalid') {
-      // console.log('SNOR INDEX:', this.props)
       this.props.history.push(currentLevel);
     }
 
-    // switch (currentLevel) {
-    //   case 'welcome-splash':
-    //     this.props.history.push('/snor/welcome-splash');
-    //   default:
-    //     console.log('---UNKNOWN level/currentLevel VALUE---')
-    // }
   }
 
   initFireBaseListeners() {
     console.log('---Setting up FireBase DB Listener---');
     
-    // as global now
-    // const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
     
     console.log('---DB Listener: Updating path level---');
     this.fbRefCurrentLevel.child('currentLevel').off();
@@ -85,29 +76,13 @@ class SnorIndex extends Component {
       this.props.setAvatarTokens(snap.val());
     })
 
-    /////////////////////////////////////////////
-    // console.log('---DB Listener: 3 Tasks Complete---');
-    // let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
-    // // console.log('-=-=-=-=-=SUP:', fbRef);
-    // fbRef.on('child_changed', snap => {
-    //   console.log('FireBase Listener - TASK COMPLETE - HIT', snap.val())
-    // })
   }
-
-  // componentWillUpdate(nextProps, nextState) {
-  //   const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level`);
-  //   fbRef.once('value', snap => {
-  //     console.log('COMPONENT WILL UPDATE _ SNOR INDEX');
-  //     this.whereDoYouBelong(snap.val().currentLevel);
-  //   })    
-  // }
 
   // somehwere here in snor index, we could call a function,
   // or better yet have a listener to the database, and when
   // it detects a level upgrade, force the user to a new route :)
 
   startLevel1() {
-    // console.log('start level 1 hit');
 
     const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
     fbRef.set('/snor/level-1');
@@ -138,83 +113,13 @@ class SnorIndex extends Component {
   }
 
 
-
-
-  // splashLevel4() {
-  //   console.log('#######SPLASH lvel 4');
-  //   if (this.props.history.location.pathname === '/snor/level4-splash') {
-  //     console.log('++++++SPLASH lvel 4');
-
-  //     // FireBaseTools.getStorageReference()
-  //     // .child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
-  //     // .getDownloadURL()
-  //     // .then(url => {
-  //     //   console.log('******URL:', url)
-  //     // })
-
-  //     // this.addImageToStorage(this.props.currentUser.uid, 'user/avatar', `https://robohash.org/${this.props.currentUser.uid}`);
-
-
-  //   }
-
-
-  //   return {
-  //     name: '::invalid::'
-  //   }
-
-  // }
-
-
-
-  // addImageToStorage(key, folderPath, imgUrl) {
-  //   // just playing around with storage here
-  //   //
-
-  //   let prePath = 'snor/assets/';
-
-  //   let folderImages = FireBaseTools.getStorageReference().child(prePath + folderPath);
-  //   let newRoboFileName = `${key}.png`;
-  //   let newRobo = folderImages.child(newRoboFileName);
-  //   console.log('STORAGE:', newRobo.fullPath)
-
-  //   const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-  //   var xhr = new XMLHttpRequest();
-  //   xhr.open('GET', proxyurl + imgUrl, true);
-  //   xhr.responseType = 'blob';
-  //   // if (folderPath === 'images/moods') {
-  //   //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-  //   //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-  //   // }
-  //   xhr.onload = function (e) {
-  //     if (this.status == 200) {
-  //       var myBlob = this.response;
-  //       console.log('what is myBlob', myBlob)
-  //       newRobo.put(myBlob).then(snap => {
-  //         console.log('File Upload Complete: ', newRobo.fullPath)
-  //       })
-  //       // myBlob is now the blob that the object URL pointed to.
-  //     }
-  //   };
-  //   xhr.send();
-  // }
-
-
-
-
-
   toggleTaskReminder() {
     let newToggleVal = this.state.taskOrReminder === 'task' ? 'reminder' : 'task';
     this.setState({
       taskOrReminder: newToggleVal
     })
-
   }
 
-        // <Route path="/snor/level-1/1b/1c/1d/1e" component={RemindersIndex} />
-
-
-  
   render() {
     return(
       <div>

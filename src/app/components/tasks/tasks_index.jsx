@@ -36,38 +36,19 @@ class TasksIndex extends Component {
   }
 
 
-  // Need to review how we filling in the userTaskList array from the DB.
-  // can probably be refactored to approach it differently
-  // componentWillReceiveProps(nextProps) {
-    // console.log('COMPONENT WILL REC PROPS - OLD:', this.props, ' | NEW:', nextProps);
-
-    // if (!this.props.currentUser && nextProps.currentUser) {
-    //   // console.log('LISTENING to nextProps');
-    //   this.listenForTasks(nextProps);
-    // }
-  // }
 
   componentDidMount() {
 
     console.log('COMPONENT DID MOUNT: what are props:', this.props)
     if (this.props.currentUser) {
-      // console.log('LISTENING to this.props');
 
       this.fbRefSimpleTasks.off();
       this.listenForTasks();
     }
   }
 
-  // componentDidUpdate(prevProps, prevState) {
 
   levelUpChecker() {
-
-    // let totalComplete = Object.keys(this.state.userTaskList).reduce((acum, task) => {
-    //   if (this.state.userTaskList[task].status === 'complete') {
-    //     acum ++;
-    //   }
-    //   return acum;
-    // }, 0);
 
     this.fbRefCurrentLevel.once('value', snap => {
       console.log('----CHECK ME OUT:', snap.val());
@@ -80,14 +61,6 @@ class TasksIndex extends Component {
         snap.child('currentLevel').ref.set('/snor/level2-splash');
         console.log('WENT TO /snor/level2-splash')
         
-        // dont think i need this anymore....
-        // const fbRefB = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/account/level/currentLevel`)
-        // only update if at level-1
-        // this.fbRefCurrentLevel.child('currentLevel').once('value', snap => {
-        //   if (snap.val() === '/snor/level-1') {
-        //     this.fbRefCurrentLevel.child('currentLevel').set('/snor/level2-splash');
-        //   }
-        // })
       }
 
   
@@ -107,18 +80,6 @@ class TasksIndex extends Component {
         snap.child('currentLevel').ref.set('/snor/level4-splash');
         console.log('WENT TO /snor/level4-splash');
 
-        // set the avatar url of the userPath store
-        // FireBaseTools.getStorageReference()
-        //   .child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
-        //   .getDownloadURL()
-        //   .then(url => {
-        //     console.log('******URL:', url);
-        //     // this.props.setAvatarUrl(url);
-        //   })
-
-
-        // let whatisthis = FireBaseTools.getStorageReference().child(`snor/assets/user/avatar/${this.props.currentUser.uid}.png`)
-        // debugger;
       }
 
       if (pointTotal > 9 && (pointTotal % 3 === 0)) {
@@ -157,9 +118,6 @@ class TasksIndex extends Component {
 
 
   actualTaskListener() {
-    // const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
-    //
-    // fbRef.off();
     this.fbRefSimpleTasks.on('child_added', snap => {
       let stateCopy = Object.assign({}, this.state.userTaskList);
       // only add if it's not there yet. could run into issues later with this,
@@ -174,15 +132,11 @@ class TasksIndex extends Component {
   }
 
   actualTaskUpdateListener() {
-    // const fbRef = FireBaseTools.getDatabaseReference(`users/${myProps.currentUser.uid}/simple-tasks`);
-    // console.log('UPDATE TASK WATCHER STARTED!');
-    // fbRef.off();
     this.fbRefSimpleTasks.on('child_changed', snap => {
 
       
       
       let stateCopy = Object.assign({}, this.state.userTaskList);
-      // console.log('TASK update watcher HIT:', snap.key)
       // is this right? where we check if key is there,
       // then update.
       if (stateCopy[snap.key]) {
@@ -202,14 +156,9 @@ class TasksIndex extends Component {
 
 
   listenForTasks() {
-    //
-    // ref.on('child_added') will return all children and then maintain a listener for more.
-    // ref.on('value') just detects change in path item itself?
-    //
 
     // how do we store the current user logged in "uid" so then we just listen for that here:
     console.log(`LISTENER ATTACHED TO [users/${this.props.currentUser.uid}/simple-tasks]`);
-    // const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
     
     // Before we setup our listener, let's pre load
     // the userTaskList so we can avoid all these renders
@@ -232,10 +181,6 @@ class TasksIndex extends Component {
       this.actualTaskUpdateListener();
     })
 
-    // var users = [];
-    // usersRef.on(‘child_added’, function (snap) {
-    //   users.push(snap.val()); // Push children to a local users array
-    // });
   }
 
 
@@ -246,18 +191,12 @@ class TasksIndex extends Component {
       currentLevel: to
     })
 
-    // this.props.history.push(to);
   }
 
 
   onFormTaskAdd(event) {
     event.preventDefault();
-    // console.log('ADDING TASK FOR USER:', this.props.currentUser.uid);
 
-    // actual task add
-    //
-
-    // let fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-tasks`);
     let childRef = this.fbRefSimpleTasks.push({
       userEmail: this.props.currentUser.email,
       title: this.state.taskTitle,
@@ -268,48 +207,8 @@ class TasksIndex extends Component {
         taskTitle: '',
         taskDesc: ''
       })
-      // console.log('Task Added Successfully');
-      // saving random images
-      // this.addImageToStorage(response.key, 'images/avatars', `https://robohash.org/${response.key}`);
-      // this.addImageToStorage(response.key, 'images/moods', `https://api.adorable.io/avatars/200/${response.key}.png`);
     })
   }
-
-  // https://api.adorable.io/avatars/200/abott@adorable.png
-
-  // addImageToStorage(key, folderPath, imgUrl) {
-  //   // just playing around with storage here
-  //   //
-
-  //   let prePath = 'snor/assets/';
-
-  //   let folderImages = FireBaseTools.getStorageReference().child(prePath + folderPath);
-  //   let newRoboFileName = `${key}.png`;
-  //   let newRobo = folderImages.child(newRoboFileName);
-  //   console.log('STORAGE:', newRobo.fullPath)
-
-  //   const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-  //   var xhr = new XMLHttpRequest();
-  //   xhr.open('GET', proxyurl + imgUrl, true);
-  //   xhr.responseType = 'blob';
-  //   // if (folderPath === 'images/moods') {
-  //   //   xhr.setRequestHeader('Access-Control-Allow-Headers', '*');
-  //   //   xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
-  //   // }
-  //   xhr.onload = function (e) {
-  //     if (this.status == 200) {
-  //       var myBlob = this.response;
-  //       console.log('what is myBlob', myBlob)
-  //       newRobo.put(myBlob).then(snap => {
-  //         console.log('File Upload Complete: ', newRobo.fullPath)
-  //       })
-  //       // myBlob is now the blob that the object URL pointed to.
-  //     }
-  //   };
-  //   xhr.send();
-  // }
-
 
   render() {
 
@@ -320,7 +219,6 @@ class TasksIndex extends Component {
               />
     })
 
-    // this.props.history.push('/profile');
 
     return(
       <div>
