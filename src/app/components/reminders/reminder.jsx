@@ -10,8 +10,16 @@ class Reminder extends Component {
     this.deleteReminder = this.deleteReminder.bind(this);
     this.whatClassNameAmI = this.whatClassNameAmI.bind(this);
 
-
   }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+
+    // if (this.state.taskInEditMode && (this.state.taskInEditMode !== this.nextState.taskInEditMode)) {
+    //   return true;
+    // }
+    // return false;
+  // }
+
 
   deleteReminder(e) {
     const fbRef = FireBaseTools.getDatabaseReference(`users/${this.props.currentUser.uid}/simple-reminders/${this.props.reminderId}`);
