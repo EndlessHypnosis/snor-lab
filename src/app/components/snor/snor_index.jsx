@@ -122,7 +122,7 @@ class SnorIndex extends Component {
 
   render() {
     return(
-      <div>
+      <div className='snor-wrapper-main'>
 
         <Route path="/snor/level-1/1b/1c/1d" component={AvatarOutput} />
         <Route path='/snor/level-1' render={(props) => {
@@ -232,14 +232,10 @@ class SnorIndex extends Component {
             </div>
           );
         }} />
-
-
-
         </div>
       );
     }
   }
-  
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ setPathLevel, setAvatarUrl, setAvatarName, setAvatarTokens }, dispatch);

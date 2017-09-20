@@ -42,7 +42,7 @@ class RemindersIndex extends Component {
 
 
   listenForReminders() {
-    console.log(`LISTENER ATTACHED TO [users/${this.props.currentUser.uid}/simple-reminders]`);
+    // console.log(`LISTENER ATTACHED TO [users/${this.props.currentUser.uid}/simple-reminders]`);
 
     this.fbRefSimpleReminders.once('value', snap => {
       let stateCopy = Object.assign({}, this.state.userReminderList);

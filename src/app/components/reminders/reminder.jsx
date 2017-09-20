@@ -9,8 +9,6 @@ class Reminder extends Component {
 
     this.deleteReminder = this.deleteReminder.bind(this);
     this.whatClassNameAmI = this.whatClassNameAmI.bind(this);
-
-
   }
 
   deleteReminder(e) {

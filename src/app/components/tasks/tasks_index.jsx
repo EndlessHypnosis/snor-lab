@@ -39,7 +39,7 @@ class TasksIndex extends Component {
 
   componentDidMount() {
 
-    console.log('COMPONENT DID MOUNT: what are props:', this.props)
+    // console.log('COMPONENT DID MOUNT: what are props:', this.props)
     if (this.props.currentUser) {
 
       this.fbRefSimpleTasks.off();
@@ -158,7 +158,7 @@ class TasksIndex extends Component {
   listenForTasks() {
 
     // how do we store the current user logged in "uid" so then we just listen for that here:
-    console.log(`LISTENER ATTACHED TO [users/${this.props.currentUser.uid}/simple-tasks]`);
+    // console.log(`LISTENER ATTACHED TO [users/${this.props.currentUser.uid}/simple-tasks]`);
     
     // Before we setup our listener, let's pre load
     // the userTaskList so we can avoid all these renders
@@ -222,7 +222,7 @@ class TasksIndex extends Component {
 
     return(
       <div>
-      <h2>What's on your mind?</h2>
+      <h2 className='my-h2'>What's on your mind?</h2>
         <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
           <input
             type="text"

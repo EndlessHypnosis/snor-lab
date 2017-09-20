@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { loginUser, fetchUser, loginWithProvider } from '../../actions/firebase_actions';
+import "firebase/storage";
 
 
 class UserLogin extends Component {
