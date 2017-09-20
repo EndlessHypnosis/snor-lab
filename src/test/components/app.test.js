@@ -1,4 +1,3 @@
-// import {renderComponent, expect} from '../test_helper';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from '../../app/components/app';

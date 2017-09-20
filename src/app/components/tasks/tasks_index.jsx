@@ -158,7 +158,7 @@ class TasksIndex extends Component {
   listenForTasks() {
 
     // how do we store the current user logged in "uid" so then we just listen for that here:
-    console.log(`LISTENER ATTACHED TO [users/${this.props.currentUser.uid}/simple-tasks]`);
+    // console.log(`LISTENER ATTACHED TO [users/${this.props.currentUser.uid}/simple-tasks]`);
     
     // Before we setup our listener, let's pre load
     // the userTaskList so we can avoid all these renders

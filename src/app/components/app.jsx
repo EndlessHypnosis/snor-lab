@@ -75,7 +75,7 @@ class App extends Component {
   }
 
   runLoop() {
-    console.log('RUN LOOP LOGGER');
+    // console.log('RUN LOOP LOGGER');
 
         var now = new Date();
         // make sure user exists
@@ -128,11 +128,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-
     this.runLoop();
-
-
-
   }
 
 

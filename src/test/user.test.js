@@ -34,37 +34,21 @@ it('should verify wrapper works properly', () => {
 
 
 
-it('should sign in user on submit', () => {
+it.skip('should sign in user on submit', () => {
   const mockfn = jest.fn();
   const callback = spy();
-
   initialState = {
     message: ''
   }
   store = mockStore(initialState);
-
   wrapper = mount(<UserLogin firebaseLoginUser={mockfn} onSubmit={callback} store={store}/>);
 
   const submitBtn = wrapper.find('.btn-primary').at(0);
   const form = wrapper.find('form').at(0);
 
   store.dispatch(loginUser({ email: 'ccc@ccc.com', password: 'asdfasdf' }))
-
-
-  // console.log('HIHI:', store)
-  // console.log('DDDD:', store.getState())
-
-
-
-  // { email, password }
-
-  // expect(form.props().onSubmit).toBeDefined();
-  // expect(form.props().onSubmit).toEqual(callback);
-
-  // submitBtn.simulate('submit');
-
-  //
-  // expect(callback).toHaveBeenCalled();
+  submitBtn.simulate('submit');
+  expect(callback).toHaveBeenCalled();
 });
 
 
