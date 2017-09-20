@@ -222,7 +222,7 @@ class TasksIndex extends Component {
 
     return(
       <div>
-      <h2>What's on your mind?</h2>
+      <h2 className='my-h2'>What's on your mind?</h2>
         <form id="frmTask" role="form" onSubmit={this.onFormTaskAdd}>
           <input
             type="text"
