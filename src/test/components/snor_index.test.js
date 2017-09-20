@@ -51,6 +51,22 @@ describe('Snor Index', () => {
     expect(wrapper.find('.avatar-wrapper').length).toEqual(0);
   });
 
+  it('Snor Index Should NOT render switch button', () => {
+    initialState = {
+      currentUser: storeUserMock,
+      taskOrReminder: 'task'
+    };
+
+    store = mockStore(initialState);
+    wrapper = mount(
+      <Router>
+        <SnorIndex state={initialState} currentUser={storeUserMock.currentUser} store={store} />
+      </Router>
+    );
+
+    expect(wrapper.find('.btn-primary btn-mega').length).toEqual(0);
+  });
+
 
 
 

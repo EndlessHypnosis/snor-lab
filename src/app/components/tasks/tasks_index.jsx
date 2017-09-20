@@ -39,7 +39,7 @@ class TasksIndex extends Component {
 
   componentDidMount() {
 
-    console.log('COMPONENT DID MOUNT: what are props:', this.props)
+    // console.log('COMPONENT DID MOUNT: what are props:', this.props)
     if (this.props.currentUser) {
 
       this.fbRefSimpleTasks.off();

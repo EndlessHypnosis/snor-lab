@@ -25,7 +25,7 @@ class HomeIndex extends Component {
     // if current user exists and user id exists than make user navigation
     if (this.props.currentUser && this.props.currentUser.uid) {
       return (
-        <div>
+        <div className='home-user-wrapper'>
           { this.props.currentUser.displayName
             ? <p className='ubuntu-gray-medium'>
                 Hello,
@@ -77,7 +77,7 @@ class HomeIndex extends Component {
     }
     else {
       return (
-        <div>
+        <div className='home-index-wrapper'>
           <Route exact path="/" render={(props) => {
             return (
               <div>
