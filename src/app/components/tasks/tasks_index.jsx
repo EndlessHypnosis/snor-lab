@@ -48,6 +48,20 @@ class TasksIndex extends Component {
   }
 
 
+  // shouldComponentUpdate(nextProps, nextState) {
+
+    // if (this.props.currentUser && (JSON.stringify(this.props.currentUser) !== JSON.stringify(this.nextProps.currentUser))) {
+    //   return true;
+    // }
+    // // debugger;
+    // if (this.props.userPath && Object.keys(this.props.userPath) > 0 && (JSON.stringify(this.props.userPath) !== JSON.stringify(this.nextProps.userPath))) {
+    //   return true;
+    // }
+
+    // return true;
+  // }
+
+
   levelUpChecker() {
 
     this.fbRefCurrentLevel.once('value', snap => {

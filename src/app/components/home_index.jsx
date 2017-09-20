@@ -21,6 +21,31 @@ class HomeIndex extends Component {
 
   }
 
+  // shouldComponentUpdate(nextProps, nextState) {
+
+    // console.log('$$$$$$$$$$$$$$$$$$$$$$')
+
+    // console.log('CURR PROPS: ', this.props)
+    // console.log('NEXT PROPS: ', nextProps)
+    // console.log('CURR STATE: ', this.state)
+    // console.log('NEXT STATE: ', nextState)
+
+    // if (this.props.currentUser && (JSON.stringify(this.props.currentUser) !== JSON.stringify(this.nextProps.currentUser))) {
+    //   return true;
+    // }
+    // // debugger;
+    // if (this.props.userPath && Object.keys(this.props.userPath) > 0 && (JSON.stringify(this.props.userPath) !== JSON.stringify(this.nextProps.userPath))) {
+    //   return true;
+    // }
+
+    // return false;
+  // }
+
+  // componentDidUpdate(prevProps, prevState) {
+  //   console.log('HOME INDEX UPDATED!')
+  // }
+
+
   renderLoginCheck() {
     // if current user exists and user id exists than make user navigation
     if (this.props.currentUser && this.props.currentUser.uid) {
