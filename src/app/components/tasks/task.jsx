@@ -22,6 +22,19 @@ class Task extends Component {
   }
 
 
+
+  // shouldComponentUpdate(nextProps, nextState) {
+    // console.log('------------------')
+
+    // if (this.state.taskInEditMode && (this.state.taskInEditMode !== this.nextState.taskInEditMode)) {
+    //   return true;
+    // }
+
+    // return false;
+  // }
+
+
+
   saveEditTask() {
 
     if (this.state.taskInEditMode) {

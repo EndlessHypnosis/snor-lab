@@ -128,11 +128,23 @@ class App extends Component {
   }
 
   componentDidMount() {
-
     this.runLoop();
+  }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    
+    // console.log('@@@@@@@@@@@@@@@@@@@@@')
+    
+    // console.log('CURR PROPS: ', this.props)
+    // console.log('NEXT PROPS: ', nextProps)
+    // console.log('CURR STATE: ', this.state)
+    // console.log('NEXT STATE: ', nextState)
 
+    // if (this.props.currentUser && (JSON.stringify(this.props.currentUser) === JSON.stringify(this.nextProps.currentUser))) {
+    //   return false;
+    // }
 
+    return true;
   }
 
 
