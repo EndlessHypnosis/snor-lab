@@ -14,11 +14,17 @@ class Reminder extends Component {
 
   // shouldComponentUpdate(nextProps, nextState) {
 
-    // if (this.state.taskInEditMode && (this.state.taskInEditMode !== this.nextState.taskInEditMode)) {
+      //   console.log('CURR PROPS: ', this.props)
+      //   console.log('NEXT PROPS: ', nextProps)
+      //   console.log('CURR STATE: ', this.state)
+      //   console.log('NEXT STATE: ', nextState)
+
+      // if (this.state.taskInEditMode && (this.state.taskInEditMode !== this.nextState.taskInEditMode)) {
+      //   return true;
+      // }
+      // return false;
     //   return true;
     // }
-    // return false;
-  // }
 
 
   deleteReminder(e) {

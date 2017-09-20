@@ -28,7 +28,6 @@ class AvatarOutput extends Component {
 
   render() {
 
-    debugger;
     return(
       <div className='avatar-wrapper'>
         <img className='avatar-20-hug' src={this.props.userPath.avatarUrl} />
