@@ -9,6 +9,10 @@ import Reminder from './reminder';
 import { setAvatarUrl } from '../../actions/index';
 import Notifications, { success } from 'react-notification-system-redux';
 
+// TODO:
+// this is a todo
+// FIXME:
+// this is a fixme
 
 class RemindersIndex extends Component {
   constructor(props) {
